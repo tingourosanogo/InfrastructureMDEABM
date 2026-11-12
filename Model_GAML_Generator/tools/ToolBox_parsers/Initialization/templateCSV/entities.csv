@@ -1,0 +1,4 @@
+```csv
+name,type,count,initialization_method,data_source,sampling_strategy,stratification_variables,attribute_mapping
+"<Nom de l'entité, ex. HouseholdAgent>","<Type, ex. agent>","<Nombre, ex. 1500>","<Méthode, ex. data_driven>","<Source, ex. data/household_survey.csv>","<Stratégie, ex. stratified_random>","<Variables, ex. [\"income_class\", \"location\"]>","<Mappings, ex. [{\"model_attribute\": \"size_ha\", \"data_field\": \"area\", \"conversion\": \"square_meters_to_hectares\"}]>"
+```

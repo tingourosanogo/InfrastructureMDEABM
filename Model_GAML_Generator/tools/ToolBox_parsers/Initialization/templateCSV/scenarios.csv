@@ -1,0 +1,4 @@
+```csv
+name,description,based_on,parameters,state_variables,validation_status
+"<Nom du scénario, ex. sustainability_transition>","<Description, ex. Pathway towards sustainable agroecology>","<Base, ex. IPCC RCP2.6 + EU Green Deal>","<Paramètres, ex. {\"climate_change_scenario\": \"RCP2.6\", \"policy_intervention\": \"regulation\"}>","<Variables d'état, ex. {\"initial_investment\": 20000}>","<Statut de validation, ex. plausible>"
+```

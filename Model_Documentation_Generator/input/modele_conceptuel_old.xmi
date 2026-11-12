@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
+           xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML"
+           xmi:id="_pastoralSystemModel" name="PastoralSystem">
+
+	<!-- Packages pour organiser les éléments -->
+	<packagedElement xmi:type="uml:Package" xmi:id="pkg_Core" name="Core">
+
+		<!-- Classes de base améliorées -->
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Actor" name="Actor" isAbstract="true">
+			<ownedAttribute xmi:id="attr_Actor_id" name="id" type="string"/>
+			<ownedAttribute xmi:id="attr_Actor_type" name="type" type="string"/>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_IndividualActor" name="IndividualActor">
+			<generalization xmi:id="gen_IndividualActor_Actor" general="class_Actor"/>
+			<ownedOperation xmi:id="op_manageResource" name="manageResource">
+				<ownedParameter xmi:id="param_manageResource_res" name="resource" type="class_Resource" upperValue="*"/>
+			</ownedOperation>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Resource" name="Resource" isAbstract="true">
+			<ownedAttribute xmi:id="attr_Resource_id" name="id" type="string"/>
+			<ownedAttribute xmi:id="attr_Resource_quantity" name="quantity" type="float"/>
+		</packagedElement>
+
+		<!-- Activités productives -->
+		<packagedElement xmi:type="uml:Class" xmi:id="class_FarmingActivity" name="FarmingActivity" isAbstract="true">
+			<ownedAttribute xmi:id="attr_FarmingActivity_startDate" name="startDate" type="date"/>
+			<ownedAttribute xmi:id="attr_FarmingActivity_endDate" name="endDate" type="date"/>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Livestock" name="Livestock">
+			<generalization xmi:id="gen_Livestock_Farming" general="class_FarmingActivity"/>
+			<ownedAttribute xmi:id="attr_Livestock_herdSize" name="herdSize" type="integer"/>
+			<ownedOperation xmi:id="op_produceMeat" name="produceMeat" type="class_Meat"/>
+			<ownedOperation xmi:id="op_produceMilk" name="produceMilk" type="class_Milk"/>
+		</packagedElement>
+
+		<!-- Ressources biologiques -->
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Plant" name="Plant">
+			<ownedAttribute xmi:id="attr_Plant_species" name="species" type="string"/>
+			<ownedAttribute xmi:id="attr_Plant_biomass" name="biomass" type="float"/>
+			<ownedOperation xmi:id="op_absorbNutrients" name="absorbNutrients">
+				<ownedParameter xmi:id="param_absorbNutrients_nut" name="nutrients" type="class_Nutrient" upperValue="*"/>
+			</ownedOperation>
+		</packagedElement>
+
+		<!-- Produits -->
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Product" name="Product" isAbstract="true">
+			<ownedAttribute xmi:id="attr_Product_quality" name="quality" type="float"/>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Meat" name="Meat">
+			<generalization xmi:id="gen_Meat_Product" general="class_Product"/>
+			<ownedAttribute xmi:id="attr_Meat_cutType" name="cutType" type="string"/>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Milk" name="Milk">
+			<generalization xmi:id="gen_Milk_Product" general="class_Product"/>
+			<ownedAttribute xmi:id="attr_Milk_fatContent" name="fatContent" type="float"/>
+		</packagedElement>
+
+		<!-- Associations de base -->
+		<packagedElement xmi:type="uml:Association" xmi:id="assoc_Actor_Activity" name="performs">
+			<memberEnd xmi:idref="class_Actor"/>
+			<memberEnd xmi:idref="class_FarmingActivity"/>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Actor_Activity" type="class_Actor" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="1"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="*"/>
+			</ownedEnd>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Activity_Actor" type="class_FarmingActivity" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="1"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="*"/>
+			</ownedEnd>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Association" xmi:id="assoc_Activity_Product" name="produces">
+			<memberEnd xmi:idref="class_FarmingActivity"/>
+			<memberEnd xmi:idref="class_Product"/>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Activity_Product" type="class_FarmingActivity" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="1"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="1"/>
+			</ownedEnd>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Product_Activity" type="class_Product" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="0"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="*"/>
+			</ownedEnd>
+		</packagedElement>
+
+	</packagedElement>
+
+	<!-- Package pour les ressources naturelles -->
+	<packagedElement xmi:type="uml:Package" xmi:id="pkg_NaturalResources" name="NaturalResources">
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_WaterSource" name="WaterSource" isAbstract="true">
+			<ownedAttribute xmi:id="attr_WaterSource_capacity" name="capacity" type="float"/>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_SurfaceWater" name="SurfaceWater">
+			<generalization xmi:id="gen_SurfaceWater_Water" general="class_WaterSource"/>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Soil" name="Soil">
+			<ownedAttribute xmi:id="attr_Soil_fertility" name="fertility" type="float"/>
+			<ownedAttribute xmi:id="attr_Soil_compaction" name="compaction" type="float"/>
+		</packagedElement>
+
+		<!-- Associations des ressources naturelles -->
+		<packagedElement xmi:type="uml:Association" xmi:id="assoc_Plant_Soil" name="growsIn">
+			<memberEnd xmi:idref="class_Plant"/>
+			<memberEnd xmi:idref="class_Soil"/>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Plant_Soil" type="class_Plant" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="0"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="*"/>
+			</ownedEnd>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Soil_Plant" type="class_Soil" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="1"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="1"/>
+			</ownedEnd>
+		</packagedElement>
+
+	</packagedElement>
+
+	<!-- Package pour les processus -->
+	<packagedElement xmi:type="uml:Package" xmi:id="pkg_Processes" name="Processes">
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Consumption" name="Consumption">
+			<ownedAttribute xmi:id="attr_Consumption_date" name="date" type="date"/>
+			<ownedAttribute xmi:id="attr_Consumption_quantity" name="quantity" type="float"/>
+		</packagedElement>
+
+		<packagedElement xmi:type="uml:Class" xmi:id="class_Growth" name="Growth">
+			<ownedAttribute xmi:id="attr_Growth_rate" name="rate" type="float"/>
+		</packagedElement>
+
+		<!-- Associations des processus -->
+		<packagedElement xmi:type="uml:Association" xmi:id="assoc_Livestock_Consumption" name="consumes">
+			<memberEnd xmi:idref="class_Livestock"/>
+			<memberEnd xmi:idref="class_Consumption"/>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Livestock_Consumption" type="class_Livestock" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="1"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="1"/>
+			</ownedEnd>
+			<ownedEnd xmi:type="uml:Property" xmi:id="end_Consumption_Livestock" type="class_Consumption" aggregation="none">
+				<lowerValue xmi:type="uml:LiteralInteger" value="0"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" value="*"/>
+			</ownedEnd>
+		</packagedElement>
+
+	</packagedElement>
+
+</uml:Model>

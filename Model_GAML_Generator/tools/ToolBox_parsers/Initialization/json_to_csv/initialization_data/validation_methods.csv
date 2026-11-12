@@ -1,0 +1,3 @@
+method_name,validation_date,participants,period,metric,metric_value,threshold,result
+historical_validation,2025-01-01,10,2010-2020,Nash-Sutcliffe,,0.6,model_calibrated
+gps_field_validation,2024-06-01,5,2020-2024,mobility_accuracy,,0.7,transhumance_validated

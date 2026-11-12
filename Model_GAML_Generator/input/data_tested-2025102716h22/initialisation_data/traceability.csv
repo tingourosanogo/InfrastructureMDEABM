@@ -1,0 +1,4 @@
+traceability_type,parameter,quality_score,assessment_method,experts,uncertainty_type,magnitude,propagation_method,planned_methods,parameters_included,software
+data_quality,discount_rate,0.8,expert_judgment,"[{""name"": ""Dr. Economist"", ""confidence"": ""high""}]",,,,,,
+uncertainty,soil_mineralization_rate,,,,epistemic,medium,monte_carlo,,,
+sensitivity,,,,,,,,"[""SOBOL"", ""Morris""]",all,SALib

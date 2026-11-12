@@ -1,0 +1,39 @@
+// ========== SORTIES ET INDICATEURS ==========
+
+// Déclaration des variables pour indicateurs
+{% for indicator in indicators %}
+float {{ indicator.name | sanitize_gaml }}_value <- 0.0;
+{% endfor %}
+
+// Moniteurs basiques
+{% for indicator in indicators %}
+monitor "{{ indicator.name }}" value: {{ indicator.name | sanitize_gaml }}_value;
+{% endfor %}
+
+// Calcul des indicateurs (exemple simplifié)
+reflex calculate_indicators {
+    {% for indicator in indicators %}
+    // TODO: Implémenter la logique réelle pour: {{ indicator.name }}
+    {{ indicator.name | sanitize_gaml }}_value <- cycle * 0.1 * ({{ loop.index }});
+    {% endfor %}
+}
+
+// Sauvegarde des résultats
+output {
+    save simulation_data to: "output/simulation_results.csv" type: "csv" {
+        // Métriques de base
+        data "cycle" value: cycle;
+        data "year" value: simulation_year;
+        data "time" value: time;
+        
+        // Indicateurs
+        {% for indicator in indicators %}
+        data "{{ indicator.name | replace(' ', '_') }}" value: {{ indicator.name | sanitize_gaml }}_value;
+        {% endfor %}
+        
+        // Statistiques agents
+        {% for agent in agents if agent.attributes or agent.actions %}
+        data "count_{{ agent.name }}" value: ({{ agent.name }} count);
+        {% endfor %}
+    }
+}

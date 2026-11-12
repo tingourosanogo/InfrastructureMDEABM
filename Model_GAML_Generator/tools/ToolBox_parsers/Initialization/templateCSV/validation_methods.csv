@@ -1,0 +1,4 @@
+```csv
+method_name,validation_date,participants,period,metric,metric_value,threshold,result
+"<Nom de la méthode, ex. expert_validation>","<YYYY-MM-DD, ex. 2024-01-10>","<Nombre, ex. 5>","<Période, ex. 2010-2020>","<Métrique, ex. Nash-Sutcliffe>","<Valeur, ex. 0.75>","<Seuil, ex. 0.6>","<Résultat, ex. parameters_approved>"
+```

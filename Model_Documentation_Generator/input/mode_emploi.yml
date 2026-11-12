@@ -1,0 +1,190 @@
+﻿# mode_emploi_pastoralisme_gama.yaml
+version: "1.2"
+metadata:
+  auteur: "Équipe de Modélisation Pastoralisme"
+  date_mise_a_jour: "2024-03-15"
+  version_modele: "PastoralABM v3.1"
+  reference: "Gurung et al. 2023 - Ecological Modelling"
+  licence: "CC BY-NC 4.0"
+
+lancement_simulation:
+  plateforme_requise:
+    os: ["Windows 10/11", "Linux Ubuntu 20.04+", "macOS 12+"]
+    memoire_ram: "16GB recommandés (8GB minimum)"
+    espace_disque: "2GB libre (données spatiales incluses)"
+    dependances: 
+      - "GAMA Platform 1.9.1+"
+      - "Java 17+"
+      - "GDAL 3.4+ (pour données géospatiales)"
+      - "Python 3.10+ (pour analyse post-simulation)"
+
+  fichiers_necessaires:
+    - nom: "main_model.gaml"
+      description: "Modèle principal GAMA contenant les espèces et expériences"
+      format: "GAML"
+      exemple: "models/pastoral_abm/main_model.gaml"
+
+    - nom: "config_parameters.xml"
+      description: "Fichier de paramétrage de la simulation"
+      format: "XML"
+      parametres_cles: ["duree_simulation", "pas_temps", "scenario_climatique"]
+
+    - nom: "land_cover.tiff"
+      description: "Carte d'occupation du sol (classification FAO LCCS)"
+      format: "GeoTIFF"
+      resolution: "10m"
+      systeme_coordonnees: "WGS84 UTM 28N"
+
+    - nom: "herd_data.csv"
+      description: "Données initiales des troupeaux par ménage"
+      format: "CSV UTF-8"
+      colonnes_obligatoires: ["household_id", "cattle_count", "sheep_count", "goat_count", "initial_location"]
+
+  procedure:
+    - etape: 1
+      commande: "gama-headless.exe main_model.gaml config_parameters.xml"
+      description: "Lancement en mode headless (sans interface)"
+      options:
+        - "--experiment main_experiment : exécute l'expérience principale"
+        - "--output results/ : spécifie le dossier de sortie"
+        - "--params param1=value1 param2=value2 : paramètres en ligne de commande"
+
+    - etape: 2
+      commande: "gama.exe main_model.gaml"
+      description: "Lancement avec interface graphique GAMA"
+      prerequis: "Environnement graphique disponible"
+
+    - etape: 3
+      commande: "python run_batch.py --scenarios all --replicates 10"
+      description: "Lancement batch de multiples scénarios"
+      prerequis: "Script Python d'orchestration installé"
+
+entrees:
+  interface_utilisateur:
+    disponible: true
+    type: "GAMA Modeling Environment"
+    url: "https://gama-platform.org"
+    fonctionnalites:
+      - "Exploration visuelle des scénarios climatiques (X)"
+      - "Modification interactive des paramètres (Z) : taux de reproduction, règles de mobilité"
+      - "Visualisation temps réel de la dynamique pastorale"
+      - "Inspection des agents (troupeaux, ménages, ressources)"
+
+  fichiers_entree:
+    - type: "parametres_globaux"
+      format: "XML"
+      schema: "schemas/parameters_schema.xsd"
+      description: "Paramètres globaux du modèle socio-écologique"
+      champs_obligatoires: 
+        - "simulation_duration: 3650 (10 ans)"
+        - "time_step: 1 (jour)"
+        - "climate_scenario: RCP4.5|RCP8.5"
+        - "market_access_level: low|medium|high"
+
+    - type: "donnees_spatiales"
+      format: "GeoTIFF/Shapefile"
+      systeme_coordonnees: "WGS84/UTM"
+      couches_requises:
+        - "land_cover: Occupation du sol (classes FAO)"
+        - "dem: Modèle numérique d'élévation"
+        - "water_sources: Points d'eau permanents/seasonniers"
+        - "protected_areas: Aires protégées et restrictions"
+
+    - type: "donnees_socio_economiques"
+      format: "CSV/JSON"
+      description: "Données des ménages et troupeaux"
+      variables_cles:
+        - "household_size: Taille du ménage"
+        - "livestock_holdings: Composition du troupeau"
+        - "wealth_index: Indice de richesse"
+        - "mobility_pattern: Pattern de mobilité (sédentaire/nomade)"
+
+    - type: "donnees_climatiques"
+      format: "NetCDF"
+      description: "Données climatiques historiques et projections"
+      variables:
+        - "precipitation: Précipitations quotidiennes (mm)"
+        - "temperature: Températures min/max (°C)"
+        - "ndvi: Normalized Difference Vegetation Index"
+
+sorties:
+  visualisation:
+    - type: "cartes_dynamiques"
+      format: "HTML interactif"
+      outils: "GAMA GIS + Leaflet.js"
+      description: "Cartographie dynamique de la mobilité pastorale et état des ressources"
+      indicateurs_visuels:
+        - "Densité de troupeaux par cellule"
+        - "État de la biomasse végétale"
+        - "Conflits d'usage des ressources"
+        - "Patterns de mobilité saisonnière"
+
+    - type: "courbes_evolution"
+      format: "SVG/PDF interactif"
+      outils: "GAMA Charts + Plotly"
+      description: "Graphiques temporels des indicateurs clés"
+      indicateurs:
+        - "Biomasse disponible (kg/ha)"
+        - "Taille des troupeaux (TLU)"
+        - "Revenus pastoraux (USD/ménage)"
+        - "Dégradation des sols (indice)"
+
+    - type: "reseaux_sociaux"
+      format: "GEXF/JSON"
+      outils: "Gephy/Cytoscape"
+      description: "Visualisation des réseaux d'entraide et partage de ressources"
+
+  fichiers_sortie:
+    - type: "resultats_bruts"
+      format: "CSV"
+      colonnes: 
+        - "step: Pas de temps"
+        - "household_id: Identifiant ménage"
+        - "location_x, location_y: Coordonnées UTM"
+        - "livestock_count: Effectif bétail (TLU)"
+        - "income: Revenu journalier"
+        - "biomass_available: Biomasse disponible locale"
+      description: "Données brutes pour analyse statistique"
+
+    - type: "metrics_agregees"
+      format: "JSON"
+      indicateurs:
+        - "mean_herd_size: Taille moyenne des troupeaux"
+        - "mobility_distance: Distance parcourue moyenne"
+        - "resource_conflicts: Nombre de conflits"
+        - "ecological_carrying_capacity: Charge écologique"
+      description: "Indicateurs agrégés par scénario"
+
+    - type: "rapport_synthese"
+      format: "PDF/HTML"
+      sections: 
+        - "résumé_exécutif"
+        - "performance_écologique"
+        - "résilience_sociale"
+        - "recommandations_gestions"
+      description: "Rapport automatique avec graphiques et analyses"
+
+  post_traitement:
+    outils_recommandes:
+      - "R Studio (analyse statistique)"
+      - "Jupyter Notebook (analyse exploratoire)"
+      - "QGIS (analyse spatiale)"
+      - "Gephi (analyse de réseaux)"
+    scripts_exemples: "scripts/analysis/"
+    methodes_analyse:
+      - "ANOVA multi-facteurs pour comparaison de scénarios"
+      - "Analyses de cluster pour typologie des stratégies pastorales"
+      - "Spatial autocorrelation (Moran's I) pour patterns spatiaux"
+      - "Agent-based model validation (pattern-oriented modeling)"
+
+documentation_complementaire:
+  references_bibliographiques:
+    - "Barton et al. 2022 - Pastoral mobility in changing climates"
+    - "Turner et al. 2021 - Coupled human-natural systems modeling"
+    - "Gurung et al. 2023 - GAMA for pastoral ABM"
+  tutorials: 
+    - "https://github.com/pastoral-abm/tutorials"
+    - "https://gama-platform.org/tutorials"
+  formations:
+    - "Atelier de modélisation agent-based (CNRS)"
+    - "GAMA Summer School (annuelle)"

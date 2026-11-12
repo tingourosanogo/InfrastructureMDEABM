@@ -1,0 +1,38 @@
+// ========== EXPÉRIMENTATION ==========
+
+experiment "Simulation_Pastorale" type: gui {
+    // Paramètres modifiables
+    parameter "Durée simulation" var: total_steps category: "Temporel";
+    parameter "Step temporel" var: step category: "Temporel";
+    
+    {% for param in global_parameters if param.mutable is not defined or param.mutable %}
+    parameter "{{ param.name }}" var: {{ param.name }} category: "Paramètres";
+    {% endfor %}
+    
+    output {
+        // Affichage spatial
+        display "Carte_Agents" {
+            {% for agent in agents if agent.attributes or agent.actions %}
+            species {{ agent.name }} aspect: default;
+            {% endfor %}
+        }
+        
+        // Tableau de bord indicateurs
+        display "Indicateurs" {
+            {% for indicator in indicators %}
+            chart "{{ indicator.name | replace(' ', '_') }}" type: series {
+                data "{{ indicator.name }}" value: cycle_count color: rgb({{ (loop.index0 * 30) % 255 }}, {{ (loop.index0 * 60) % 255 }}, {{ (loop.index0 * 90) % 255 }});
+            }
+            {% endfor %}
+        }
+        
+        // Monitoring valeurs
+        display "Monitoring" {
+            {% for agent in agents if agent.attributes and agent.attributes|length > 0 %}
+            {% for attr in agent.attributes[:2] %} {# 2 premiers attributs par agent #}
+            monitor "{{ agent.name }}.{{ attr.name }}" value: (first({{ agent.name }})).{{ attr.name }};
+            {% endfor %}
+            {% endfor %}
+        }
+    }
+}

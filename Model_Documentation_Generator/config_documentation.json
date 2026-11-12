@@ -1,0 +1,85 @@
+{
+  "metadata": {
+    "title": "Modèle PRAPS",
+    "subtitle": "Pastoralisme au Sahel",
+    "version": "1.0.0",
+    "date_creation": "2026-04-29",
+    "date_version": "2026-04-29",
+    "status": "Brouillon",
+    "classification": "Interne",
+    "language": "fr",
+    "keywords": [
+      "Modèle à base d'agents",
+      "Pastoralisme",
+      "Sahel"
+    ]
+  },
+  "authors": [
+    {
+      "affiliation": "Doctorant",
+      "email": "tingourosanogo@gmail.com",
+      "name": "Tingouro Sanogo",
+      "role": "Auteur principal"
+    },
+    {
+      "affiliation": "Chercheur senior - CIRAD",
+      "email": "jean-pierre.muller@cirad.fr",
+      "name": "Pr. Jean-Pierre Müller",
+      "role": "Auteur principal"
+    },
+    {
+      "affiliation": "Enseignant-chercheur",
+      "email": "maigabababa78@yahoo.fr",
+      "name": "Dr Oumar Y. Maïga",
+      "role": "Auteur principal"
+    },
+    {
+      "affiliation": "Enseignant-chercheur",
+      "email": "sstraore@yahoo.fr",
+      "name": "Dr Souleymane S. Traoré",
+      "role": "Auteur principal"
+    }
+  ],
+  "project": {},
+  "documentation": {},
+  "technical": {},
+  "paths": {
+    "Introduction": {
+      "input_path": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_Documentation_Generator/input/introduction.yml",
+      "format": "yaml",
+      "ignored": false
+    },
+    "Modele_Conceptuel": {
+      "input_path": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_Documentation_Generator/input/modele_conceptuel.xmi",
+      "format": "xmi",
+      "ignored": false
+    },
+    "Initialisation": {
+      "input_path": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_Documentation_Generator/input/initialisation.yml",
+      "format": "yaml",
+      "ignored": false
+    },
+    "Indicateurs": {
+      "input_path": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_Documentation_Generator/input/indicateurs.yml",
+      "format": "yaml",
+      "ignored": false
+    },
+    "Mode_Emploi": {
+      "input_path": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_Documentation_Generator/input/mode_emploi.yml",
+      "format": "yaml",
+      "ignored": false
+    },
+    "output_path": "C:\\Users\\tingo\\Documents\\Self_Vscode\\Tout_Bazar\\Model_Documentation_Generator\\exports\\documentation_20260429_093915.md"
+  },
+  "assets": {},
+  "schemas": {},
+  "export": {
+    "formats": [
+      "html",
+      "pdf",
+      "docx"
+    ],
+    "css_path": null,
+    "output_dir": "C:\\Users\\tingo\\Documents\\Self_Vscode\\Tout_Bazar\\Model_Documentation_Generator\\exports"
+  }
+}

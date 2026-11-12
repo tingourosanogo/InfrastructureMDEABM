@@ -1,0 +1,8 @@
+/**
+ * Modèle GAML généré automatiquement
+ * Source: {{ model.metadata.get('introduction', {}).get('metadata', {}).get('source', 'DSL CIM/PIM') }}
+ * Date: {{ now.strftime('%Y-%m-%d %H:%M') }}
+ * Agents: {{ agents|length }}, Processus: {{ processes|default([])|length }}
+ */
+
+model {{ initialization_config.get('metadata', {}).get('model_name', 'pastoral_model') | lower | replace(' ', '_') }}

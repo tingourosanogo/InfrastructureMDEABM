@@ -1,0 +1,3 @@
+variable_type,name,entity,value,values,unit,distribution,distribution_params,probabilities,source
+fixed,initial_wealth,HouseholdAgent,50000,,EUR,lognormal,"{""mean"": 10.82, ""sigma"": 0.8}",,National statistics 2020
+variable,land_use_type,ParcelEntity,,"[""forest"", ""agriculture"", ""urban"", ""wetland""]",,categorical,,"[0.3, 0.4, 0.2, 0.1]",Land cover map 2020

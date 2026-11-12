@@ -1,0 +1,4 @@
+```csv
+parameter_type,name,entity,value,values,unit,definition,source,uncertainty,sensitivity_rank,validation,impact_assessment
+"<Type de paramètre, ex. fixed>","<Nom, ex. discount_rate>","<Entité, ex. HouseholdAgent>","<Valeur, ex. 0.03>","<Liste de valeurs, ex. [\"RCP2.6\", \"RCP4.5\", \"RCP8.5\"]>","<Unité, ex. dimensionless>","<Définition, ex. Temporal discount rate>","<Source, ex. Berger et al. (2007)>","<Incertitude, ex. {\"distribution\": \"normal\", \"std_dev\": 0.005}>","<Rang de sensibilité, ex. high>","<Validation, ex. lab_experiments>","<Impact, ex. high>"
+```

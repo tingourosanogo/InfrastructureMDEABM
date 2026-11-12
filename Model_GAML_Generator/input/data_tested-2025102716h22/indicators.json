@@ -1,0 +1,364 @@
+{
+  "indicators": [
+    {
+      "id": "PA.01.01",
+      "name": "Charge animale instantanée",
+      "category": "Pastoralisme",
+      "source": "Dutilly-Diane et al. (2007), Journal of Arid Environments; Ndiaye et al. (2021), Pastoralism",
+      "description": "Nombre d'unités de bétail (UBT) par hectare de pâturage disponible. Indicateur clé de pression sur les ressources fourragères, adapté au Sahel pour évaluer la durabilité et la résilience face à la variabilité climatique.\n",
+      "formula": "CA = (Nombre UBT) / (Surface pâturable * Facteur Saison)",
+      "unit": "UBT/ha",
+      "variables": [
+        {
+          "name": "nombre_ubt",
+          "entity": "Troupeau",
+          "definition": "Effectif converti en unité de bétail tropical, ajusté pour races saheliennes",
+          "unit": "UBT"
+        },
+        {
+          "name": "surface_paturage",
+          "entity": "Espace",
+          "definition": "Surface accessible au pâturage, incluant parcours transhumants",
+          "unit": "ha"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "facteur_saison",
+          "entity": "Système",
+          "definition": "Coefficient saisonnier d'ajustement pour variabilité pluviométrique",
+          "value": 1.2,
+          "unit": "coefficient"
+        }
+      ]
+    },
+    {
+      "id": "PA.02.01",
+      "name": "Taux de rotation des pâturages",
+      "category": "Pastoralisme",
+      "source": "Vallentine (2001), Grazing Management; Snapp et al. (2021), Global Food Security",
+      "description": "Fréquence de rotation des troupeaux entre parcelles. Critique pour la durabilité des parcours et la résilience aux sécheresses au Sahel.\n",
+      "formula": "TR = (Nombre rotations) / (Période analysée)",
+      "unit": "rotations/an",
+      "variables": [
+        {
+          "name": "nombre_rotations",
+          "entity": "Troupeau",
+          "definition": "Nombre de déplacements entre parcelles, incluant transhumance",
+          "unit": "n"
+        },
+        {
+          "name": "periode_analyse",
+          "entity": "Système",
+          "definition": "Période d'observation, typiquement une année pastorale",
+          "unit": "jours"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "duree_min_sejour",
+          "entity": "Parcelle",
+          "definition": "Durée minimale entre deux rotations pour régénération",
+          "value": 21,
+          "unit": "jours"
+        }
+      ]
+    },
+    {
+      "id": "PA.03.01",
+      "name": "Taux de charge soutenable",
+      "category": "Pastoralisme",
+      "source": "Sandford (1983), Management of Pastoral Development; Böhm et al. (2024), Nature Climate Change",
+      "description": "Capacité de charge maximale sans dégradation à long terme. Basé sur la productivité fourragère, adapté aux impacts climatiques au Sahel.\n",
+      "formula": "TCS = (Production fourragère annuelle) / (Consommation UBT)",
+      "unit": "UBT/ha/an",
+      "variables": [
+        {
+          "name": "production_fourrage",
+          "entity": "Parcelle",
+          "definition": "Biomasse fourragère produite annuellement, ajustée pour variabilité pluviométrique",
+          "unit": "kg MS/ha"
+        },
+        {
+          "name": "consommation_ubt",
+          "entity": "Troupeau",
+          "definition": "Besoin annuel moyen par UBT, incluant mobilité",
+          "unit": "kg MS/UBT"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "facteur_resilience",
+          "entity": "Ecosystème",
+          "definition": "Coefficient de résilience des parcours face au climat",
+          "value": 0.85,
+          "unit": "coefficient"
+        }
+      ]
+    },
+    {
+      "id": "AE.02.01",
+      "name": "Taux de couverture végétale",
+      "category": "Agroécologie",
+      "source": "FAO (2021), Voluntary Guidelines for Soil Conservation; GIZ (2022), Policy Brief on Dryland Pastoral Systems",
+      "description": "Pourcentage de sol couvert par la végétation vivante ou morte. Réduit l'érosion et améliore la résilience au Sahel.\n",
+      "formula": "TCV = (Surface couverte / Surface totale) * 100",
+      "unit": "%",
+      "variables": [
+        {
+          "name": "surface_couverte",
+          "entity": "Parcelle",
+          "definition": "Surface avec couverture végétale",
+          "unit": "ha"
+        },
+        {
+          "name": "surface_totale",
+          "entity": "Parcelle",
+          "definition": "Surface totale observée",
+          "unit": "ha"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "surface_observée",
+          "entity": "Espace",
+          "definition": "Surface échantillonnée",
+          "value": 1.0,
+          "unit": "ha"
+        }
+      ]
+    },
+    {
+      "id": "CL.03.01",
+      "name": "Bilan carbone",
+      "category": "Climat",
+      "source": "IPCC (2019), GHG Guidelines; World Bank (2024), RESILAND Overview",
+      "description": "Émissions nettes de GES par hectare, évaluant contribution à ODD 13 au Sahel.\n",
+      "formula": "(émissions - séquestration) / surface",
+      "unit": "tCO2eq/ha/an",
+      "variables": [
+        {
+          "name": "émissions",
+          "entity": "Exploitation",
+          "definition": "Émissions totales de GES, incluant entériques",
+          "unit": "tCO2eq/an"
+        },
+        {
+          "name": "séquestration",
+          "entity": "Sol",
+          "definition": "Carbone séquestré dans les sols pastoraux",
+          "unit": "tCO2eq/an"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "surface",
+          "entity": "Espace",
+          "definition": "Surface agricole utile",
+          "value": 1.0,
+          "unit": "ha"
+        }
+      ]
+    },
+    {
+      "id": "CL.03.02",
+      "name": "Indice de résilience climatique",
+      "category": "Climat",
+      "source": "IPCC (2022), AR6 Report; USAID (2024), Resilience in Sahel",
+      "description": "Capacité à maintenir la production sous stress climatique, lié à résilience des ménages.\n",
+      "formula": "(production_reelle / production_potentielle) * 100",
+      "unit": "%",
+      "variables": [
+        {
+          "name": "production_reelle",
+          "entity": "Exploitation",
+          "definition": "Production effective en année stressante",
+          "unit": "t/ha"
+        },
+        {
+          "name": "production_potentielle",
+          "entity": "Exploitation",
+          "definition": "Production théorique optimale",
+          "unit": "t/ha"
+        }
+      ]
+    },
+    {
+      "id": "BD.04.01",
+      "name": "Indice de biodiversité fonctionnelle",
+      "category": "Biodiversité",
+      "source": "Díaz et al. (2015), Nature; CARE (2024), Resilient Pastoral Livelihoods",
+      "description": "Abondance relative d'espèces indicatrices, contribuant à ODD 15 au Sahel.\n",
+      "formula": "Σ(abondance_espèce_i * poids_écologique_i)",
+      "unit": "points",
+      "variables": [
+        {
+          "name": "abondance_especes",
+          "entity": "Écosystème",
+          "definition": "Nombre d'individus par espèce",
+          "unit": "individus/ha"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "poids_ecologique",
+          "entity": "Système",
+          "definition": "Valeur écologique de l'espèce",
+          "value": 0.75,
+          "unit": "coefficient"
+        }
+      ]
+    },
+    {
+      "id": "BD.04.02",
+      "name": "Indice de biodiversité",
+      "category": "Biodiversité",
+      "source": "CBD (2020), Biodiversity Indicators; Ndiaye et al. (2021), Pastoralism",
+      "description": "Richesse spécifique normalisée, pour évaluer durabilité des pâturages.\n",
+      "formula": "nombre_espèces / surface_reference",
+      "unit": "espèces/ha",
+      "variables": [
+        {
+          "name": "nombre_espèces",
+          "entity": "Espace",
+          "definition": "Espèces identifiées dans pâturages",
+          "unit": "nombre"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "surface_reference",
+          "entity": "Système",
+          "definition": "Surface de référence",
+          "value": 10.0,
+          "unit": "ha"
+        }
+      ]
+    },
+    {
+      "id": "RE.01.01",
+      "name": "Indice de résilience des ménages",
+      "category": "Résilience",
+      "source": "USAID (2024), Resilience in Sahel; Böhm et al. (2024), Nature Climate Change",
+      "description": "Mesure la capacité des ménages à absorber les chocs climatiques et économiques.\n",
+      "formula": "(revenus_diversifies + accès_ressources + santé_troupeau) / 3",
+      "unit": "indice (0-1)",
+      "variables": [
+        {
+          "name": "revenus_diversifies",
+          "entity": "Ménage",
+          "definition": "Niveau de diversification des revenus",
+          "unit": "[0-1]"
+        },
+        {
+          "name": "accès_ressources",
+          "entity": "Ménage",
+          "definition": "Accès à eau et fourrage",
+          "unit": "[0-1]"
+        },
+        {
+          "name": "santé_troupeau",
+          "entity": "Troupeau",
+          "definition": "Santé du bétail",
+          "unit": "[0-1]"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "seuil_resilience",
+          "entity": "Système",
+          "definition": "Seuil minimal pour résilience",
+          "value": 0.6,
+          "unit": "indice"
+        }
+      ]
+    },
+    {
+      "id": "ODD.02.01",
+      "name": "Indice de sécurité alimentaire",
+      "category": "ODD 2",
+      "source": "FAO (2021), Food Security Indicators; World Bank (2025), Pastoralism in Sahel",
+      "description": "Mesure la contribution à ODD 2 via production lait/viande.\n",
+      "formula": "(lait_produit + viande_produite) / besoins_ménage",
+      "unit": "%",
+      "variables": [
+        {
+          "name": "lait_produit",
+          "entity": "Exploitation",
+          "definition": "Lait produit annuellement",
+          "unit": "litres"
+        },
+        {
+          "name": "viande_produite",
+          "entity": "Exploitation",
+          "definition": "Viande produite annuellement",
+          "unit": "kg"
+        },
+        {
+          "name": "besoins_ménage",
+          "entity": "Ménage",
+          "definition": "Besoins nutritionnels annuels",
+          "unit": "équivalent calorique"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "facteur_nutritionnel",
+          "entity": "Système",
+          "definition": "Facteur de conversion nutritionnel",
+          "value": 1.0,
+          "unit": "coefficient"
+        }
+      ]
+    },
+    {
+      "id": "ODD.13.01",
+      "name": "Émissions nettes GES",
+      "category": "ODD 13",
+      "source": "IPCC (2019), GHG Guidelines; CARE (2024), Pastoral Livelihoods",
+      "description": "Émissions nettes, évaluant action climatique (ODD 13).\n",
+      "formula": "émissions - séquestration",
+      "unit": "tCO2eq/an",
+      "variables": [
+        {
+          "name": "émissions",
+          "entity": "Système",
+          "definition": "Émissions totales GES",
+          "unit": "tCO2eq/an"
+        },
+        {
+          "name": "séquestration",
+          "entity": "Sol",
+          "definition": "Séquestration carbone",
+          "unit": "tCO2eq/an"
+        }
+      ]
+    },
+    {
+      "id": "ODD.15.01",
+      "name": "Indice de dégradation des terres",
+      "category": "ODD 15",
+      "source": "UNCCD (2022), Land Degradation Indicators; GIZ (2022), Dryland Pastoral Systems",
+      "description": "Mesure la dégradation des pâturages, contribuant à ODD 15.\n",
+      "formula": "1 - (couverture_végétale / couverture_optimal)",
+      "unit": "indice (0-1)",
+      "variables": [
+        {
+          "name": "couverture_végétale",
+          "entity": "Parcelle",
+          "definition": "Pourcentage de couverture végétale",
+          "unit": "%"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "couverture_optimal",
+          "entity": "Système",
+          "definition": "Couverture végétale optimale",
+          "value": 70.0,
+          "unit": "%"
+        }
+      ]
+    }
+  ]
+}

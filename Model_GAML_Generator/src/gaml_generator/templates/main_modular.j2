@@ -1,0 +1,38 @@
+/**
+ * Modèle GAML modulaire généré automatiquement
+ * Date: {{ now.strftime('%Y-%m-%d %H:%M') }}
+ * Structure modulaire avec imports
+ */
+
+model {{ initialization_config.get('metadata', {}).get('model_name', 'pastoral_model') | lower | replace(' ', '_') }}
+
+// === IMPORTS DES MODULES ===
+import "globals.gaml"
+{% for agent in agents if agent.attributes or agent.actions %}
+import "species/{{ agent.name | lower }}.gaml"
+{% endfor %}
+import "behaviors/global_reflexes.gaml"
+import "experiments/main_experiment.gaml"
+import "outputs/indicators.gaml"
+
+// === INITIALISATION PRINCIPALE ===
+init {
+    {% for agent in agents_with_count %}
+    create {{ agent.name }} number: {{ agent.initial_count }};
+    {% endfor %}
+    
+    // Création par défaut pour les espèces conceptuelles
+    {% for agent in agents %}
+    {% if agent.initial_count == 0 and (agent.attributes or agent.actions) %}
+    create {{ agent.name }} number: 1;
+    {% endif %}
+    {% endfor %}
+    
+    write "=== SIMULATION MODULAIRE DÉMARRÉE ===";
+    write "Agents actifs:";
+    {% for agent in agents if agent.attributes or agent.actions %}
+    write "  - {{ agent.name }}: " + ({{ agent.name }} count) + " agents";
+    {% endfor %}
+}
+
+end

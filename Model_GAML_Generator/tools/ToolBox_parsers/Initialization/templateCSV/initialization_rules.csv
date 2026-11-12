@@ -1,0 +1,4 @@
+```csv
+entity,rule_description,implementation_code,assumptions
+"<Entité, ex. HouseholdAgent>","<Description de la règle, ex. wealth ~ lognormal(10.82, 0.8)>","<Code d'implémentation, ex. numpy.random.lognormal(10.82, 0.8, n_agents)>","<Hypothèses, ex. Wealth distribution follows national statistics>"
+```

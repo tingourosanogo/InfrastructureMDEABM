@@ -1,0 +1,31 @@
+{# main.j2 - Fichier principal GAML avec imports modulaires #}
+/**
+ * Modèle GAML généré automatiquement - {{ model.initialization_config.metadata.model_name | default('SocioEcosystem') }}
+ * Généré le : {{ now.strftime('%Y-%m-%d %H:%M') }}
+ * Source : {{ model.metadata.introduction.metadata.source | default('DSL CIM/PIM') }}
+ */
+
+model {{ model.initialization_config.metadata.model_name | lower | replace(' ', '_') | default('socioecosystem_model') }}
+
+// === IMPORTS MODULAIRES ===
+import "globals.gaml"
+{% for agent in agents %}
+import "species/{{ agent.name | lower }}.gaml"
+{% endfor %}
+import "behaviors/global_reflexes.gaml"
+import "experiments/main_experiment.gaml"
+import "outputs/indicators.gaml"
+
+// === INITIALISATION PRINCIPALE ===
+init {
+    {% for agent in agents_with_count %}
+    create {{ agent.name }} number: {{ agent.initial_count }};
+    {% endfor %}
+    
+    // Initialisation spatiale si configurée
+    {% if initialization_config.spatial.environment %}
+    create environment with: [shape::{{ initialization_config.spatial.environment.shape | default('square') }}];
+    {% endif %}
+}
+
+end

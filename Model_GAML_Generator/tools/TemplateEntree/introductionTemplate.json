@@ -1,0 +1,84 @@
+{
+  "version": "<Version du document, ex. 1.0>",
+  "metadata": {
+    "titre": "<Titre du document>",
+    "auteur": "<Auteur(s) ou équipe>",
+    "date_creation": "<YYYY-MM-DD>",
+    "modele_reference": "<Nom ou identifiant du modèle>"
+  },
+  "principe_modelisation": {
+    "question_recherche": {
+      "formulation": "<Question de recherche principale>",
+      "explication": "<Description détaillée de la question et des concepts associés>"
+    },
+    "concepts_fondamentaux": {
+      "entites": "<Description des entités du système>",
+      "attributs": [
+        {
+          "type": "<Type d'attribut, ex. parametres>",
+          "definition": "<Définition ou rôle>"
+        },
+        {
+          "type": "<Type d'attribut, ex. variables_etat>",
+          "definition": "<Définition ou rôle>"
+        }
+      ],
+      "portee_attributs": [
+        "<Portée des attributs, ex. globaux>",
+        "<Portée des attributs, ex. locaux>",
+        "<Portée des attributs, ex. individuels>"
+      ]
+    },
+    "relation_questions_modele": {
+      "explication": "<Explication des relations entre question et modèle>",
+      "implication": "<Implications pour l'utilisation du modèle>"
+    }
+  },
+  "modele_specifique": {
+    "question_centrale": {
+      "formulation": "<Question spécifique du modèle>",
+      "domaine": "<Domaine d'application>",
+      "echelle": "<Échelle d'application, ex. territoriale>"
+    },
+    "diagrammes": [
+      {
+        "id": "<Identifiant unique du diagramme>",
+        "fichier": "<Chemin ou URL du fichier>",
+        "legende": "<Légende du diagramme>",
+        "description": "<Description détaillée du diagramme>"
+      }
+    ],
+    "composants_principaux": [
+      {
+        "nom": "<Nom du composant>",
+        "description": "<Description du composant>",
+        "role": "<Rôle ou fonction dans le modèle>",
+        "types": ["<Type ou sous-catégorie>"], 
+        "usages": ["<Usage ou application>"] 
+      }
+    ],
+    "acteurs": [
+      {
+        "type": "<Type d'acteur, ex. individuels>",
+        "exemple": "<Exemple concret, ex. exploitations>"
+      }
+    ]
+  },
+  "contextualisation": {
+    "domaine_application": "<Domaine(s) d'application>",
+    "pertinence_scientifique": "<Justification ou pertinence du modèle>",
+    "public_cible": [
+      "<Groupe cible, ex. décideurs politiques>",
+      "<Groupe cible, ex. chercheurs>"
+    ]
+  },
+  "references_bibliographiques": [
+    {
+      "auteur": "<Nom(s) de l'auteur>",
+      "annee": "<Année de publication>",
+      "titre": "<Titre de la référence>",
+      "journal": "<Nom du journal, éditeur ou source>", 
+      "edition": "<Éditeur, si applicable>" 
+    }
+  ]
+}

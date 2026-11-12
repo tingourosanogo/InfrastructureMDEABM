@@ -1,0 +1,3 @@
+entity,rule_description,implementation_code,assumptions
+HouseholdAgent,"wealth ~ lognormal(10.82, 0.8)","numpy.random.lognormal(10.82, 0.8, n_agents)",Wealth distribution follows national statistics
+ParcelEntity,"land_use = categorical([0.3, 0.4, 0.2, 0.1])","random.choice(['forest', 'agriculture', 'urban', 'wetland'], p=[0.3, 0.4, 0.2, 0.1])",

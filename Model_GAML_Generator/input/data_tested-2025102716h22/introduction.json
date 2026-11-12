@@ -1,0 +1,164 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "titre": "Introduction",
+    "auteur": "Équipe de modélisation",
+    "date_creation": "2025-10-27",
+    "modele_reference": "ModeleElevage_v1.0"
+  },
+  "principe_modelisation": {
+    "question_recherche": {
+      "formulation": "Quel est l'impact des investissements dans le pastoralisme au Sahel sur la résilience des ménages et leur contribution aux ODD ?",
+      "explication": "Toute modélisation part d'une question structurée où :\n- X définit l’ensemble des scénarios d'investissements (ex. appui régional au pastoralisme) \n- Y l’ensemble des indicateurs de résilience et ODD (ex. sécurité alimentaire, action climatique) \n- Z le contexte du Sahel (variabilité climatique, systèmes pastoraux)"
+    },
+    "concepts_fondamentaux": {
+      "entites": "Système structuré en agents (acteurs humains et naturels) et processus dynamiques",
+      "attributs": [
+        {
+          "type": "parametres",
+          "definition": "dont la valeur ne varie pas au fil de la simulation, ex. taux de reproduction"
+        },
+        {
+          "type": "variables_etat",
+          "definition": "dont la simulation fait varier la valeur au fil du temps, ex. stocks de ressources comme l'eau ou le fourrage"
+        }
+      ],
+      "portee_attributs": [
+        "globaux : partagés par tout le système (nous avons choisi de les décrire dans l’entité « SocioEcosystem »)",
+        "locaux : partagés par entités de même type (ex. troupeaux)",
+        "individuels : spécifiques à chaque entité (ex. cash d'un ménage)"
+      ]
+    },
+    "relation_questions_modele": {
+      "explication": "X ⊆ A, Z ⊆ A, X ∩ Z = ∅, X ∪ Z = A\nX est un sous-ensemble des attributs (de A) comme les investissements \nZ est un sous-ensemble des attributs disjoint de X comme le contexte climatique \nX union Z = A \nY est calculé à partir des attributs comme les indicateurs ODD",
+      "implication": "Un choix différent de X et Z permet de répondre à d'autres questions avec le même modèle, ex. simuler divers scénarios d'appui au pastoralisme pour évaluer résilience et ODD"
+    }
+  },
+  "modele_specifique": {
+    "question_centrale": {
+      "formulation": "Quel est l'impact des investissements d'un Projet Régional d’Appui au Pastoralisme au Sahel sur la résilience des ménages et les ODD ?",
+      "domaine": "pastoralisme agroécologique",
+      "echelle": "territoriale et régionale (Sahel)"
+    },
+    "diagrammes": [
+      {
+        "id": "question_recherche",
+        "fichier": "C:/Users/tingo/source/repos/tingourosanogo/CIM-PIM_Transformation/CIM-PIM_Transformation/project_root/src/input/diagrammes/question.png",
+        "legende": "Question de recherche schématisée",
+        "description": "Sur la flèche diagonale, on représente qu’une combinaison (X) d'investissements et facteurs exogènes impacte les stocks de ressources pastoraux.\nEn bas à droite, les stocks sont des quantités de ressources pour usages (humains, troupeaux, écosystèmes).\nAu milieu en bas, un porteur de ressource (ex. ménage) est composé de divers stocks et met en œuvre une dynamique utilisant des ressources.\nA gauche, les investissements sont ensembles de schémas mis en œuvre par acteurs (individuels ou collectifs).\nAu milieu en haut, les facteurs exogènes influencent le système sans contrôle des acteurs."
+      },
+      {
+        "id": "facteurs_exogenes",
+        "fichier": "C:/Users/tingo/source/repos/tingourosanogo/CIM-PIM_Transformation/CIM-PIM_Transformation/project_root/src/input/diagrammes/facteurs.png",
+        "legende": "Facteurs exogènes",
+        "description": "Les facteurs exogènes sont un ensemble de facteurs influençant le système sans être contrôlés par les acteurs, ex. variabilité climatique, prix marchés."
+      }
+    ],
+    "composants_principaux": [
+      {
+        "nom": "porteurs_ressources",
+        "description": "Composé de stocks (ex. eau, fourrage) et met en œuvre des dynamiques",
+        "role": "Utilisent des ressources et produisent des stocks pour résilience"
+      },
+      {
+        "nom": "schemas_gestion",
+        "description": "Ensembles de schémas mis en œuvre par acteurs",
+        "types": [
+          "individuels : par ménages éleveurs",
+          "collectifs : par villages ou institutions"
+        ]
+      },
+      {
+        "nom": "stocks",
+        "description": "Quantités de ressources pour usages",
+        "usages": [
+          "humains (ex. cash)",
+          "animaux (ex. troupeaux)",
+          "plantes (ex. couvert herbacé)",
+          "processus biophysiques (ex. sol)"
+        ]
+      }
+    ],
+    "acteurs": [
+      {
+        "type": "individuels",
+        "exemple": "ménages éleveurs"
+      },
+      {
+        "type": "collectifs",
+        "exemple": "villages, institutions gouvernementales"
+      }
+    ]
+  },
+  "contextualisation": {
+    "domaine_application": "modélisation socio-écosystème pastoral au Sahel",
+    "pertinence_scientifique": "Permet d'évaluer impacts d'investissements sur résilience et ODD (ex. 2, 13, 15) dans un contexte de changement climatique et variabilité",
+    "public_cible": [
+      "décideurs politiques et investisseurs régionaux",
+      "chercheurs en agroécologie et modélisation",
+      "acteurs territoriaux (ménages, villages)"
+    ]
+  },
+  "references_bibliographiques": [
+    {
+      "auteur": "World Bank",
+      "annee": 2025,
+      "titre": "Reinforcing pastoralism in the Sahel and West Africa: a decade of progress and the path forward",
+      "journal": "World Bank Blogs"
+    },
+    {
+      "auteur": "Snapp et al.",
+      "annee": 2021,
+      "titre": "Introducing experiences from African pastoralist communities to support future climate change adaptation in Asia",
+      "journal": "Global Food Security"
+    },
+    {
+      "auteur": "GIZ",
+      "annee": 2022,
+      "titre": "What can we learn from pastoral systems in Africa's drylands?",
+      "edition": "GIZ Policy Brief"
+    },
+    {
+      "auteur": "Bluesquare",
+      "annee": 2025,
+      "titre": "A Data-Driven Platform Supporting Pastoralism in the Sahel Region",
+      "journal": "Bluesquare Hub"
+    },
+    {
+      "auteur": "Ndiaye et al.",
+      "annee": 2021,
+      "titre": "Resilience strategies of West African pastoralists in response to scarcity of pastoral resources: evolution of livestock herds and purchase of feed",
+      "journal": "Pastoralism"
+    },
+    {
+      "auteur": "World Bank",
+      "annee": 2024,
+      "titre": "Sahel RESILAND - World Bank Overview",
+      "edition": "World Bank Programs"
+    },
+    {
+      "auteur": "CARE",
+      "annee": 2024,
+      "titre": "CARE's Resilient Pastoral Livelihoods Framework",
+      "edition": "CARE Climate Change"
+    },
+    {
+      "auteur": "Böhm et al.",
+      "annee": 2024,
+      "titre": "Over-reliance on water infrastructure can hinder climate resilience in pastoral dryland populations",
+      "journal": "Nature Climate Change"
+    },
+    {
+      "auteur": "USAID",
+      "annee": 2024,
+      "titre": "Resilience and Economic Growth in the Sahel - Enhanced Resilience",
+      "edition": "USAID Programs"
+    },
+    {
+      "auteur": "Hänke et al.",
+      "annee": 2019,
+      "titre": "Land resources opportunities for a growing prosperity in the Sahel",
+      "journal": "Current Opinion in Environmental Sustainability"
+    }
+  ]
+}

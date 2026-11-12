@@ -1,0 +1,3 @@
+name,type,count,initialization_method,data_source,sampling_strategy,stratification_variables,attribute_mapping
+HouseholdAgent,agent,1500,data_driven,data/household_survey.csv,stratified_random,"[""income_class"", ""location""]",[]
+ParcelEntity,environment,,gis_import,data/parcels.geojson,,[],"[{""model_attribute"": ""size_ha"", ""data_field"": ""area"", ""conversion"": ""square_meters_to_hectares""}]"

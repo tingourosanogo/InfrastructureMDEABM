@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%F0%9F%93%9A-cim-pim-transformation-tool">📚 CIM-PIM Transformation Tool</h1>
+<p><strong>Générateur Automatique de Documentation</strong> à partir de modèles conceptuels (XMI) et configurations structurées.</p>
+<p><a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python 3.8+"></a>
+<a href=""><img src="https://img.shields.io/badge/Platform-Windows | Linux | macOS-green.svg" alt="Platform: Windows/Linux/macOS"></a></p>
+<h2 id="%F0%9F%9A%80-fonctionnalit%C3%A9s">🚀 Fonctionnalités</h2>
+<ul>
+<li><strong>Génération Automatique</strong> de documentation Markdown professionnelle</li>
+<li><strong>Support Multi-Sources</strong> : XMI, YAML, JSON, CSV</li>
+<li><strong>Sections Complètes</strong> : Page de garde, structure et dynamiques, Initialisation, indicateurs, mode d'emploi</li>
+<li><strong>Configuration Interactive</strong> : Assistant de configuration pas-à-pas</li>
+<li><strong>Validation des Données</strong> : Schémas intégrés pour la qualité</li>
+<li><strong>Export Personnalisable</strong> : Templates modulables</li>
+</ul>
+<h2 id="%F0%9F%93%A6-installation">📦 Installation</h2>
+<h3 id="pr%C3%A9requis-syst%C3%A8me">Prérequis Système</h3>
+<ul>
+<li><strong>Python 3.8+</strong> : <a href="https://www.python.org/downloads/">Télécharger Python</a></li>
+<li><strong>Git</strong> (optionnel) : <a href="https://git-scm.com/downloads">Télécharger Git</a></li>
+</ul>
+<h3 id="installation-rapide">Installation Rapide</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Cloner le repository (si versionné)</span>
+git <span class="hljs-built_in">clone</span> https://github.com/tingourosanogo/Model_Documentation_Generator.git
+<span class="hljs-built_in">cd</span> Model_Documentation_Generator
+
+<span class="hljs-comment"># Ou télécharger les fichiers directement</span>
+<span class="hljs-comment"># Puis lancer le guide d'installation</span>
+./setup_guide.sh
+</div></code></pre>
+<h3 id="installation-manuelle">Installation Manuelle</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. Installer les dépendances Python</span>
+pip install lxml pyyaml questionary
+
+<span class="hljs-comment"># 2. Créer la structure de dossiers</span>
+mkdir -p input output assets schemas
+
+<span class="hljs-comment"># 3. Configurer manuellement le config.json</span>
+
+<span class="hljs-comment"># 4. Configurer manuellement ou utiliser le guide</span>
+python main.py
+</div></code></pre>
+<h3 id="%F0%9F%8E%AF-guide-de-d%C3%A9marrage-rapide">🎯 Guide de Démarrage Rapide</h3>
+<h4 id="pour-les-nouveaux-utilisateurs">Pour les Nouveaux Utilisateurs</h4>
+<h5 id="1-lancez-lassistant">1. Lancez l'assistant :</h5>
+<pre class="hljs"><code><div>./setup_guide.sh
+</div></code></pre>
+<h5 id="2-suivez-les-%C3%A9tapes-interactives">2. Suivez les étapes interactives :</h5>
+<ul>
+<li>
+<p>✅ Installation des dépendances</p>
+</li>
+<li>
+<p>📝 Configuration des métadonnées</p>
+</li>
+<li>
+<p>👥 Ajout des auteurs</p>
+</li>
+<li>
+<p>🏗️ Configuration du projet</p>
+</li>
+<li>
+<p>📁 Choix des fichiers d'entrée</p>
+</li>
+<li>
+<p>📁 Choix du fichier de sortie</p>
+</li>
+</ul>
+<h5 id="3-g%C3%A9n%C3%A9rez-la-documentation">3. Générez la documentation :</h5>
+<pre class="hljs"><code><div>python main.py
+</div></code></pre>
+<h3 id="%F0%9F%93%81-structure-du-projet">📁 Structure du Projet</h3>
+<pre class="hljs"><code><div>Model_Documentation_Generator/
+├── src/                        # Code source
+│   ├── sections/               # Sections de documentation
+│   │   ├── coverPage.py        # Page de garde
+│   │   ├── introduction.py     # Introduction
+│   │   ├── structure.py        # Structure et dynamiques
+│   │   ├── initialization.py   # Initialization
+│   │   ├── indicators.py       # Indicateurs
+│   │   └── userManual.py       # Mode d'emploi
+│   ├── parsers/                                  # Analyseurs de fichiers
+│   │   ├── xmi_parser.py                         # Parser XMI/UML
+│   │   ├── parser_csv_to_json_indicator.py       # Parser CSV/JSON 
+│   │   ├── parser_csv_to_json_initialization.py  # Parser CSV/JSON 
+│   │   └── yaml_to_json.py                       # Parser YAML/JSON 
+│   ├── loader/                                   # Téléchargeurs de fichiers
+│   │   ├── introduction_loader.py                # Loader Introduction
+│   │   ├── initialization_loader.py              # Loader Initialization 
+│   │   ├── indicator_loader.py                   # Loader Indicateurs 
+│   │   └── userManual_loader.py                  # Loader Mode d'emploi 
+│   └── doc_builder.py         # Générateur principal
+├── input/                     # Fichiers d'entrée
+│   ├── introduction.yml       # Section introduction (YAML/JSON)
+│   ├── modele_conceptuel.xmi  # Modèle XMI 
+│   ├── initialisation.csv     # Initialisation (YAML/Multi-CSV/JSON)
+│   ├── indicators.csv         # Indicateurs (YAML/CSV/JSON)
+│   ├── user_manual.yml        # Mode d'emploi (YAML/JSON)                     
+│   ├── initialization_data/       # Fichiers CSV (Multi-CSV)
+│   │   ├── metadata_general.csv
+│   │   ├── metadata_authors.csv
+│   │   ├── metadata_references.csv
+│   │   ├── global_config.csv
+│   │   ├── input_data.csv
+│   │   ├── entities.csv
+│   │   ├── parameters.csv
+│   │   ├── state_variables.csv
+│   │   ├── scenarios.csv
+│   │   ├── traceability.csv
+│   │   ├── validation_methods.csv
+│   │   └── initialization_rules.csv
+├── output/               # Documentation générée
+│   └── documentation.md  # Fichier de sortie
+├── exports/
+│   ├── documentation.html        # Version web (avec CSS)
+│   ├── documentation.pdf         # Version imprimable (PDF)
+│   └── documentation.docx        # Version Word (éditable)
+├── assets/              # Ressources
+│   ├── logo.png         # Logo du projet
+│   ├── cover.jpg        # Image de couverture
+│   └── custom.css               # CSS personnalisé (optionnel)
+├── schemas/             # Schémas de validation
+│   ├── indicators_schema.json
+│   └── parameters_schema.yml
+├── config.json          # Configuration principale
+├── setup_guide.sh       # Assistant d'installation
+└── main.py             # Point d'entrée
+</div></code></pre>
+<h3 id="%E2%9A%99%EF%B8%8F-configuration-d%C3%A9taill%C3%A9e">⚙️ Configuration Détaillée</h3>
+<h4 id="format-du-fichier-configjson">Format du Fichier config.json</h4>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"metadata"</span>: {
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Titre de la documentation"</span>,
+    <span class="hljs-attr">"subtitle"</span>: <span class="hljs-string">"Sous-titre explicatif"</span>,
+    <span class="hljs-attr">"version"</span>: <span class="hljs-string">"1.0.0"</span>,
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"Brouillon/Revue/Final"</span>,
+    <span class="hljs-attr">"classification"</span>: <span class="hljs-string">"Interne/Public/Confidentiel"</span>,
+    <span class="hljs-attr">"language"</span>: <span class="hljs-string">"fr"</span>,
+    <span class="hljs-attr">"keywords"</span>: [<span class="hljs-string">"mot-clé1"</span>, <span class="hljs-string">"mot-clé2"</span>]
+  },
+  <span class="hljs-attr">"authors"</span>: [
+    {
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Prénom Nom"</span>,
+      <span class="hljs-attr">"affiliation"</span>: <span class="hljs-string">"Institution"</span>,
+      <span class="hljs-attr">"role"</span>: <span class="hljs-string">"Rôle dans le projet"</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">"email@institution.fr"</span>,
+      <span class="hljs-attr">"orcid"</span>: <span class="hljs-string">"0000-0000-0000-0000"</span>
+    }
+  ],
+  <span class="hljs-attr">"project"</span>: {
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Nom du projet"</span>,
+    <span class="hljs-attr">"acronym"</span>: <span class="hljs-string">"ACRONYME"</span>,
+    <span class="hljs-attr">"funding"</span>: <span class="hljs-string">"Organisme financeur"</span>,
+    <span class="hljs-attr">"grant_number"</span>: <span class="hljs-string">"NUMERO_SUBVENTION"</span>,
+    <span class="hljs-attr">"duration"</span>: <span class="hljs-string">"2024-2026"</span>,
+    <span class="hljs-attr">"website"</span>: <span class="hljs-string">"https://projet.org"</span>,
+    <span class="hljs-attr">"repository"</span>: <span class="hljs-string">"https://github.com/organisation/projet"</span>
+  },
+  <span class="hljs-attr">"documentation"</span>: {
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"Type de document"</span>,
+    <span class="hljs-attr">"purpose"</span>: <span class="hljs-string">"Objectif de la documentation"</span>,
+    <span class="hljs-attr">"audience"</span>: <span class="hljs-string">"Public cible"</span>,
+    <span class="hljs-attr">"conformance"</span>: <span class="hljs-string">"Standard suivi"</span>,
+    <span class="hljs-attr">"license"</span>: <span class="hljs-string">"Licence de diffusion"</span>
+  },
+  <span class="hljs-attr">"technical"</span>: {
+    <span class="hljs-attr">"model_version"</span>: <span class="hljs-string">"Version du modèle"</span>,
+    <span class="hljs-attr">"platform"</span>: <span class="hljs-string">"Plateforme technique"</span>,
+    <span class="hljs-attr">"programming_language"</span>: <span class="hljs-string">"Langage de programmation"</span>,
+    <span class="hljs-attr">"minimum_ram"</span>: <span class="hljs-string">"8GB"</span>,
+    <span class="hljs-attr">"recommended_ram"</span>: <span class="hljs-string">"16GB"</span>,
+    <span class="hljs-attr">"dependencies"</span>: [<span class="hljs-string">"Python 3.8"</span>, <span class="hljs-string">"Java 11"</span>],
+    <span class="hljs-attr">"data_formats"</span>: [<span class="hljs-string">"CSV"</span>, <span class="hljs-string">"JSON"</span>, <span class="hljs-string">"XMI"</span>]
+  },
+  <span class="hljs-attr">"paths"</span>: {
+    <span class="hljs-attr">"output_path"</span>: <span class="hljs-string">"chemin/vers/output/documentation.md"</span>,
+    <span class="hljs-attr">"Introduction"</span>: {
+      <span class="hljs-attr">"input_path"</span>: <span class="hljs-string">"chemin/vers/input/introduction.yml"</span>,
+      <span class="hljs-attr">"json_path"</span>: <span class="hljs-string">"chemin/vers/input/introduction.json"</span>,
+      <span class="hljs-attr">"format"</span>: <span class="hljs-string">"yaml"</span>,
+      <span class="hljs-attr">"delimitor"</span>: <span class="hljs-string">""</span>
+    }
+  },
+  <span class="hljs-attr">"assets"</span>: {
+    <span class="hljs-attr">"logo"</span>: <span class="hljs-string">"chemin/vers/assets/logo.png"</span>,
+    <span class="hljs-attr">"cover"</span>: <span class="hljs-string">"chemin/vers/assets/cover.jpg"</span>
+  },
+  <span class="hljs-attr">"schemas"</span>: {
+    <span class="hljs-attr">"indicators_schema"</span>: <span class="hljs-string">"chemin/vers/schemas/indicators_schema.json"</span>
+  }
+}
+</div></code></pre>
+<h3 id="%F0%9F%93%8A-formats-de-fichiers-support%C3%A9s">📊 Formats de Fichiers Supportés</h3>
+<h4 id="introduction">Introduction</h4>
+<ul>
+<li><strong>YAML (.yml)</strong> : Structure hiérarchique lisible</li>
+<li><strong>JSON (.json)</strong> : Format standard interchangeable</li>
+</ul>
+<h4 id="structure">Structure</h4>
+<ul>
+<li><strong>XMI (.xmi)</strong> : Format standard UML pour modèles conceptuels</li>
+</ul>
+<h4 id="indicateurs">Indicateurs</h4>
+<ul>
+<li><strong>YAML (.yml)</strong> : Pour configurations complexes</li>
+<li><strong>JSON (.json)</strong> : Pour intégration avec d'autres outils</li>
+<li><strong>CSV (.csv)</strong> : Pour données tabulaires simples</li>
+</ul>
+<h4 id="initialisation">Initialisation</h4>
+<ul>
+<li><strong>Multi-CSV (dossier/)</strong> : Multiple fichiers CSV organisés</li>
+<li><strong>YAML (.yml)</strong> : Configuration structurée</li>
+<li><strong>JSON (.json)</strong> : Données d'initialisation</li>
+</ul>
+<h4 id="mode-demploi">Mode d'Emploi</h4>
+<ul>
+<li><strong>YAML (.yml)</strong> : Instructions structurées</li>
+<li><strong>JSON (.json)</strong> : Données de procédure</li>
+</ul>
+<h4 id="%F0%9F%9B%A0%EF%B8%8F-utilisation-avanc%C3%A9e">🛠️ Utilisation Avancée</h4>
+<ul>
+<li><strong>API Python</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> src.builder <span class="hljs-keyword">import</span> DocumentationBuilder
+<span class="hljs-keyword">from</span> src.config <span class="hljs-keyword">import</span> load_config
+<span class="hljs-keyword">from</span> src.parsers.xmi_parser <span class="hljs-keyword">import</span> XMIParser
+
+<span class="hljs-comment"># Chargement configuration</span>
+config = load_config(<span class="hljs-string">"config.json"</span>)
+
+<span class="hljs-comment"># Parsing manuel</span>
+parser = XMIParser(<span class="hljs-string">"input/modele.xmi"</span>)
+classes = parser.get_classes()
+
+<span class="hljs-comment"># Génération personnalisée</span>
+builder = DocumentationBuilder(config)
+documentation = builder.build()
+
+<span class="hljs-comment"># Export vers fichier</span>
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">"output/docs.md"</span>, <span class="hljs-string">"w"</span>, encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> f:
+    f.write(documentation)
+</div></code></pre>
+<ul>
+<li><strong>ligne de Commande</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Génération simple</span>
+python main.py
+
+<span class="hljs-comment"># Avec configuration spécifique</span>
+python main.py --config mon_config.json --output ma_documentation.md
+
+<span class="hljs-comment"># Génération partielle (sections spécifiques)</span>
+python main.py --sections cover,structure --output partial_docs.md
+
+<span class="hljs-comment"># Mode verbose pour le débogage</span>
+python main.py --verbose --debug
+
+<span class="hljs-comment"># Générer seulement Markdown</span>
+python main.py --config config.json
+
+<span class="hljs-comment"># Générer Markdown + HTML</span>
+python main.py --<span class="hljs-built_in">export</span> html
+
+<span class="hljs-comment"># Générer Markdown + HTML + PDF</span>
+python main.py --<span class="hljs-built_in">export</span> html pdf
+
+<span class="hljs-comment"># Avec CSS personnalisé</span>
+python main.py --<span class="hljs-built_in">export</span> html pdf --css assets/custom.css
+
+<span class="hljs-comment"># Spécifier le dossier d'export</span>
+python main.py --<span class="hljs-built_in">export</span> html pdf docx --<span class="hljs-built_in">export</span>-dir docs/<span class="hljs-built_in">export</span>
+
+<span class="hljs-comment"># Générer seulement PDF</span>
+python main.py --<span class="hljs-built_in">export</span> pdf
+
+<span class="hljs-comment"># Générer seulement certaines section</span>
+python main.py --sections Introduction Indicateurs
+</div></code></pre>
+<p><strong>Arguments Principaux</strong>
+<code>--config</code> : Fichier de configuration personnalisé</p>
+<p><code>--output</code> : Chemin de sortie personnalisé</p>
+<p><code>--sections</code> : Génération partielle par sections</p>
+<p><code>--export</code> : Export multi-format (HTML, PDF)</p>
+<p><code>--css</code> : CSS personnalisé pour l'export</p>
+<p>Options de Debug
+<code>--verbose</code> : Mode verbeux</p>
+<p><code>--debug</code> : Mode debug détaillé</p>
+<p><code>--force</code> : Forcer l'écrasement</p>
+<p><code>--validate</code> : Validation des entrées</p>
+<h3 id="%F0%9F%93%8A-d%C3%A9pendances-par-fonctionnalit%C3%A9">📊 Dépendances par Fonctionnalité</h3>
+<h4 id="parsing-xmixml">Parsing XMI/XML</h4>
+<ul>
+<li><strong>lxml</strong> : Parseur principal XMI/UML</li>
+<li><strong>xmltodict</strong> : Conversion XML vers dict (optionnel)</li>
+</ul>
+<h4 id="configuration-yamljson">Configuration YAML/JSON</h4>
+<ul>
+<li><strong>PyYAML</strong> : Lecture/écriture YAML</li>
+<li><strong>jsonschema</strong> : Validation JSON/YAML</li>
+</ul>
+<h4 id="interface-utilisateur">Interface Utilisateur</h4>
+<ul>
+<li><strong>questionary</strong> : CLI interactive</li>
+<li><strong>rich</strong> : Interface enrichie (optionnel)</li>
+</ul>
+<h4 id="traitement-donn%C3%A9es">Traitement Données</h4>
+<ul>
+<li><strong>pandas</strong> : Données tabulaires (CSV, Excel)</li>
+<li><strong>openpyxl</strong> : Support Excel</li>
+</ul>
+<h4 id="validation">Validation</h4>
+<ul>
+<li><strong>jsonschema</strong> : Validation schémas</li>
+<li><strong>pydantic</strong> : Validation données (optionnel)</li>
+</ul>
+<h4 id="exportoutput">Export/Output</h4>
+<ul>
+<li><strong>markdown</strong> : Rendering Markdown</li>
+<li><strong>pdfkit</strong> : Export PDF (optionnel)</li>
+</ul>
+<h4 id="%F0%9F%90%8D-compatibilit%C3%A9-python">🐍  Compatibilité Python</h4>
+<ul>
+<li>✅ Python 3.8+</li>
+</ul>
+<p><strong>Systèmes d'exploitation :</strong></p>
+<ul>
+<li>✅ Windows 10/11</li>
+<li>✅ Linux</li>
+<li>✅ macOS 10.15+</li>
+</ul>
+<h4 id="installation">Installation</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># Core seulement</span>
+pip install lxml PyYAML questionary jsonschema
+
+<span class="hljs-comment"># Avec support CSV</span>
+pip install lxml PyYAML questionary jsonschema pandas
+
+<span class="hljs-comment"># Avec visualisation</span>
+pip install lxml PyYAML questionary jsonschema matplotlib plotly
+
+<span class="hljs-comment"># Avec export</span>
+pip install markdown==3.4.4 pdfkit==1.0.0 python-docx==1.1.0
+pip install markdown pdfkit python-docx
+
+<span class="hljs-comment"># Installer wkhtmltopdf (requis pour pdfkit)</span>
+<span class="hljs-comment"># Sur Ubuntu/Debian:</span>
+sudo apt-get install wkhtmltopdf
+
+<span class="hljs-comment"># Sur macOS:</span>
+brew install wkhtmltopdf
+
+<span class="hljs-comment"># Sur Windows: Télécharger depuis https://wkhtmltopdf.org/</span>
+<span class="hljs-comment"># Ajouter le chemin d'installation aux variables d'environnement</span>
+<span class="hljs-built_in">set</span> PATH=%PATH%;C:\Program Files\wkhtmltopdf\bin
+
+<span class="hljs-comment"># Vérifier l'installation sur Windows</span>
+wkhtmltopdf --version
+</div></code></pre>
+<h4 id="%F0%9F%94%8D-v%C3%A9rification-installation">🔍 Vérification Installation</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># Vérifier les dépendances installées</span>
+pip list | grep -E <span class="hljs-string">"lxml|PyYAML|questionary|jsonschema"</span>
+
+<span class="hljs-comment"># Vérifier la version Python</span>
+python --version
+
+<span class="hljs-comment"># Tester l'import des modules</span>
+python -c <span class="hljs-string">"import lxml; import yaml; import questionary; print('✅ Toutes les dépendances sont installées')"</span>
+</div></code></pre>
+<h4 id="%F0%9F%94%84-mise-%C3%A0-jour">🔄 Mise à Jour.</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># Mettre à jour toutes les dépendances</span>
+pip install --upgrade -r requirements.txt
+
+<span class="hljs-comment"># Vérifier les versions obsolètes</span>
+pip list --outdated
+
+<span class="hljs-comment"># Mettre à jour une dépendance spécifique</span>
+pip install --upgrade package_name
+</div></code></pre>
+<h3 id="%F0%9F%94%A7-d%C3%A9pannage">🔧 Dépannage</h3>
+<h4 id="probl%C3%A8mes-courants">Problèmes Courants</h4>
+<ul>
+<li><strong>Erreur : Module non trouvé</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Réinstaller les dépendances </span>
+<span class="hljs-comment"># Installation Complete</span>
+pip install -r requirements.txt
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># Installation Minimaliste</span>
+pip install -r requirements-minimal.txt
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># Installation avec Options</span>
+<span class="hljs-comment"># Core seulement</span>
+pip install lxml PyYAML questionary jsonschema
+
+<span class="hljs-comment"># Avec support CSV</span>
+pip install lxml PyYAML questionary jsonschema pandas
+
+<span class="hljs-comment"># Avec visualisation</span>
+pip install lxml PyYAML questionary jsonschema matplotlib plotly
+</div></code></pre>
+<ul>
+<li><strong>Debug Mode</strong>
+Activez le mode debug pour plus d'informations :</li>
+</ul>
+<pre class="hljs"><code><div>python main.py --debug 2&gt; debug.log
+</div></code></pre>
+<ul>
+<li><strong>Erreur : Encoding XMI</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Spécifier l'encodage UTF-8</span>
+<span class="hljs-built_in">export</span> PYTHONUTF8=1
+python main.py
+</div></code></pre>
+<ul>
+<li><strong>Fichiers non trouvés</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Vérifier les chemins dans config.json</span>
+python -c <span class="hljs-string">"import json; print(json.load(open('config.json'))['paths'])"</span>
+</div></code></pre>
+<h3 id="%F0%9F%93%8B-bonnes-pratiques">📋 Bonnes Pratiques</h3>
+<h4 id="structure-des-donn%C3%A9es">Structure des Données</h4>
+<ul>
+<li><strong>Organisation</strong> : Gardez les fichiers d'entrée dans <code>input/</code></li>
+<li><strong>Versionnement</strong> : Versionnez les modèles XMI et configurations</li>
+<li><strong>Sauvegarde</strong> : Backup régulier du dossier <code>output/</code></li>
+</ul>
+<h4 id="qualit%C3%A9-de-la-documentation">Qualité de la Documentation</h4>
+<ul>
+<li><strong>Validation</strong> : Utilisez les schémas JSON pour valider les entrées</li>
+<li><strong>Review</strong> : Revue régulière de la documentation générée</li>
+<li><strong>Mise à jour</strong> : Maintenance des templates et configurations</li>
+</ul>
+<h4 id="performance">Performance</h4>
+<ul>
+<li>⚡ <strong>Génération typique</strong> : 2-10 secondes</li>
+<li>📄 <strong>Documentation moyenne</strong> : 50-200 pages</li>
+<li>💾 <strong>Mémoire recommandée</strong> : 8GB+ pour gros modèles</li>
+</ul>
+<h4 id="%F0%9F%A4%9D-contribution">🤝 Contribution</h4>
+<h5 id="d%C3%A9veloppement">Développement</h5>
+<ol>
+<li>Fork le repository</li>
+<li><strong>Feature branch</strong> : <code>git checkout -b feature/nouvelle-fonctionnalite</code></li>
+<li><strong>Commit</strong> : <code>git commit -am 'Ajout nouvelle fonctionnalité'</code></li>
+<li><strong>Push</strong> : <code>git push origin feature/nouvelle-fonctionnalite</code></li>
+<li><strong>Pull Request</strong></li>
+</ol>
+<h3 id="%F0%9F%9A%80-aide-et-exemples">🚀 Aide et Exemples</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Afficher l'aide complète</span>
+python main.py --<span class="hljs-built_in">help</span>
+
+<span class="hljs-comment"># Afficher des exemples d'utilisation</span>
+python cli_help.py
+
+<span class="hljs-comment"># Afficher l'aide des sections</span>
+python cli_help.py --sections
+</div></code></pre>
+<h1 id="fonctionnalit%C3%A9s-docx-impl%C3%A9ment%C3%A9es">Fonctionnalités DOCX Implémentées</h1>
+<h2 id="conversion-des-%C3%A9l%C3%A9ments-markdown">Conversion des Éléments Markdown</h2>
+<ul>
+<li>✅ Titres (H1-H6) avec styles appropriés</li>
+<li>✅ Paragraphes avec formatage de texte</li>
+<li>✅ Listes à puces et numérotées</li>
+<li>✅ Blocs de code avec police monospace</li>
+<li>✅ Tableaux avec bordures et en-têtes</li>
+<li>✅ Texte en <strong>gras</strong> et <em>italique</em></li>
+</ul>
+<h2 id="mise-en-page-professionnelle">Mise en Page Professionnelle</h2>
+<ul>
+<li>✅ En-tête avec titre et date</li>
+<li>✅ Pied de page avec informations de génération</li>
+<li>✅ Styles cohérents tout au long du document</li>
+<li>✅ Sauts de page appropriés</li>
+</ul>
+<h2 id="options-avanc%C3%A9es">Options Avancées</h2>
+<ul>
+<li>✅ Styles personnalisables via python-docx</li>
+<li>✅ Métadonnées du document</li>
+<li>✅ Gestion des erreurs robuste</li>
+<li>✅ Intégration transparente avec le système existant</li>
+</ul>
+<h2 id="%F0%9F%8E%AF-avantages-du-docx">🎯 Avantages du DOCX</h2>
+<ul>
+<li><strong>Éditabilité</strong> : Modification facile dans Word</li>
+<li><strong>Accessibilité</strong> : Format universellement reconnu</li>
+<li><strong>Collaboration</strong> : Commentaires et révisions</li>
+<li><strong>Compatibilité</strong> : Office 365, Google Docs, LibreOffice</li>
+<li><strong>Professionnalisme</strong> : Format standard pour les rapports</li>
+</ul>
+
+</body>
+</html>

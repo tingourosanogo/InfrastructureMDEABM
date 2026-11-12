@@ -1,0 +1,107 @@
+%import common.WS_INLINE
+%import common.NEWLINE
+%import common.INT
+%import common.FLOAT
+
+%ignore WS_INLINE
+%ignore NEWLINE
+
+// === Commentaires ===
+// Inline conservés dans l’AST
+COMMENT_INLINE: "//" /[^\n]*/
+// Multilignes ignorés
+COMMENT_BLOCK: "/*" /(.|\n)*?/ "*/"
+%ignore COMMENT_BLOCK
+
+start: stmt*
+
+// === Instructions ===
+stmt: assign_stmt
+    | if_stmt
+    | else_if_stmt
+    | for_stmt
+    | for_range_stmt
+    | while_stmt
+    | repeat_until_stmt
+    | switch_stmt
+    | break_stmt
+    | return_stmt
+    | io_stmt
+    | procedure_decl
+    | function_decl
+    | comment_stmt   
+
+// === Commentaires inline ===
+comment_stmt: COMMENT_INLINE
+
+// === Assignations ===
+assign_stmt: var_name ASSIGN_OP expr annotation? SEMI
+           | var_name annotation? SEMI
+
+var_name: /[a-zA-Z_][a-zA-Z_0-9]*/
+
+annotation: "/*" (RESOURCE_ID | PROPERTY_ID) "*/"
+
+ASSIGN_OP: "=" | "+=" | "-=" | "*=" | "/="
+
+// === Expressions ===
+atom: NUMBER | STRING | BOOL | var_name | list_literal | array_access | dict_access
+
+func_call: CNAME "(" (expr ("," expr)*)? ")"
+
+CNAME: /[a-zA-Z_][a-zA-Z_0-9]*/
+
+list_literal: "[" (expr ("," expr)*)? "]"
+
+array_access: var_name "[" expr "]"
+dict_access: var_name "[" expr "]"
+
+NUMBER: INT | FLOAT
+STRING: /"(\\.|[^"])*"/
+BOOL: "true" | "false"
+
+BIN_OP: "+" | "-" | "*" | "/" | "^" | ">" | "<" | ">=" | "<=" | "==" | "!=" | "and"i | "or"i
+UN_OP: "-" | "!"
+
+expr: atom
+    | expr BIN_OP expr
+    | UN_OP expr
+    | "(" expr ")"
+    | func_call
+
+value: NUMBER | STRING | BOOL
+
+// === Contrôle de flux ===
+break_stmt: "break" SEMI
+
+if_stmt: "if" "(" expr ")" "{" stmt* "}" else_if_stmt* else_stmt?
+
+else_if_stmt: "else" "if" "(" expr ")" "{" stmt* "}"
+
+else_stmt: "else" "{" stmt* "}"
+
+for_stmt: "for" "each" var_name "in" expr "{" stmt* "}"
+
+for_range_stmt: "for" var_name "=" expr "to" expr "{" stmt* "}"
+
+while_stmt: "while" "(" expr ")" "{" stmt* "}"
+
+repeat_until_stmt: "repeat" "{" stmt* "}" "until" "(" expr ")" SEMI
+
+switch_stmt: "switch" "(" expr ")" "{" case_stmt* default_stmt? "}"
+
+case_stmt: "case" value ":" stmt* break_stmt?
+default_stmt: "default" ":" stmt*
+
+// === Procédures et fonctions ===
+procedure_decl: "procedure" CNAME "(" (var_name ("," var_name)*)? ")" "{" stmt* "}"
+function_decl: "function" CNAME "(" (var_name ("," var_name)*)? ")" "{" stmt* return_stmt? "}"
+return_stmt: "return" expr SEMI
+
+// === Entrées / sorties ===
+io_stmt: ("read" var_name | "print" expr) SEMI
+
+SEMI: ";"
+
+RESOURCE_ID: /resource_\d+/
+PROPERTY_ID: /property_\d+/

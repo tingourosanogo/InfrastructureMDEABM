@@ -1,0 +1,6 @@
+traceability_type,parameter,quality_score,assessment_method,experts,uncertainty_type,magnitude,propagation_method,planned_methods,parameters_included,software
+data_quality,adult_female_reproduction_rate,0.85,literature_review,"[{""name"": ""Expert Pastoralisme"", ""confidence"": ""high""}]",,,,,,
+data_quality,fodder_biomass,0.75,remote_sensing_validation,"[{""name"": ""Expert GIS"", ""confidence"": ""medium""}]",,,,,,
+uncertainty,drought_mortality_rate,,,,aleatory,high,monte_carlo,,,
+uncertainty,fodder_biomass,,,,epistemic,medium,sensitivity_analysis,,,
+sensitivity,,,,,,,,"[""SOBOL"", ""Morris""]",all,SALib

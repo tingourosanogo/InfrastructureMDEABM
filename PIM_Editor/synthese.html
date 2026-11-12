@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>synthese</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="synthese_files/libs/clipboard/clipboard.min.js"></script>
+<script src="synthese_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="synthese_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="synthese_files/libs/quarto-html/popper.min.js"></script>
+<script src="synthese_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="synthese_files/libs/quarto-html/anchor.min.js"></script>
+<link href="synthese_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="synthese_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="synthese_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="synthese_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="synthese_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="développement-dun-éditeur-python-basé-sur-un-métamodèle-emf-avec-export-en-.xmi" class="level1">
+<h1>Développement d’un éditeur Python basé sur un métamodèle EMF avec export en .xmi</h1>
+<p>Ton métamodèle (au format Ecore/XMI) définit les concepts. En Python, tu peux :</p>
+<ul>
+<li><strong>Charger et manipuler</strong> ton métamodèle (instances) grâce à des bibliothèques comme <code>pyecore</code>.</li>
+<li><strong>Éditer le modèle</strong> via une interface graphique (ex. PyQt5/PySide, Tkinter, voire un éditeur web via PyScript/React).</li>
+<li><strong>Sauvegarder / partager</strong> les instances directement en <code>.xmi</code> (<code>pyecore</code> le fait nativement).</li>
+</ul>
+<p>Cela te donne une alternative <strong>plus flexible</strong> à Sirius, tout en respectant l’ingénierie dirigée par les modèles (IDM/MDE), car :</p>
+<ul>
+<li>Le métamodèle reste la <strong>source de vérité</strong>.</li>
+<li>Les modèles instanciés sont stockés en <code>.xmi</code>.</li>
+<li>L’éditeur est juste une couche de <strong>visualisation/manipulation</strong>.</li>
+</ul>
+<hr>
+<section id="étape-1-les-briques-nécessaires" class="level2">
+<h2 class="anchored" data-anchor-id="étape-1-les-briques-nécessaires">🔹 Étape 1 : Les briques nécessaires</h2>
+<ul>
+<li><p><strong>Python + pyecore</strong> → pour manipuler le métamodèle et créer des instances.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pyecore</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv venv</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">venv/bin/pip</span> install <span class="at">--upgrade</span> pip</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install PySide6 pyecore</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionnel : pygraphviz / networkx pour layout automatique</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install networkx graphviz</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install lxml</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install svgwrite <span class="co"># n'est plus utilise</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pymupdf</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install reportlab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Ton métamodèle exporté en .ecore (ou .xmi) depuis Eclipse EMF/Sirius. Un script Python minimal qui :</p></li>
+<li><p>Charge ton métamodèle.</p></li>
+<li><p>Instancie quelques objets (Actor, Resource, etc.).</p></li>
+<li><p>Sérialise en .xmi.</p></li>
+</ul>
+<p>Exemple de squelette minimal (adapté à ton métamodèle)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyecore.resources <span class="im">import</span> ResourceSet, URI</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Charger ton métamodèle</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>rset <span class="op">=</span> ResourceSet()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>mm <span class="op">=</span> rset.get_resource(URI(<span class="st">'file:SocioEcosystem.ecore'</span>)).contents[<span class="dv">0</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>rset.metamodel_registry[mm.nsURI] <span class="op">=</span> mm</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Créer une ressource pour ton modèle</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>resource <span class="op">=</span> rset.create_resource(URI(<span class="st">'file:example_model.xmi'</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Instancier un élément du métamodèle (exemple Actor)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>Actor <span class="op">=</span> mm.getEClassifier(<span class="st">'Actor'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>actor1 <span class="op">=</span> Actor(name<span class="op">=</span><span class="st">"Berger"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajouter au modèle</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>resource.append(actor1)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Sauvegarder</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>resource.save()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="étape-2-construire-léditeur" class="level1">
+<h1>Étape 2 : Construire l’éditeur</h1>
+<section id="choix-stratégiques" class="level2">
+<h2 class="anchored" data-anchor-id="choix-stratégiques">Choix stratégiques</h2>
+<p>Deux approches possibles pour l’éditeur :</p>
+<ul>
+<li><strong>Éditeur textuel</strong> (console ou fichier YAML/JSON) :
+<ul>
+<li>Plus simple pour débuter.</li>
+</ul></li>
+<li><strong>Éditeur graphique</strong> (GUI) :
+<ul>
+<li>Plus proche de Sirius.</li>
+</ul></li>
+</ul>
+<section id="technologies-suggérées" class="level3">
+<h3 class="anchored" data-anchor-id="technologies-suggérées">Technologies suggérées</h3>
+<ul>
+<li><strong>Python</strong> :
+<ul>
+<li>PyQt5, PySide6, Tkinter, etc.</li>
+</ul></li>
+<li><strong>Web</strong> :
+<ul>
+<li>React ou Vue avec une API Python (FastAPI ou Flask).</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+</section>
+<section id="étape-3-stratégie-de-développement-pas-à-pas" class="level1">
+<h1>Étape 3 : Stratégie de développement pas à pas</h1>
+<ol type="1">
+<li><strong>Charger et instancier le métamodèle</strong> :
+<ul>
+<li>Réalisé (✔ voir étape 1 ci-dessus).</li>
+</ul></li>
+<li><strong>Créer une API Python</strong> :
+<ul>
+<li>Permettre l’ajout/suppression d’éléments (<code>Actors</code>, <code>Resources</code>, <code>Relations</code>).</li>
+</ul></li>
+<li><strong>Sauvegarder/ouvrir un fichier .xmi</strong> :
+<ul>
+<li>Gérer la persistance des modèles.</li>
+</ul></li>
+<li><strong>Ajouter une interface simple</strong> :
+<ul>
+<li>Liste des éléments avec un bouton d’ajout.</li>
+</ul></li>
+<li><strong>Étendre vers une interface graphique</strong> :
+<ul>
+<li>Support pour l’édition de graphes avec nœuds et arêtes.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="proposition" class="level1">
+<h1>🚀 Proposition</h1>
+<p>Avancer en itérations simples :</p>
+<ol type="1">
+<li><strong>Prototype Python minimal</strong> :
+<ul>
+<li>Charger le fichier <code>.ecore</code>.</li>
+<li>Créer un modèle avec quelques instances.</li>
+<li>Sauvegarder en fichier <code>.xmi</code>.</li>
+</ul></li>
+<li><strong>Ajouter les opérations CRUD</strong> :
+<ul>
+<li>Fonctionnalités pour ajouter, supprimer, modifier un <code>Actor</code>, une <code>Resource</code>, ou une arête.</li>
+</ul></li>
+<li><strong>Réfléchir à l’éditeur visuel</strong> :
+<ul>
+<li>Planifier l’implémentation d’une interface graphique pour l’édition.</li>
+</ul>
+<h1 id="recommandation-simple-directe">Recommandation (simple &amp; directe)</h1></li>
+</ol>
+<p><strong>Choix recommandé</strong> : PySide6 (Qt6 for Python).<br>
+Si pour une raison pratique vous préférez l’autre binding Qt, <strong>PyQt5</strong> est une alternative viable.<br>
+<strong>Évitez Tkinter</strong> pour un véritable éditeur de diagrammes (trop limité graphiquement).</p>
+<hr>
+<section id="pourquoi-pyside6-résumé" class="level2">
+<h2 class="anchored" data-anchor-id="pourquoi-pyside6-résumé">Pourquoi PySide6 (résumé)</h2>
+<ul>
+<li><strong>Framework graphique riche</strong> : <code>QGraphicsScene</code> / <code>QGraphicsView</code> est fait pour des éditeurs graphiques (nœuds, arêtes, zoom, pan, sélection, groupe, calques, collisions, animations).</li>
+<li><strong>Performance</strong> : Qt est optimisé pour gérer des centaines / milliers d’items graphiques.</li>
+<li><strong>Widgets prêts à l’emploi</strong> : docks (propriétés), palettes d’outils, menus, undo/redo (<code>QUndoStack</code>), éditeurs inline, dialogs.</li>
+<li><strong>Licences</strong> : PySide6 est LGPL (plus souple pour usage entreprise). PyQt5 est GPL/commercial (attention licence).</li>
+<li><strong>Futur-proof</strong> : Qt6 / PySide6 est la voie moderne ; API proche de PyQt mais sans contraintes de licence commerciale.</li>
+<li><strong>Écosystème &amp; outillage</strong> : Qt Designer, styles, ressources, packaging (PyInstaller), support multi-plateforme.</li>
+</ul>
+<hr>
+</section>
+<section id="comparatif-rapide" class="level2">
+<h2 class="anchored" data-anchor-id="comparatif-rapide">Comparatif rapide</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Critère</th>
+<th>PySide6</th>
+<th>PyQt5</th>
+<th>Tkinter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Support QGraphicsView (éditeur)</strong></td>
+<td>✅ Optimal</td>
+<td>✅</td>
+<td>❌ Très limité</td>
+</tr>
+<tr class="even">
+<td><strong>Licence</strong></td>
+<td>LGPL (souple)</td>
+<td>GPL / commercial</td>
+<td>BSD-like (mais limité)</td>
+</tr>
+<tr class="odd">
+<td><strong>Documentation / exemples</strong></td>
+<td>Très bon</td>
+<td>Très bon</td>
+<td>Bon mais simple</td>
+</tr>
+<tr class="even">
+<td><strong>Outils visuels (Designer)</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr class="odd">
+<td><strong>Courbe d’apprentissage</strong></td>
+<td>Moyenne</td>
+<td>Moyenne</td>
+<td>Très faible</td>
+</tr>
+<tr class="even">
+<td><strong>Idéal pour éditeur de diagrammes</strong></td>
+<td>Oui (fortement)</td>
+<td>Oui</td>
+<td>Non</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="fonctionnalités-qt-utiles-pour-un-éditeur-mde" class="level2">
+<h2 class="anchored" data-anchor-id="fonctionnalités-qt-utiles-pour-un-éditeur-mde">Fonctionnalités Qt utiles pour un éditeur MDE</h2>
+<ul>
+<li><strong>QGraphicsScene / QGraphicsItem</strong> : Nœuds/edges personnalisés.</li>
+<li><strong>Sélection multiple, drag/drop, snapping, guides</strong>.</li>
+<li><strong>QGraphicsLineItem / custom</strong> : Edges avec routage orthogonal.</li>
+<li><strong>QUndoStack</strong> : Undo/redo pour opérations CRUD sur le modèle.</li>
+<li><strong>QDockWidget</strong> : Palette + propriété (édition d’attributs comme <code>pseudoCode</code>, <code>equation</code>…).</li>
+<li><strong>Export</strong> : PNG/PDF, copy/paste, zoom, grid.</li>
+<li><strong>Intégration facile avec pyecore</strong> : Couche modèle.</li>
+</ul>
+<hr>
+</section>
+<section id="intégration-avec-ton-flux-mde-pyecore" class="level2">
+<h2 class="anchored" data-anchor-id="intégration-avec-ton-flux-mde-pyecore">Intégration avec ton flux MDE (pyecore)</h2>
+<ul>
+<li><strong>Modèle</strong> : <code>pyecore</code> pour charger <code>.ecore</code> et sérialiser <code>.xmi</code>.</li>
+<li><strong>Vue</strong> : PySide6 <code>QGraphicsView</code>.</li>
+<li><strong>Contrôleur</strong> : Actions Qt qui traduisent les interactions utilisateur → opérations <code>pyecore</code> (create/remove/set).</li>
+<li><strong>Undo/Redo</strong> : Wrap des opérations modèle dans des commandes <code>QUndoCommand</code> personnalisées.</li>
+</ul>
+</section>
+</section>
+<section id="plan-daction-pas-à-pas-recommandé-suite" class="level1">
+<h1>Plan d’action pas-à-pas recommandé (suite)</h1>
+<section id="prototype-minimal-pyside6" class="level2">
+<h2 class="anchored" data-anchor-id="prototype-minimal-pyside6">Prototype minimal PySide6</h2>
+<ul>
+<li><strong>Objectif</strong> : Créer une interface avec une fenêtre contenant :
+<ul>
+<li><code>QGraphicsView</code> pour la visualisation graphique.</li>
+<li>Palette avec boutons pour créer : <code>Actor</code>, <code>Resource</code>, <code>Process</code>, <code>Interaction</code>.</li>
+<li>Création visuelle d’un nœud.</li>
+</ul></li>
+</ul>
+</section>
+<section id="liaison-au-modèle" class="level2">
+<h2 class="anchored" data-anchor-id="liaison-au-modèle">Liaison au modèle</h2>
+<ul>
+<li>À la création visuelle d’un élément :
+<ul>
+<li>Créer l’instance <code>pyecore</code> correspondante.</li>
+<li>Attacher l’instance au <code>SocioEcosystem</code>.</li>
+</ul></li>
+<li>Sauvegarde du modèle en fichier <code>.xmi</code>.</li>
+</ul>
+</section>
+<section id="crud-complet" class="level2">
+<h2 class="anchored" data-anchor-id="crud-complet">CRUD complet</h2>
+<ul>
+<li><strong>Édition</strong> : Modifier les attributs via un dock (interface dédiée).</li>
+<li><strong>Suppression</strong> : Gérer la suppression avec distinction entre :
+<ul>
+<li><code>Remove</code> (suppression logique du modèle).</li>
+<li><code>DeleteView</code> (suppression de la vue graphique uniquement).</li>
+</ul></li>
+<li><strong>Création d’arêtes</strong> : Sélectionner une source, puis une cible pour créer des relations.</li>
+<li><strong>Gestion des références</strong> : Distinguer entre relations de containment et non-containment.</li>
+</ul>
+</section>
+<section id="undoredo" class="level2">
+<h2 class="anchored" data-anchor-id="undoredo">Undo/Redo</h2>
+<ul>
+<li>Utiliser <code>QUndoStack</code> pour gérer l’historique des actions sur le modèle (annuler/refaire).</li>
+</ul>
+</section>
+<section id="améliorations" class="level2">
+<h2 class="anchored" data-anchor-id="améliorations">Améliorations</h2>
+<ul>
+<li><strong>Layout automatique</strong> : Positionnement optimisé des nœuds.</li>
+<li><strong>Styles</strong> : Personnalisation visuelle des éléments (e.g., couleurs, formes).</li>
+<li><strong>Export</strong> : Sauvegarde ou exportation dans d’autres formats.</li>
+<li><strong>Validation</strong> : Vérification de la cohérence du modèle.</li>
+</ul>
+<hr>
+</section>
+<section id="alternatives-à-considérer-si-besoin" class="level2">
+<h2 class="anchored" data-anchor-id="alternatives-à-considérer-si-besoin">Alternatives à considérer (si besoin)</h2>
+<ul>
+<li><strong>Web UI</strong> :
+<ul>
+<li>Technologies : <code>Flask</code>/<code>FastAPI</code> (backend) + <code>React</code> (frontend) + bibliothèques graphiques (<code>cytoscape.js</code>, <code>jointjs</code>, <code>gojs</code>).</li>
+<li>Avantage : Adapté pour un éditeur collaboratif ou accessible via navigateur.</li>
+</ul></li>
+<li><strong>Kivy</strong> :
+<ul>
+<li>Usage : Interface tactile ou mobile.</li>
+<li>Limite : Moins adapté pour des applications desktop professionnelles.</li>
+</ul></li>
+<li><strong>wxPython</strong> :
+<ul>
+<li>Faisabilité : Possible, mais communauté et outils graphiques moins riches comparé à Qt.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="conclusion-proposition-détape-suivante" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-proposition-détape-suivante">Conclusion &amp; proposition d’étape suivante</h2>
+<section id="choix-recommandé" class="level3">
+<h3 class="anchored" data-anchor-id="choix-recommandé">Choix recommandé</h3>
+<ul>
+<li><strong>PySide6</strong> (bindings Qt6) pour sa robustesse et son adéquation aux besoins d’un éditeur graphique desktop.</li>
+</ul>
+</section>
+<section id="proposition-1" class="level3">
+<h3 class="anchored" data-anchor-id="proposition-1">Proposition</h3>
+<p>Créer un <strong>prototype PySide6 minimal</strong> (squelette) qui inclut :</p>
+<ul>
+<li>Une fenêtre avec <code>QGraphicsView</code> pour la visualisation.</li>
+<li>Une palette permettant de créer un <code>Actor</code> et une <code>Resource</code>.</li>
+<li>Création des instances <code>pyecore</code> correspondantes, attachées au modèle.</li>
+<li>Sauvegarde du modèle en fichier <code>.xmi</code> sur demande.</li>
+</ul>
+<p>Si tu veux, je peux préparer ce prototype minimal ou ajuster le plan selon tes besoins. Confirme avec “ok pour l’étape suivante” en précisant si tu veux le prototype ou d’autres modifications.</p>
+</section>
+</section>
+</section>
+<section id="représentation-visuelle-dans-léditeur-sirius" class="level1">
+<h1>Représentation visuelle dans l’éditeur Sirius</h1>
+<section id="nœuds-nodes" class="level2">
+<h2 class="anchored" data-anchor-id="nœuds-nodes">Nœuds (Nodes)</h2>
+<p>Les classes principales (<code>Actor</code>, <code>Resource</code>, <code>Process</code>, <code>Interaction</code>, <code>Property</code>) seront représentées comme des formes distinctes et ergonomiques sur le canevas.</p>
+<ul>
+<li>L’idée d’utiliser des <strong>rectangles orange</strong> pour les acteurs est un bon début.</li>
+</ul>
+</section>
+<section id="arêtes-edges" class="level2">
+<h2 class="anchored" data-anchor-id="arêtes-edges">Arêtes (Edges)</h2>
+<p>Les relations entre les classes, telles que <code>hasProcesses</code> ou <code>affects</code>, se matérialiseront sous forme de <strong>flèches</strong> ou de <strong>lignes</strong> reliant les nœuds.</p>
+<ul>
+<li>C’est la manière standard de représenter les références dans les outils de modélisation visuelle.</li>
+</ul>
+</section>
+<section id="logique-des-relations" class="level2">
+<h2 class="anchored" data-anchor-id="logique-des-relations">Logique des relations</h2>
+<ul>
+<li><strong>Acteurs</strong> :
+<ul>
+<li>Agissent sur des <strong>ressources</strong>.</li>
+<li>Possèdent des <strong>propriétés</strong>.</li>
+<li>Exécutent des <strong>processus</strong>.</li>
+<li>Participent à des <strong>interactions</strong>.</li>
+</ul></li>
+<li><strong>Processus</strong> et <strong>interactions</strong> :
+<ul>
+<li>Modifient les <strong>propriétés</strong> ou les <strong>ressources</strong>.</li>
+</ul></li>
+<li><strong>Propriétés</strong> :
+<ul>
+<li>Constituent les briques de base, pouvant être <strong>partagées</strong> ou <strong>individuelles</strong>.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="description-de-lapplication" class="level1">
+<h1>Description de l’application</h1>
+<section id="main.py" class="level2">
+<h2 class="anchored" data-anchor-id="main.py">main.py</h2>
+<section id="structure" class="level3">
+<h3 class="anchored" data-anchor-id="structure">Structure</h3>
+<ul>
+<li>Une application <strong>PySide6</strong> avec une interface graphique (<code>QMainWindow</code>) comprenant :
+<ul>
+<li>Une <strong>scène graphique</strong> (<code>QGraphicsScene</code>).</li>
+<li>Une <strong>vue</strong> (<code>SocioEcosystemView</code>).</li>
+<li>Une <strong>palette</strong> pour le drag-and-drop.</li>
+<li>Un <strong>arbre de navigation</strong>.</li>
+<li>Une <strong>barre de statut</strong>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="crud-pour-actor" class="level3">
+<h3 class="anchored" data-anchor-id="crud-pour-actor">CRUD pour <code>Actor</code></h3>
+<ul>
+<li><strong>Create</strong> :
+<ul>
+<li><code>handle_new_actor</code> crée un acteur via drag-and-drop.</li>
+<li>Ouvre <code>ActorDialog</code> pour saisir les données.</li>
+<li>Assigne <code>pos_x</code>/<code>pos_y</code> à l’acteur.</li>
+<li>Ajoute l’acteur à la scène et au modèle.</li>
+</ul></li>
+<li><strong>Read</strong> :
+<ul>
+<li><code>display_model</code> charge les acteurs du modèle Ecore.</li>
+<li>Utilise <code>pos_x</code>/<code>pos_y</code> si définis, sinon applique un fallback linéaire (<code>offset_x += 100</code>).</li>
+</ul></li>
+<li><strong>Update</strong> :
+<ul>
+<li>Connecte les signaux <code>actor_updated</code> et <code>actor_deleted</code> de <code>ActorItem</code> pour mettre à jour l’arbre de navigation après modification ou suppression.</li>
+</ul></li>
+<li><strong>Delete</strong> :
+<ul>
+<li>Gère la suppression multiple via <code>keyPressEvent</code> (touches SUPPR/DEL).</li>
+<li>Retire les <code>ActorItem</code> sélectionnés de la scène et du modèle.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="actordialog.py" class="level2">
+<h2 class="anchored" data-anchor-id="actordialog.py">actordialog.py</h2>
+<section id="fonctionnalité" class="level3">
+<h3 class="anchored" data-anchor-id="fonctionnalité">Fonctionnalité</h3>
+<ul>
+<li>Une boîte de dialogue pour <strong>créer</strong> ou <strong>éditer</strong> un acteur, avec les champs suivants :
+<ul>
+<li><code>id</code> : Lecture seule en édition, auto-généré en création.</li>
+<li><code>name</code> : Obligatoire.</li>
+<li><code>category</code> : Champ pour la catégorie.</li>
+<li><code>documentation</code> : Champ pour la documentation détaillée.</li>
+<li><code>comment</code> : Champ pour les commentaires additionnels.</li>
+</ul></li>
+<li><strong>Validation</strong> : Assure que le champ <code>name</code> est non vide.</li>
+</ul>
+</section>
+<section id="intégration" class="level3">
+<h3 class="anchored" data-anchor-id="intégration">Intégration</h3>
+<ul>
+<li>Fournit les données au format attendu par <code>ActorItem</code> et <code>model_manager.create_actor</code>.</li>
+<li>Compatible avec le métamodèle (attributs <code>id</code>, <code>name</code>, <code>category</code>, <code>documentation</code>, <code>comment</code> sur <code>Actor</code> via <code>Entity</code>).</li>
+</ul>
+</section>
+<section id="remarque" class="level3">
+<h3 class="anchored" data-anchor-id="remarque">Remarque</h3>
+<ul>
+<li>Pas de gestion directe de <code>pos_x</code>/<code>pos_y</code>, ce qui est correct (la position est gérée par la scène graphique).</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="actor_item.py" class="level2">
+<h2 class="anchored" data-anchor-id="actor_item.py">actor_item.py</h2>
+<section id="structure-1" class="level3">
+<h3 class="anchored" data-anchor-id="structure-1">Structure</h3>
+<ul>
+<li><code>ActorItem</code> hérite de <code>QObject</code> (pour les signaux) et <code>QGraphicsRectItem</code>.</li>
+<li>Gère :
+<ul>
+<li>L’<strong>affichage graphique</strong> (rectangle orange avec texte centré).</li>
+<li>La <strong>sélection</strong>.</li>
+<li>Les <strong>interactions</strong>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="crud" class="level3">
+<h3 class="anchored" data-anchor-id="crud">CRUD</h3>
+<ul>
+<li><strong>Update</strong> :
+<ul>
+<li><code>mouseDoubleClickEvent</code> ouvre <code>ActorDialog</code> pour modifier les attributs.</li>
+<li>Met à jour <code>actor_model</code>.</li>
+<li>Émet <code>actor_updated</code> pour rafraîchir l’arbre de navigation.</li>
+</ul></li>
+<li><strong>Delete</strong> :
+<ul>
+<li>Implémente la suppression via :
+<ul>
+<li><code>keyPressEvent</code> (touche SUPPR).</li>
+<li><code>contextMenuEvent</code> (clic droit &gt; Supprimer).</li>
+</ul></li>
+<li>Supprime l’acteur du modèle et de la scène.</li>
+<li>Émet <code>actor_deleted</code>.</li>
+</ul></li>
+<li><strong>Move</strong> :
+<ul>
+<li><code>itemChange</code> synchronise <code>pos_x</code>/<code>pos_y</code> avec <code>actor_model</code> lors des déplacements (<code>ItemPositionHasChanged</code>).</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="points-forts" class="level2">
+<h2 class="anchored" data-anchor-id="points-forts">Points forts</h2>
+<ul>
+<li>Gestion robuste de la <strong>suppression simple/multiple</strong> (via clavier et clic droit).</li>
+<li>Signaux <code>actor_updated</code> et <code>actor_deleted</code> bien intégrés avec <code>main.py</code>.</li>
+<li><code>itemChange</code> persiste les positions, compatible avec le métamodèle (<code>pos_x</code>, <code>pos_y</code> sur <code>Entity</code>).</li>
+</ul>
+<hr>
+</section>
+<section id="problème-potentiel" class="level2">
+<h2 class="anchored" data-anchor-id="problème-potentiel">Problème potentiel</h2>
+<p>Si les positions ne sont pas persistées au rechargement, cela peut venir de :</p>
+<ul>
+<li><code>pyecore</code> ne sérialise pas <code>pos_x</code>/<code>pos_y</code> si égaux à <code>0.0</code> (comportement EMF par défaut pour les <code>EDouble</code> non-set).</li>
+<li><code>model_manager.save_model()</code> ou <code>load_model</code> ne gère pas correctement les attributs.</li>
+<li>La logique de <code>display_model</code> applique le fallback linéaire trop agressivement.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="recap-du-projet" class="level1">
+<h1>Recap du projet</h1>
+</section>
+<section id="metamodel" class="level1">
+<h1>Metamodel</h1>
+<section id="structure-hiérarchique" class="level2">
+<h2 class="anchored" data-anchor-id="structure-hiérarchique">Structure hiérarchique</h2>
+<p>Le modèle commence avec un conteneur principal SocioEcosystem, qui contient toutes les autres entités (Actor, Resource, Process, Interaction, Property, etc.). Cette structure de contenance (containment=“true”) est la bonne pratique pour les modèles Ecore, car elle garantit l’intégrité et la gestion automatique des cycles de vie.</p>
+</section>
+<section id="entités-de-base" class="level2">
+<h2 class="anchored" data-anchor-id="entités-de-base">Entités de base</h2>
+<p>L’héritage de la classe Entity pour la plupart des éléments (Actor, Resource, Process, Interaction) est une excellente idée. Cela vous permet de centraliser les attributs communs comme id, name, documentation, et comment. C’est exactement l’approche que vous avez adoptée dans vos dialogs et items.</p>
+</section>
+<section id="hiérarchie-property" class="level2">
+<h2 class="anchored" data-anchor-id="hiérarchie-property">Hiérarchie Property</h2>
+<p>La spécialisation de la classe Property en Parameter et Variable est logique et bien modélisée. L’attribut scope avec l’énumération ScopeType montre une bonne compréhension des concepts métier.</p>
+</section>
+<section id="relations-entre-les-entités" class="level2">
+<h2 class="anchored" data-anchor-id="relations-entre-les-entités">Relations entre les entités</h2>
+<p>Les références (eReference) sont clairement définies et reflètent les relations complexes entre les éléments :</p>
+<ul>
+<li>Un Process dependsOn des Propertys et les affects.</li>
+<li>Un Process involves des Resources.</li>
+<li>Un Interaction relie un source et un target, et peut exchange des Resources.</li>
+<li>Les Actors et les Resources hasProperties.</li>
+</ul>
+</section>
+</section>
+<section id="une-architecture-modulaire-dialog.py" class="level1">
+<h1>Une architecture modulaire (*dialog.py)</h1>
+<ul>
+<li><p><strong>Chaque entité</strong> (Actor, Processus, Interaction, etc.) possède sa propre boîte de dialogue dédiée.</p></li>
+<li><p><strong>Gestion de la création et de l’édition</strong> : Chaque <code>QDialog</code> peut être utilisée pour créer une nouvelle instance ou pour éditer une instance existante, en fonction des arguments passés.</p></li>
+<li><p><strong>Génération automatique d’ID</strong> : Un système de numérotation séquentielle (<code>actor_001</code>, <code>process_001</code>) assure la génération d’identifiants uniques.</p></li>
+<li><p><strong>Récupération des données</strong> : La méthode <code>get_data()</code> standardise la récupération des informations saisies sous forme de dictionnaire, ce qui est très pratique.</p></li>
+<li><p><strong>Validation des données</strong> : La validation de base, comme la vérification des champs obligatoires, est intégrée à l’aide de <code>QMessageBox</code>.</p></li>
+</ul>
+</section>
+<section id="analyse-du-code-_item.py" class="level1">
+<h1>Analyse du code (*_item.py)</h1>
+<section id="séparation-des-préoccupations" class="level2">
+<h2 class="anchored" data-anchor-id="séparation-des-préoccupations">Séparation des préoccupations</h2>
+<p>La logique métier est conservée dans un modèle (Ecore, comme vous l’avez mentionné), tandis que la logique de l’interface utilisateur et de l’interaction (affichage, déplacement, suppression) est gérée par les <code>QGraphicsItem</code> correspondants. C’est une approche très robuste.</p>
+</section>
+<section id="héritage-et-modularité" class="level2">
+<h2 class="anchored" data-anchor-id="héritage-et-modularité">Héritage et modularité</h2>
+<p>L’utilisation de <code>QGraphicsRectItem</code> comme base pour tous les éléments est un choix judicieux. Le code est modulaire et les classes sont clairement nommées, ce qui facilite la compréhension et la maintenance.</p>
+</section>
+<section id="gestion-des-interactions-de-lutilisateur" class="level2">
+<h2 class="anchored" data-anchor-id="gestion-des-interactions-de-lutilisateur">Gestion des interactions de l’utilisateur</h2>
+<p>Vous avez correctement implémenté les gestionnaires d’événements pour le double-clic (édition), la touche “Suppr” et le menu contextuel (suppression). C’est essentiel pour une bonne expérience utilisateur.</p>
+</section>
+<section id="gestion-des-connecteurs" class="level2">
+<h2 class="anchored" data-anchor-id="gestion-des-connecteurs">Gestion des connecteurs</h2>
+<p>J’apprécie le fait que chaque <code>Item</code> maintienne des listes de ses connecteurs entrants et sortants. C’est une structure cruciale pour la mise à jour et la suppression des liens entre les éléments.</p>
+</section>
+<section id="signalisation-efficace" class="level2">
+<h2 class="anchored" data-anchor-id="signalisation-efficace">Signalisation efficace</h2>
+<p>L’utilisation de signaux (<code>_updated</code>, <code>_deleted</code>, <code>_moved</code>) est la bonne pratique avec PySide6 pour communiquer les changements à l’application principale (<code>main.py</code>), ce qui permet de maintenir l’arbre de navigation et l’état général de l’application à jour.</p>
+</section>
+</section>
+<section id="gestion-du-méta-modèle-ecore-model_manager.py" class="level1">
+<h1>Gestion du méta-modèle Ecore (model_manager.py)</h1>
+<p>L’approche de chargement dynamique du méta-modèle à partir d’un fichier <code>.ecore</code> est excellente. Cela garantit une forte séparation entre le modèle et la vue, et facilite l’évolution de votre modèle de données sans toucher au code de l’interface graphique.</p>
+<section id="encapsulation-des-opérations-du-modèle" class="level2">
+<h2 class="anchored" data-anchor-id="encapsulation-des-opérations-du-modèle">Encapsulation des opérations du modèle</h2>
+<p>La classe <code>ModelManager</code> centralise toutes les opérations de création, d’édition et de manipulation des éléments du modèle. C’est une très bonne pratique qui rend le code plus propre et plus facile à maintenir.</p>
+</section>
+<section id="cohérence-avec-les-dialogues-et-les-items" class="level2">
+<h2 class="anchored" data-anchor-id="cohérence-avec-les-dialogues-et-les-items">Cohérence avec les dialogues et les items</h2>
+<p>J’ai noté que les méthodes <code>create_...</code> dans <code>ModelManager</code> correspondent parfaitement aux données retournées par les méthodes <code>get_data()</code> de vos dialogues. De même, la méthode <code>update_element_position</code> montre le lien direct entre les événements de déplacement sur la scène (<code>_moved</code> dans les <code>Items</code>) et la mise à jour du modèle.</p>
+</section>
+<section id="récupération-des-classes-ecore" class="level2">
+<h2 class="anchored" data-anchor-id="récupération-des-classes-ecore">Récupération des classes Ecore</h2>
+<p>La manière dont vous récupérez les classes Ecore (<code>SocioEcosystem</code>, <code>Actor</code>, etc.) et l’énumération <code>ScopeType</code> est correcte.</p>
+</section>
+</section>
+<section id="architecture-modèle-vue-contrôleur-mvc" class="level1">
+<h1>Architecture Modèle-Vue-Contrôleur (MVC)</h1>
+<p>Vous avez une séparation claire :</p>
+<ul>
+<li><strong>Modèle</strong> : <code>ModelManager</code> gère l’état et la logique des données Ecore.</li>
+<li><strong>Vue</strong> : <code>SocioEcosystemView</code> et les classes <code>*_item</code> gèrent l’affichage et les interactions graphiques.</li>
+<li><strong>Contrôleur</strong> : <code>main.py</code> agit comme le contrôleur, connectant les signaux des vues aux méthodes du gestionnaire de modèle, et gérant le flux global de l’application (menus, barre d’outils, etc.). C’est une architecture solide et évolutive.</li>
+</ul>
+<section id="gestion-des-événements" class="level2">
+<h2 class="anchored" data-anchor-id="gestion-des-événements">Gestion des Événements</h2>
+<p>La gestion du glisser-déposer (<code>dragEnterEvent</code>, <code>dropEvent</code>) est bien implémentée. Vous utilisez le type MIME <code>text/plain</code> pour passer l’information du type d’élément (<code>actor</code>, <code>resource</code>, etc.) depuis la barre d’outils vers la scène, ce qui est une méthode efficace.</p>
+</section>
+<section id="centralisation-des-créationsmises-à-jour" class="level2">
+<h2 class="anchored" data-anchor-id="centralisation-des-créationsmises-à-jour">Centralisation des Créations/Mises à jour</h2>
+<p>Les signaux (<code>actor_dropped</code>, <code>itemMoved</code>, etc.) sont connectés aux slots dans <code>main.py</code> qui, à leur tour, appellent les méthodes correspondantes dans <code>ModelManager</code>. C’est l’essence d’un bon découplage.</p>
+</section>
+<section id="interfaces-utiles" class="level2">
+<h2 class="anchored" data-anchor-id="interfaces-utiles">Interfaces Utiles</h2>
+<p>Les fonctionnalités d’ouverture/sauvegarde de fichiers (<code>open_model</code>, <code>save_model</code>, <code>save_as_model</code>) sont présentes, de même que la mise à jour de la barre de statut et l’arbre de navigation.</p>
+</section>
+<section id="création-de-connecteurs" class="level2">
+<h2 class="anchored" data-anchor-id="création-de-connecteurs">Création de Connecteurs</h2>
+<p>Le mécanisme pour créer des connexions entre les éléments (<code>connection_mode</code>, <code>connection_source</code>) est bien pensé et est au bon endroit, dans <code>SocioEcosystemView</code>.</p>
+</section>
+</section>
+<section id="structure-du-projet" class="level1">
+<h1>Structure du projet</h1>
+<pre class="text"><code>PIM_Editor/
+├─── dialogs/
+│   ├─── *dialog.py
+├─── icons/
+│   ├─── actor.png
+│   ├─── resource.png
+│   ├─── process.png
+│   └─── ...
+├─── items/
+│   ├─── *_item.py
+├─── modelManager/
+│   └─── model_manager.py
+├─── main.py
+├─── socioecosystem_view.py
+└─── pimSocioecosytemMM.ecore
+</code></pre>
+</section>
+<section id="bilan-de-larchitecture" class="level1">
+<h1>Bilan de l’architecture</h1>
+<p>Votre application respecte les principes de conception logicielle suivants :</p>
+<p><strong>Modélisation Ecore (pimSocioecosytemMM.ecore)</strong> : C’est le fondement de votre éditeur. Il définit les entités, leurs propriétés et leurs relations. C’est une source unique de vérité qui garantit la cohérence des données.</p>
+<p><strong>Gestion du modèle (model_manager.py)</strong> : Cette classe agit comme un service centralisé. Elle gère toutes les interactions avec le modèle Ecore, de la création à la sauvegarde, en passant par les mises à jour. C’est une excellente encapsulation.</p>
+<p><strong>Interface graphique (socioecosystem_view.py, main.py, items/, dialogs/)</strong> : L’interface est découpée en composants clairs. Les QGraphicsItem (<em>_item.py) représentent les entités sur la scène, les QDialog (</em>_dialog.py) gèrent la saisie des données, et les classes principales orchestrent le tout.</p>
+<p>La séparation de ces responsabilités est la clé de la réussite de ce projet. C’est ce qui permettra d’ajouter de nouvelles fonctionnalités, de faire évoluer le métamodèle ou de modifier le design sans que tout le code ne s’effondre.</p>
+</section>
+<section id="compréhension-de-la-description" class="level1">
+<h1>Compréhension de la Description</h1>
+<p>Votre description met l’accent sur des règles spécifiques pour les relations et les champs associés :</p>
+<section id="unicité-et-non-partage-pour-certaines-relations" class="level2">
+<h2 class="anchored" data-anchor-id="unicité-et-non-partage-pour-certaines-relations">Unicité et Non-Partage pour Certaines Relations</h2>
+<ul>
+<li>Pour <code>hasProcesses</code> (Actor -&gt; Process), <code>owns</code> (Actor -&gt; Resource), <code>hasProperties</code> (Actor/Resource -&gt; Property) : Ces relations sont uniques et non partagées. Un processus, une ressource “owned”, ou une propriété ne peut pas être associé à plusieurs acteurs/ressources. Cela implique que ces éléments sont “exclusifs” à un acteur/ressource. Si un élément est déjà connecté, il ne devrait pas être disponible pour d’autres.</li>
+<li>Pour <code>uses</code> (Actor -&gt; Resource), <code>dependsOn/affects</code> (Process -&gt; Property), <code>involves</code> (Process -&gt; Resource), <code>betweenActors</code> (Interaction -&gt; Actor), <code>affectsResources</code> (Interaction -&gt; Resource) : Ces relations permettent le partage. Les éléments cibles (ressources, propriétés, acteurs) doivent exister au préalable et peuvent être partagés entre plusieurs sources.</li>
+</ul>
+</section>
+<section id="relations-contraintes" class="level2">
+<h2 class="anchored" data-anchor-id="relations-contraintes">Relations (contraintes)</h2>
+<ul>
+<li><strong>hasProcesses (Actor -&gt; Process)</strong> : Connecteurs uniques, non partagés (un processus ne peut être associé qu’à un seul acteur).</li>
+<li><strong>owns (Actor -&gt; Resource)</strong> : Connecteurs uniques, non partagés (une ressource “owned” ne peut être associée qu’à un seul acteur).</li>
+<li><strong>hasProperties (Actor -&gt; Property)</strong> : Connecteurs uniques, non partagés (une propriété, Parameter ou Variable, ne peut être associée qu’à un seul acteur ou ressource).</li>
+<li><strong>uses (Actor -&gt; Resource)</strong> : Connecteurs partagés (une ressource peut être utilisée par plusieurs acteurs, mais doit exister au préalable).</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="analyse-du-métamodèle-pimsocioecosytemmm.ecore" class="level1">
+<h1>Analyse du métamodèle pimSocioecosytemMM.ecore</h1>
+<p>Le fichier Ecore définit un métamodèle pour un système socio-écologique avec les classes et relations suivantes :</p>
+<section id="classes-principales" class="level2">
+<h2 class="anchored" data-anchor-id="classes-principales">Classes principales</h2>
+<section id="socioecosystem" class="level3">
+<h3 class="anchored" data-anchor-id="socioecosystem">SocioEcosystem</h3>
+<p><strong>Attributs</strong> :</p>
+<ul>
+<li>name (EString)</li>
+<li>description (EString)</li>
+</ul>
+<p><strong>Références</strong> :</p>
+<ul>
+<li>actors (0..* Actor, containment)</li>
+<li>resources (0..* Resource, containment)</li>
+<li>interactions (0..* Interaction, containment)</li>
+<li>relatedecosystems (0..* RelatedEcosystem)</li>
+<li>hasProperties (0..* Property)</li>
+<li>hasProcesses (0..* Process)</li>
+</ul>
+</section>
+<section id="entity-abstraite" class="level3">
+<h3 class="anchored" data-anchor-id="entity-abstraite">Entity (abstraite)</h3>
+<p><strong>Attributs</strong> :</p>
+<ul>
+<li>id (EString, ID)</li>
+<li>name (EString)</li>
+<li>documentation (EString)</li>
+<li>comment (EString)</li>
+<li>pos_x (EDouble)</li>
+<li>pos_y (EDouble)</li>
+<li>width (EInt)</li>
+<li>height (EInt)</li>
+</ul>
+</section>
+<section id="actor-hérite-de-entity" class="level3">
+<h3 class="anchored" data-anchor-id="actor-hérite-de-entity">Actor (hérite de Entity)</h3>
+<p><strong>Attributs</strong> :</p>
+<ul>
+<li>category (EString)</li>
+</ul>
+<p><strong>Références</strong> :</p>
+<ul>
+<li>owns (0..* Resource)</li>
+<li>uses (0..* Resource)</li>
+<li>hasProperties (0..* Property)</li>
+<li>Pas de betweenActors (voir ci-dessous pour discussion).</li>
+</ul>
+</section>
+<section id="resource-hérite-de-entity" class="level3">
+<h3 class="anchored" data-anchor-id="resource-hérite-de-entity">Resource (hérite de Entity)</h3>
+<p><strong>Références</strong> :</p>
+<ul>
+<li>hasProperties (0..* Property)</li>
+</ul>
+</section>
+<section id="process-hérite-de-entity" class="level3">
+<h3 class="anchored" data-anchor-id="process-hérite-de-entity">Process (hérite de Entity)</h3>
+<p><strong>Attributs</strong> :</p>
+<ul>
+<li>equation (EString)</li>
+<li>pseudoCode (EString)</li>
+</ul>
+<p><strong>Références</strong> :</p>
+<ul>
+<li>involves (0..* Resource)</li>
+<li>dependsOn (0..* Property)</li>
+<li>affects (0..* Property)</li>
+</ul>
+</section>
+<section id="interaction-hérite-de-entity" class="level3">
+<h3 class="anchored" data-anchor-id="interaction-hérite-de-entity">Interaction (hérite de Entity)</h3>
+<p><strong>Références</strong> :</p>
+<ul>
+<li>betweenActors (2..* Actor)</li>
+<li>affectsResources (0..* Resource)</li>
+</ul>
+</section>
+<section id="property-abstraite-hérite-de-entity" class="level3">
+<h3 class="anchored" data-anchor-id="property-abstraite-hérite-de-entity">Property (abstraite, hérite de Entity)</h3>
+<p><strong>Attributs</strong> :</p>
+<ul>
+<li>unit (EString)</li>
+<li>type (EString)</li>
+<li>scope (ScopeType, énumération avec Shared et Individual)</li>
+</ul>
+</section>
+<section id="parameter-hérite-de-property" class="level3">
+<h3 class="anchored" data-anchor-id="parameter-hérite-de-property">Parameter (hérite de Property)</h3>
+<p><strong>Attributs</strong> :</p>
+<ul>
+<li>value (EFloat)</li>
+</ul>
+</section>
+<section id="variable-hérite-de-property" class="level3">
+<h3 class="anchored" data-anchor-id="variable-hérite-de-property">Variable (hérite de Property)</h3>
+<p><strong>Pas d’attributs supplémentaires.</strong></p>
+</section>
+<section id="relatedecosystem-hérite-de-entity" class="level3">
+<h3 class="anchored" data-anchor-id="relatedecosystem-hérite-de-entity">RelatedEcosystem (hérite de Entity)</h3>
+<p><strong>Pas de références ou attributs supplémentaires.</strong></p>
+<p>Le fichier Ecore fourni est vide ou mal formaté, ce qui empêche une vérification directe des classes et relations. Pour confirmer la validité de <code>betweenActors</code> et des autres relations, j’ai besoin du contenu XML correct du métamodèle, qui devrait inclure :</p>
+<ul>
+<li>Les définitions des classes (<code>SocioEcosystem</code>, <code>Actor</code>, <code>Process</code>, <code>Resource</code>, <code>Interaction</code>, <code>Parameter</code>, <code>Variable</code>).</li>
+<li>Les références (<code>hasProcesses</code>, <code>owns</code>, <code>uses</code>, <code>hasProperties</code>, <code>dependsOn</code>, <code>affects</code>, <code>involves</code>, <code>betweenActors</code>, <code>affectsResources</code>) avec leurs cardinalités et contraintes.</li>
+<li>Les attributs (e.g., <code>id</code>, <code>name</code>, <code>documentation</code>, etc.).</li>
+</ul>
+</section>
+</section>
+<section id="hypothèses-basées-sur-les-fichiers-précédents" class="level2">
+<h2 class="anchored" data-anchor-id="hypothèses-basées-sur-les-fichiers-précédents">Hypothèses basées sur les fichiers précédents</h2>
+<ul>
+<li><p><code>Actor</code> a une référence <code>betweenActors</code> vers <code>Interaction</code> (probablement <code>0..*</code>, car plusieurs interactions sont possibles).</p></li>
+<li><p>Les autres relations sont conformes aux descriptions dans <code>model_manager.py</code> et <code>socioecosystem_view.py</code> :</p>
+<ul>
+<li><code>hasProcesses</code> : <code>Actor</code> → <code>Process</code> (unique).</li>
+<li><code>owns</code> : <code>Actor</code> → <code>Resource</code> (unique).</li>
+<li><code>uses</code> : <code>Actor</code> → <code>Resource</code> (partagé).</li>
+<li><code>hasProperties</code> : <code>Actor</code>/<code>Resource</code> → <code>Parameter</code>/<code>Variable</code> (unique).</li>
+<li><code>dependsOn</code>/<code>affects</code> : <code>Process</code> → <code>Parameter</code>/<code>Variable</code> (propriétés existantes).</li>
+<li><code>involves</code> : <code>Process</code> → <code>Resource</code> (unique).</li>
+<li><code>affectsResources</code> : <code>Interaction</code> → <code>Resource</code> (partagé).</li>
+</ul></li>
+<li><p>hasProcesses : relie un Acteur → Processus ; chaque Processus ne peut être lié qu’à un seul Acteur via ce connecteur ; alimente l’attribut hasProcesses de l’Acteur.</p></li>
+<li><p>owns : relie un Acteur → Ressource ; chaque Ressource ne peut être liée qu’à un seul Acteur via owns ; alimente l’attribut owns de l’Acteur.</p></li>
+<li><p>uses : relie un Acteur → Ressource (autre) ; la Ressource doit exister (appartenant à un autre Acteur) ; alimente l’attribut uses de l’Acteur.</p></li>
+<li><p>hasProperties : relie Acteur → Propriété ou Ressource → Propriété ; propriété de type Paramètre ou Variable (deux champs si besoin) ; interdiction de partager la même propriété entre deux Acteurs (ou deux Ressources) via ce connecteur ; alimente hasProperties.</p></li>
+<li><p>betweenActors : relie plusieurs Acteurs → Interaction (flèche indiquant l’interaction) ; alimente betweenActors de l’Interaction.</p></li>
+<li><p>affectsResources : relie Interaction → Ressource (ressources affectées) ; alimente affectsResources de l’Interaction.</p></li>
+<li><p>dependOn : relie Processus → Propriété (propriétés dont dépend le processus — ces propriétés doivent exister chez des Acteurs) ; alimente dependOn du Processus.</p></li>
+<li><p>affects : relie Processus → Propriété (propriétés affectées par le processus — doivent exister chez des Acteurs) ; alimente affects du Processus.</p></li>
+<li><p>involves : relie Processus → Ressource (ressources incluses) ; ces ressources doivent exister ; alimente involves du Processus.</p></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="sources-à-explorer" class="level1">
+<h1>Sources à explorer</h1>
+<p>https://github.com/pyecore/pyecore</p>
+</section>
+<section id="test-export" class="level1">
+<h1>Test export</h1>
+<p><img src="./export/diagramme_socioecosysteme.png" class="img-fluid"></p>
+<hr>
+</section>
+<section id="analyse-du-modèle-de-socio-écosystème-pastoral-dans-le-sahel-1" class="level1">
+<h1>Analyse du modèle de socio-écosystème pastoral dans le Sahel 1</h1>
+<p>Le diagramme représente un <strong>modèle de socio-écosystème pastoral</strong> dans le Sahel, inspiré des dynamiques biophysiques, socio-économiques et institutionnelles décrites dans la littérature scientifique (par exemple, les travaux sur la résilience des systèmes pastoraux <a href="https://example.com/web31">[web:31]</a>, <a href="https://example.com/web33">[web:33]</a>). Il s’agit d’un <strong>graph orienté</strong> où les <strong>nœuds</strong> représentent des <strong>acteurs</strong>, <strong>ressources</strong>, <strong>processus</strong> et <strong>interactions</strong>, tandis que les <strong>arêtes</strong> indiquent des relations comme la <strong>dépendance</strong>, l’<strong>affectation</strong> ou l’<strong>utilisation</strong>. Le modèle met l’accent sur les défis du pastoralisme, tels que la <strong>transhumance</strong>, la <strong>dégradation des ressources</strong> et les <strong>conflits</strong>, en alignant avec des concepts comme la <em>résilience socio-écologique</em> <a href="https://example.com/web30">[web:30]</a>, <a href="https://example.com/web35">[web:35]</a>.</p>
+<section id="composants-principaux-du-modèle-nœuds" class="level2">
+<h2 class="anchored" data-anchor-id="composants-principaux-du-modèle-nœuds">1. Composants principaux du modèle (nœuds)</h2>
+<p>Le diagramme est organisé autour de <strong>quatre catégories principales</strong> : <strong>acteurs</strong> (orange), <strong>ressources</strong> (vert), <strong>processus</strong> (bleu) et <strong>interactions</strong> (violet). Voici une décomposition :</p>
+<section id="acteurs-nœuds-orange" class="level3">
+<h3 class="anchored" data-anchor-id="acteurs-nœuds-orange">Acteurs (nœuds orange)</h3>
+<ul>
+<li><strong>Pasteur</strong> : Acteur central, représentant les communautés pastorales transhumantes. Lié à la possession de troupeaux et à l’utilisation de pâturages/eau.</li>
+<li><strong>Autorité</strong> : Représente les autorités locales, impliquées dans la gouvernance foncière.</li>
+<li><strong>Groupe Armé</strong> : Facteur de risque, lié aux conflits.</li>
+<li><strong>Agriculteur</strong> : Acteur sédentaire, en conflit avec les pasteurs pour l’accès aux ressources.</li>
+</ul>
+</section>
+<section id="ressources-nœuds-verts" class="level3">
+<h3 class="anchored" data-anchor-id="ressources-nœuds-verts">Ressources (nœuds verts)</h3>
+<ul>
+<li><strong>Pâturage naturel</strong> : Ressource clé, affectée par la dégradation et dépendante de la biomasse.</li>
+<li><strong>Points d’eau</strong> : Ressource impliquée dans la mobilité, avec une variable de niveau d’eau.</li>
+<li><strong>Couloir de transhumance</strong> : Ressource physique et juridique, impliquée dans la gouvernance.</li>
+</ul>
+</section>
+<section id="processus-nœuds-bleus" class="level3">
+<h3 class="anchored" data-anchor-id="processus-nœuds-bleus">Processus (nœuds bleus)</h3>
+<ul>
+<li><strong>Dynamique troupeau</strong> : Processus de démographie du bétail, dépendant de la biomasse et affectant le nombre de têtes.</li>
+<li><strong>Gouvernance foncière</strong> : Processus institutionnel, impliquant les pâturages et couloirs.</li>
+<li><strong>Dégradation pâturage</strong> : Processus de perte de biomasse, dépendant de la biomasse et l’affectant.</li>
+<li><strong>Décision de mobilité</strong> : Processus de choix de transhumance, dépendant de la biomasse, du niveau d’eau et du prix de vente.</li>
+</ul>
+</section>
+<section id="interactions-nœuds-violets" class="level3">
+<h3 class="anchored" data-anchor-id="interactions-nœuds-violets">Interactions (nœuds violets)</h3>
+<ul>
+<li><strong>Transhum</strong> : Interaction entre acteurs, affectant les ressources comme les pâturages et points d’eau.</li>
+<li><strong>Conflit</strong> : Interaction entre pasteurs et agriculteurs.</li>
+</ul>
+</section>
+<section id="variablespropriétés-nœuds-jaunes" class="level3">
+<h3 class="anchored" data-anchor-id="variablespropriétés-nœuds-jaunes">Variables/Propriétés (nœuds jaunes)</h3>
+<ul>
+<li><strong>Propriété Var. Taux mortalité annuel</strong> : Propriété du troupeau.</li>
+<li><strong>Propriété Var. Prix de vente du bétail</strong> : Propriété économique.</li>
+<li><strong>Propriété Var. Biomasse disponible</strong> : Propriété des pâturages.</li>
+<li><strong>Propriété Var. Diversité des espèces fourragères</strong> : Propriété des pâturages.</li>
+<li><strong>Var. Niveau d’eau</strong> : Propriété des points d’eau.</li>
+</ul>
+</section>
+</section>
+<section id="relations-et-dynamiques-arêtes" class="level2">
+<h2 class="anchored" data-anchor-id="relations-et-dynamiques-arêtes">2. Relations et dynamiques (arêtes)</h2>
+<p>Les <strong>arêtes</strong> indiquent des <strong>flux</strong>, <strong>dépendances</strong> et <strong>impacts</strong>, formant un réseau complexe :</p>
+<section id="relations-daffectation-affecte" class="level3">
+<h3 class="anchored" data-anchor-id="relations-daffectation-affecte">Relations d’affectation (“Affecte”)</h3>
+<ul>
+<li><strong>Dynamique troupeau</strong> affecte <strong>Propriété Var. Taux mortalité annuel</strong> et <strong>Propriété Var. Prix de vente du bétail</strong>.</li>
+<li><strong>Dégradation pâturage</strong> affecte <strong>Propriété Var. Biomasse disponible</strong>.
+<ul>
+<li><em>Cela montre comment les processus impactent les propriétés des ressources.</em></li>
+</ul></li>
+</ul>
+</section>
+<section id="relations-de-dépendance-dépend-de" class="level3">
+<h3 class="anchored" data-anchor-id="relations-de-dépendance-dépend-de">Relations de dépendance (“Dépend de”)</h3>
+<ul>
+<li><strong>Dynamique troupeau</strong> dépend de <strong>Propriété Var. Biomasse disponible</strong>.</li>
+<li><strong>Décision de mobilité</strong> dépend de <strong>Propriété Var. Biomasse disponible</strong>, <strong>Var. Niveau d’eau</strong> et <strong>Propriété Var. Prix de vente du bétail</strong>.
+<ul>
+<li><em>Cela illustre les facteurs biophysiques et économiques influençant les processus.</em></li>
+</ul></li>
+</ul>
+</section>
+<section id="relations-dutilisation-et-dimplication-utilise-implique" class="level3">
+<h3 class="anchored" data-anchor-id="relations-dutilisation-et-dimplication-utilise-implique">Relations d’utilisation et d’implication (“Utilise”, “Implique”)</h3>
+<ul>
+<li><strong>Gouvernance foncière</strong> implique <strong>Pâturage naturel</strong> et <strong>Couloir de transhumance</strong>.</li>
+<li><strong>Décision de mobilité</strong> implique <strong>Propriété Var. Diversité des espèces fourragères</strong>.</li>
+</ul>
+</section>
+<section id="relations-entre-acteurs-entre-acteurs" class="level3">
+<h3 class="anchored" data-anchor-id="relations-entre-acteurs-entre-acteurs">Relations entre acteurs (“Entre acteurs”)</h3>
+<ul>
+<li><strong>Transhum</strong> et <strong>Conflit</strong> relient <strong>Pasteur</strong> aux autres acteurs.</li>
+</ul>
+</section>
+<section id="possession-possède" class="level3">
+<h3 class="anchored" data-anchor-id="possession-possède">Possession (“Possède”)</h3>
+<ul>
+<li><strong>Pasteur</strong> possède <strong>Dynamique troupeau</strong>.</li>
+</ul>
+<p>Le modèle met l’accent sur la <strong>transhumance</strong> comme stratégie d’adaptation, avec des <strong>boucles de rétroaction</strong> entre dégradation, mobilité et conflits, aligné avec des études sur la résilience des systèmes pastoraux au Sahel <a href="https://example.com/web30">[web:30]</a>, <a href="https://example.com/web31">[web:31]</a>, <a href="https://example.com/web33">[web:33]</a>.</p>
+</section>
+</section>
+<section id="implications-et-recommandations" class="level2">
+<h2 class="anchored" data-anchor-id="implications-et-recommandations">3. Implications et recommandations</h2>
+<ul>
+<li><strong>Dynamiques clés</strong> : Le diagramme souligne l’<strong>interdépendance</strong> entre acteurs et ressources, avec la <strong>dégradation des pâturages</strong> comme point critique (boucle “Dépend de” / “Affecte”). Cela reflète les défis climatiques et socio-politiques du Sahel <a href="https://example.com/web34">[web:34]</a>, <a href="https://example.com/web36">[web:36]</a>.</li>
+<li><strong>Améliorations potentielles</strong> : Ajouter des <strong>métriques quantitatives</strong> (ex. équations pour “Dynamique troupeau”) ou des <strong>boucles de feedback</strong> pour une analyse plus dynamique <a href="https://example.com/web32">[web:32]</a>, <a href="https://example.com/web35">[web:35]</a>.</li>
+<li><strong>Utilité</strong> : Ce modèle peut servir à <strong>simuler des scénarios de résilience</strong>, comme l’impact de la gouvernance sur la biomasse.</li>
+</ul>
+</section>
+</section>
+<section id="analyse-approfondie-et-modifications-proposées-pour-le-modèle-de-socio-écosystème-pastoral" class="level1">
+<h1>Analyse approfondie et modifications proposées pour le modèle de socio-écosystème pastoral</h1>
+<section id="analyse-approfondie" class="level2">
+<h2 class="anchored" data-anchor-id="analyse-approfondie">1. Analyse approfondie</h2>
+<section id="a-dynamiques-internes-et-boucles-de-rétroaction" class="level3">
+<h3 class="anchored" data-anchor-id="a-dynamiques-internes-et-boucles-de-rétroaction">a) Dynamiques internes et boucles de rétroaction</h3>
+<section id="boucle-de-dégradation-des-pâturages" class="level4">
+<h4 class="anchored" data-anchor-id="boucle-de-dégradation-des-pâturages">Boucle de dégradation des pâturages</h4>
+<ul>
+<li><p>Le processus <strong>Dégradation des pâturages</strong> dépend de <strong>Propriété Var. Biomasse disponible</strong> et l’affecte via une équation approximative :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Biomasse_Finale = Biomasse_Initiale - Consommation - Tassement + Régénération</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Cette <strong>boucle négative</strong> (réduction de la biomasse due à la consommation) est un point critique, amplifié par la <strong>Décision de mobilité</strong>, qui ajuste l’utilisation des pâturages en fonction de la biomasse.</p></li>
+<li><p><strong>Limitation</strong> : L’absence de rétroaction explicite de la <strong>Gouvernance foncière</strong> sur la dégradation limite la modélisation des politiques de régénération.</p></li>
+<li><p><strong>Données empiriques</strong> : Des études récentes indiquent que la régénération des pâturages dépend fortement des pratiques de gestion communautaire et des précipitations (<a href="https://example.com/web39">web:39</a>, 2024, sur la restauration des pâturages au Sahel).</p></li>
+</ul>
+</section>
+<section id="boucle-de-mobilité-et-conflits" class="level4">
+<h4 class="anchored" data-anchor-id="boucle-de-mobilité-et-conflits">Boucle de mobilité et conflits</h4>
+<ul>
+<li>La <strong>Décision de mobilité</strong> (optimisation basée sur biomasse, eau, prix) influence la <strong>Transhumance</strong>, qui affecte les <strong>Pâturages naturels</strong> et <strong>Points d’eau</strong>.</li>
+<li>Cette décision peut exacerber le <strong>Conflit agriculteurs-éleveurs</strong> en cas de chevauchement des zones d’exploitation.</li>
+<li><strong>Rétroaction positive implicite</strong> : Plus de conflits réduisent la mobilité, augmentant la pression sur les ressources locales.</li>
+<li><strong>Données empiriques</strong> : Les conflits agriculteurs-éleveurs au Sahel ont augmenté de <strong>30 %</strong> entre 2020 et 2025 en raison de la pression foncière (rapport ACLED, <a href="https://example.com/web40">web:40</a>, 2025).</li>
+</ul>
+</section>
+<section id="impact-du-groupe-armé" class="level4">
+<h4 class="anchored" data-anchor-id="impact-du-groupe-armé">Impact du “Groupe Armé”</h4>
+<ul>
+<li>Cet acteur introduit une variable exogène d’<strong>insécurité</strong>, mais son influence sur la <strong>Décision de mobilité</strong> ou les <strong>Couloirs de transhumance</strong> n’est pas explicitement modélisée.</li>
+<li><strong>Limitation</strong> : Cela pourrait sous-estimer les risques sécuritaires documentés dans les zones pastorales (<a href="https://example.com/web41">web:41</a>, 2024).</li>
+</ul>
+</section>
+<section id="variables-économiques" class="level4">
+<h4 class="anchored" data-anchor-id="variables-économiques">Variables économiques</h4>
+<ul>
+<li><strong>Propriété Var. Prix de vente du bétail</strong> influence la <strong>Décision de mobilité</strong>, mais aucune rétroaction sur la <strong>Dynamique démographique du troupeau</strong> n’est modélisée, bien que les prix puissent affecter les taux d’exploitation.</li>
+</ul>
+</section>
+</section>
+<section id="b-lacunes-potentielles" class="level3">
+<h3 class="anchored" data-anchor-id="b-lacunes-potentielles">b) Lacunes potentielles</h3>
+<ul>
+<li><strong>Manque de quantifications</strong> : Les équations (ex. <code>TauxCroissance = TauxNatalite - TauxMortalite - TauxExploitation</code>) sont déclarées mais non paramétrées avec des valeurs initiales ou des seuils (ex. seuil de biomasse pour la mobilité).</li>
+<li><strong>Absence de boucles temporelles</strong> : Le modèle ne reflète pas les variations <em>saisonnières</em> ou <em>interannuelles</em> (ex. sécheresse), cruciales dans le Sahel (<a href="https://example.com/web42">web:42</a>).</li>
+<li><strong>Limitation géographique</strong> : Les positions (<code>pos_x</code>, <code>pos_y</code>) suggèrent une disposition spatiale, mais aucune variable de distance ou d’accessibilité n’est incluse.</li>
+<li><strong>Exportabilité</strong> : Les problèmes d’export SVG (texte trop gros) et PDF (diagramme incomplet) indiquent que la taille des nœuds et la gestion des polices ne sont pas adaptées à la complexité du modèle.</li>
+</ul>
+</section>
+<section id="c-contexte-empirique-et-recommandations" class="level3">
+<h3 class="anchored" data-anchor-id="c-contexte-empirique-et-recommandations">c) Contexte empirique et recommandations</h3>
+<ul>
+<li><strong>Résilience socio-écologique</strong> : Le modèle aligne avec les cadres de résilience (<a href="https://example.com/web35">web:35</a>), mais pourrait intégrer des indicateurs comme la <em>Capacité d’adaptation</em> ou la <em>Diversité institutionnelle</em> (<a href="https://example.com/web43">web:43</a>, 2025).</li>
+<li><strong>Données 2025</strong> : Les précipitations au Sahel ont diminué de <strong>15 %</strong> en moyenne depuis 2020, affectant la biomasse (FAO, <a href="https://example.com/web44">web:44</a>).</li>
+<li><strong>Meilleures pratiques</strong> : Des outils comme <strong>Draw.io</strong> gèrent la mise à l’échelle en ajustant dynamiquement les polices et en divisant les grands diagrammes en pages (<a href="https://example.com/web45">web:45</a>).</li>
+</ul>
+</section>
+</section>
+<section id="modifications-proposées-au-modèle" class="level2">
+<h2 class="anchored" data-anchor-id="modifications-proposées-au-modèle">2. Modifications proposées au modèle</h2>
+<p>Basé sur l’analyse, voici des ajustements pour améliorer la <strong>robustesse</strong> et la <strong>compatibilité avec l’export</strong> :</p>
+<section id="a-ajout-de-variables-et-relations" class="level3">
+<h3 class="anchored" data-anchor-id="a-ajout-de-variables-et-relations">a) Ajout de variables et relations</h3>
+<section id="nouvelle-variable-capacité-dadaptation" class="level4">
+<h4 class="anchored" data-anchor-id="nouvelle-variable-capacité-dadaptation">Nouvelle variable : Capacité d’adaptation</h4>
+<ul>
+<li>Ajoutée comme propriété partagée, influençant la <strong>Décision de mobilité</strong> et dépendant de <strong>Gouvernance foncière</strong>.</li>
+<li><strong>Position suggérée</strong> : <code>(pos_x=300, pos_y=400)</code>.</li>
+</ul>
+</section>
+<section id="nouvelle-relation-impact-sécuritaire" class="level4">
+<h4 class="anchored" data-anchor-id="nouvelle-relation-impact-sécuritaire">Nouvelle relation : Impact sécuritaire</h4>
+<ul>
+<li>Ajout d’une arête de <strong>Groupe Armé</strong> affectant <strong>Décision de mobilité</strong> et <strong>Couloir de transhumance</strong>.</li>
+<li><strong>Type</strong> : “Affecte”, avec <code>contrôle_points</code> pour courbure.</li>
+</ul>
+</section>
+<section id="mise-à-jour-des-équations" class="level4">
+<h4 class="anchored" data-anchor-id="mise-à-jour-des-équations">Mise à jour des équations</h4>
+<ul>
+<li><p>Ajout de seuils dans <strong>Décision de mobilité</strong> :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Si Biomasse &lt; 500 kg/ha OU Eau &lt; 0.5 m, ALORS Mobilité = True</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Paramétrer <strong>Dynamique troupeau</strong> avec valeurs initiales :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>TauxNatalite = 0.15, TauxMortalite = 0.10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+</section>
+<section id="b-ajustement-spatial" class="level3">
+<h3 class="anchored" data-anchor-id="b-ajustement-spatial">b) Ajustement spatial</h3>
+<ul>
+<li>Réduire les écarts extrêmes (ex. <code>pos_x=-145.99999999999977</code>) en recentrant les nœuds autour de <code>(0,0)</code> avec des incréments réguliers (ex. pas de <strong>200 px</strong>), pour faciliter l’export.</li>
+</ul>
+</section>
+<section id="version-2" class="level3">
+<h3 class="anchored" data-anchor-id="version-2">version 2</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;?xml</span> <span class="ot">version=</span><span class="st">'1.0'</span> <span class="ot">encoding=</span><span class="st">'UTF-8'</span><span class="fu">?&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">xmi:XMI</span> <span class="ot">xmlns=</span><span class="st">"http://www.example.org/socioEcosysteme"</span> <span class="ot">xmlns:xmi=</span><span class="st">"http://www.omg.org/XMI"</span> <span class="ot">xmlns:xsi=</span><span class="st">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="ot">xmlns:socioEcosysteme=</span><span class="st">"http://www.example.org/socioEcosysteme"</span> <span class="ot">xmi:version=</span><span class="st">"2.0"</span>&gt;</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">SocioEcosystem</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:SocioEcosystem"</span> <span class="ot">name=</span><span class="st">"Système Pastoral et Agro-pastoral du Sahel"</span> <span class="ot">description=</span><span class="st">"Modèle détaillé d'un socio-écosystème pastoral sahélien, avec boucles de résilience et variables quantifiées."</span>&gt;</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_pasteur"</span> <span class="ot">name=</span><span class="st">"Pasteur Transhumant"</span> <span class="ot">documentation=</span><span class="st">"Acteur principal optimisant coûts, revenus et sécurité."</span> <span class="ot">category=</span><span class="st">"communauté pastorale"</span> <span class="ot">pos_x=</span><span class="st">"200"</span> <span class="ot">pos_y=</span><span class="st">"100"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_demographie_troupeau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_mobilité"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">owns</span> <span class="ot">href=</span><span class="st">"#r_betail"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">uses</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">uses</span> <span class="ot">href=</span><span class="st">"#r_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_agriculteur"</span> <span class="ot">name=</span><span class="st">"Agriculteur Sédentaire"</span> <span class="ot">documentation=</span><span class="st">"Pression foncière sur les couloirs."</span> <span class="ot">category=</span><span class="st">"communauté agricole"</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>/&gt;</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_autorite"</span> <span class="ot">name=</span><span class="st">"Autorité Locale"</span> <span class="ot">documentation=</span><span class="st">"Gouvernance influençant l'accès aux ressources."</span> <span class="ot">category=</span><span class="st">"gouvernance"</span> <span class="ot">pos_x=</span><span class="st">"100"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_gouvernance_fonciere"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_groupe_arme"</span> <span class="ot">name=</span><span class="st">"Groupe Armé"</span> <span class="ot">documentation=</span><span class="st">"Facteur d'insécurité."</span> <span class="ot">category=</span><span class="st">"groupe armé"</span> <span class="ot">pos_x=</span><span class="st">"50"</span> <span class="ot">pos_y=</span><span class="st">"600"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#pr_mobilité"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#r_couloir_transhumance"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_betail"</span> <span class="ot">name=</span><span class="st">"Troupeau de bétail"</span> <span class="ot">documentation=</span><span class="st">"Démographie clé du système."</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_nombre_tetes"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_taux_mortalite"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_prix_marche"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_paturage"</span> <span class="ot">name=</span><span class="st">"Pâturage naturel"</span> <span class="ot">documentation=</span><span class="st">"Disponibilité dépendant de la pluviométrie."</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_eau"</span> <span class="ot">name=</span><span class="st">"Points d'eau"</span> <span class="ot">documentation=</span><span class="st">"Niveau crucial pour la transhumance."</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_niveau_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_couloir_transhumance"</span> <span class="ot">name=</span><span class="st">"Couloir de transhumance"</span> <span class="ot">documentation=</span><span class="st">"Espace de déplacement."</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"700"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>/&gt;</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_demographie_troupeau"</span> <span class="ot">name=</span><span class="st">"Dynamique démographique du troupeau"</span> <span class="ot">equation=</span><span class="st">"TauxCroissance = 0.15 - 0.10 - TauxExploitation"</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Démographie avec taux initiaux."</span> <span class="ot">pos_x=</span><span class="st">"700"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"125.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_nombre_tetes"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_gouvernance_fonciere"</span> <span class="ot">name=</span><span class="st">"Gouvernance Foncière"</span> <span class="ot">equation=</span><span class="st">""</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Gestion des droits fonciers."</span> <span class="ot">pos_x=</span><span class="st">"200"</span> <span class="ot">pos_y=</span><span class="st">"700"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">involves</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">involves</span> <span class="ot">href=</span><span class="st">"#r_couloir_transhumance"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_capacite_adaptation"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_degradation_paturages"</span> <span class="ot">name=</span><span class="st">"Dégradation des pâturages"</span> <span class="ot">equation=</span><span class="st">"Biomasse_Finale = Biomasse_Initiale - Consommation - Tassement + Régénération"</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Perte et régénération de biomasse."</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"800"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_mobilité"</span> <span class="ot">name=</span><span class="st">"Décision de Mobilité"</span> <span class="ot">equation=</span><span class="st">"Opt(Couts;Revenus;Risques)"</span> <span class="ot">pseudoCode=</span><span class="st">"Si Biomasse</span><span class="dv">&amp;lt;</span><span class="st">500 OU Eau</span><span class="dv">&amp;lt;</span><span class="st">0.5, ALORS Mobilité=True"</span> <span class="ot">documentation=</span><span class="st">"Choix basé sur ressources et risques."</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"300"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_niveau_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_prix_marche"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_capacite_adaptation"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">interactions</span> <span class="ot">id=</span><span class="st">"i_transhumance"</span> <span class="ot">name=</span><span class="st">"Transhumance"</span> <span class="ot">documentation=</span><span class="st">"Mobilité saisonnière."</span> <span class="ot">pos_x=</span><span class="st">"100"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_pasteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affectsResources</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affectsResources</span> <span class="ot">href=</span><span class="st">"#r_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">interactions</span>&gt;</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">interactions</span> <span class="ot">id=</span><span class="st">"i_conflit"</span> <span class="ot">name=</span><span class="st">"Conflit agriculteurs-éleveurs"</span> <span class="ot">documentation=</span><span class="st">"Conflits pour l'accès à la terre."</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"300"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_pasteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_agriculteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">interactions</span>&gt;</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_nombre_tetes"</span> <span class="ot">name=</span><span class="st">"Nombre de têtes"</span> <span class="ot">unit=</span><span class="st">"têtes"</span> <span class="ot">type=</span><span class="st">"integer"</span> <span class="ot">scope=</span><span class="st">"Individual"</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"40.0"</span>/&gt;</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_taux_mortalite"</span> <span class="ot">name=</span><span class="st">"Taux de mortalité annuel"</span> <span class="ot">unit=</span><span class="st">"%"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Individual"</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_prix_marche"</span> <span class="ot">name=</span><span class="st">"Prix de vente du bétail"</span> <span class="ot">unit=</span><span class="st">"USD/tête"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_biomasse"</span> <span class="ot">name=</span><span class="st">"Biomasse disponible"</span> <span class="ot">unit=</span><span class="st">"kg/ha"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"700"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_diversite_fourrage"</span> <span class="ot">name=</span><span class="st">"Diversité des espèces fourragères"</span> <span class="ot">unit=</span><span class="st">"indice"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"119.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_niveau_eau"</span> <span class="ot">name=</span><span class="st">"Niveau d'eau"</span> <span class="ot">unit=</span><span class="st">"mètres"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_capacite_adaptation"</span> <span class="ot">name=</span><span class="st">"Capacité d’adaptation"</span> <span class="ot">unit=</span><span class="st">"indice"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">SocioEcosystem</span>&gt;</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">xmi:XMI</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="version-3" class="level3">
+<h3 class="anchored" data-anchor-id="version-3">version 3</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;?xml</span> <span class="ot">version=</span><span class="st">'1.0'</span> <span class="ot">encoding=</span><span class="st">'UTF-8'</span><span class="fu">?&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">xmi:XMI</span> <span class="ot">xmlns=</span><span class="st">"http://www.example.org/socioEcosysteme"</span> <span class="ot">xmlns:xmi=</span><span class="st">"http://www.omg.org/XMI"</span> <span class="ot">xmlns:xsi=</span><span class="st">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="ot">xmlns:socioEcosysteme=</span><span class="st">"http://www.example.org/socioEcosysteme"</span> <span class="ot">xmi:version=</span><span class="st">"2.0"</span>&gt;</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">SocioEcosystem</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:SocioEcosystem"</span> <span class="ot">name=</span><span class="st">"Système Pastoral et Agro-pastoral du Sahel"</span> <span class="ot">description=</span><span class="st">"Modèle détaillé d'un socio-écosystème pastoral sahélien, avec boucles de résilience et variables quantifiées."</span>&gt;</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_pasteur"</span> <span class="ot">name=</span><span class="st">"Pasteur Transhumant"</span> <span class="ot">documentation=</span><span class="st">"Acteur principal optimisant coûts, revenus et sécurité."</span> <span class="ot">category=</span><span class="st">"communauté pastorale"</span> <span class="ot">pos_x=</span><span class="st">"200"</span> <span class="ot">pos_y=</span><span class="st">"100"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_demographie_troupeau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_mobilité"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">owns</span> <span class="ot">href=</span><span class="st">"#r_betail"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">uses</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">uses</span> <span class="ot">href=</span><span class="st">"#r_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_agriculteur"</span> <span class="ot">name=</span><span class="st">"Agriculteur Sédentaire"</span> <span class="ot">documentation=</span><span class="st">"Pression foncière sur les couloirs."</span> <span class="ot">category=</span><span class="st">"communauté agricole"</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>/&gt;</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_autorite"</span> <span class="ot">name=</span><span class="st">"Autorité Locale"</span> <span class="ot">documentation=</span><span class="st">"Gouvernance influençant l'accès aux ressources."</span> <span class="ot">category=</span><span class="st">"gouvernance"</span> <span class="ot">pos_x=</span><span class="st">"100"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_gouvernance_fonciere"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_groupe_arme"</span> <span class="ot">name=</span><span class="st">"Groupe Armé"</span> <span class="ot">documentation=</span><span class="st">"Facteur d'insécurité."</span> <span class="ot">category=</span><span class="st">"groupe armé"</span> <span class="ot">pos_x=</span><span class="st">"50"</span> <span class="ot">pos_y=</span><span class="st">"600"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#pr_mobilité"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#r_couloir_transhumance"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_betail"</span> <span class="ot">name=</span><span class="st">"Troupeau de bétail"</span> <span class="ot">documentation=</span><span class="st">"Démographie clé du système."</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_nombre_tetes"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_taux_mortalite"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_prix_marche"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_paturage"</span> <span class="ot">name=</span><span class="st">"Pâturage naturel"</span> <span class="ot">documentation=</span><span class="st">"Disponibilité dépendant de la pluviométrie."</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_eau"</span> <span class="ot">name=</span><span class="st">"Points d'eau"</span> <span class="ot">documentation=</span><span class="st">"Niveau crucial pour la transhumance."</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_niveau_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_couloir_transhumance"</span> <span class="ot">name=</span><span class="st">"Couloir de transhumance"</span> <span class="ot">documentation=</span><span class="st">"Espace de déplacement."</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"700"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>/&gt;</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_demographie_troupeau"</span> <span class="ot">name=</span><span class="st">"Dynamique démographique du troupeau"</span> <span class="ot">equation=</span><span class="st">"TauxCroissance = 0.15 - 0.10 - TauxExploitation"</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Démographie avec taux initiaux."</span> <span class="ot">pos_x=</span><span class="st">"700"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"125.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_nombre_tetes"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_gouvernance_fonciere"</span> <span class="ot">name=</span><span class="st">"Gouvernance Foncière"</span> <span class="ot">equation=</span><span class="st">""</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Gestion des droits fonciers."</span> <span class="ot">pos_x=</span><span class="st">"200"</span> <span class="ot">pos_y=</span><span class="st">"700"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">involves</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">involves</span> <span class="ot">href=</span><span class="st">"#r_couloir_transhumance"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_capacite_adaptation"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_degradation_paturages"</span> <span class="ot">name=</span><span class="st">"Dégradation des pâturages"</span> <span class="ot">equation=</span><span class="st">"Biomasse_Finale = Biomasse_Initiale - Consommation - Tassement + Régénération"</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Perte et régénération de biomasse."</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"800"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_mobilité"</span> <span class="ot">name=</span><span class="st">"Décision de Mobilité"</span> <span class="ot">equation=</span><span class="st">"Opt(Couts;Revenus;Risques)"</span> <span class="ot">pseudoCode=</span><span class="st">"Si Biomasse</span><span class="er">&lt;</span><span class="st">500 OU Eau</span><span class="er">&lt;</span><span class="st">0.5, ALORS Mobilité=True"</span> <span class="ot">documentation=</span><span class="st">"Choix basé sur ressources et risques."</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"300"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_niveau_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_prix_marche"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_capacite_adaptation"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">interactions</span> <span class="ot">id=</span><span class="st">"i_transhumance"</span> <span class="ot">name=</span><span class="st">"Transhumance"</span> <span class="ot">documentation=</span><span class="st">"Mobilité saisonnière."</span> <span class="ot">pos_x=</span><span class="st">"100"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_pasteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affectsResources</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affectsResources</span> <span class="ot">href=</span><span class="st">"#r_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">interactions</span>&gt;</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">interactions</span> <span class="ot">id=</span><span class="st">"i_conflit"</span> <span class="ot">name=</span><span class="st">"Conflit agriculteurs-éleveurs"</span> <span class="ot">documentation=</span><span class="st">"Conflits pour l'accès à la terre."</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"300"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_pasteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_agriculteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">interactions</span>&gt;</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_nombre_tetes"</span> <span class="ot">name=</span><span class="st">"Nombre de têtes"</span> <span class="ot">unit=</span><span class="st">"têtes"</span> <span class="ot">type=</span><span class="st">"integer"</span> <span class="ot">scope=</span><span class="st">"Individual"</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"40.0"</span>/&gt;</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_taux_mortalite"</span> <span class="ot">name=</span><span class="st">"Taux de mortalité annuel"</span> <span class="ot">unit=</span><span class="st">"%"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Individual"</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_prix_marche"</span> <span class="ot">name=</span><span class="st">"Prix de vente du bétail"</span> <span class="ot">unit=</span><span class="st">"USD/tête"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_biomasse"</span> <span class="ot">name=</span><span class="st">"Biomasse disponible"</span> <span class="ot">unit=</span><span class="st">"kg/ha"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"700"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_diversite_fourrage"</span> <span class="ot">name=</span><span class="st">"Diversité des espèces fourragères"</span> <span class="ot">unit=</span><span class="st">"indice"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"119.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_niveau_eau"</span> <span class="ot">name=</span><span class="st">"Niveau d'eau"</span> <span class="ot">unit=</span><span class="st">"mètres"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">SocioEcosystem</span>&gt;</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">xmi:XMI</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="version-4" class="level3">
+<h3 class="anchored" data-anchor-id="version-4">version 4</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;?xml</span> <span class="ot">version=</span><span class="st">'1.0'</span> <span class="ot">encoding=</span><span class="st">'UTF-8'</span><span class="fu">?&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">xmi:XMI</span> <span class="ot">xmlns=</span><span class="st">"http://www.example.org/socioEcosysteme"</span> <span class="ot">xmlns:xmi=</span><span class="st">"http://www.omg.org/XMI"</span> <span class="ot">xmlns:xsi=</span><span class="st">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="ot">xmlns:socioEcosysteme=</span><span class="st">"http://www.example.org/socioEcosysteme"</span> <span class="ot">xmi:version=</span><span class="st">"2.0"</span>&gt;</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">SocioEcosystem</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:SocioEcosystem"</span> <span class="ot">name=</span><span class="st">"Système Pastoral et Agro-pastoral du Sahel"</span> <span class="ot">description=</span><span class="st">"Modèle détaillé d'un socio-écosystème pastoral sahélien, avec boucles de résilience et variables quantifiées."</span>&gt;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_pasteur"</span> <span class="ot">name=</span><span class="st">"Pasteur Transhumant"</span> <span class="ot">documentation=</span><span class="st">"Acteur principal optimisant coûts, revenus et sécurité."</span> <span class="ot">category=</span><span class="st">"communauté pastorale"</span> <span class="ot">pos_x=</span><span class="st">"200"</span> <span class="ot">pos_y=</span><span class="st">"100"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_demographie_troupeau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_mobilité"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">owns</span> <span class="ot">href=</span><span class="st">"#r_betail"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">uses</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">uses</span> <span class="ot">href=</span><span class="st">"#r_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_agriculteur"</span> <span class="ot">name=</span><span class="st">"Agriculteur Sédentaire"</span> <span class="ot">documentation=</span><span class="st">"Pression foncière sur les couloirs."</span> <span class="ot">category=</span><span class="st">"communauté agricole"</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>/&gt;</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_autorite"</span> <span class="ot">name=</span><span class="st">"Autorité Locale"</span> <span class="ot">documentation=</span><span class="st">"Gouvernance influençant l'accès aux ressources."</span> <span class="ot">category=</span><span class="st">"gouvernance"</span> <span class="ot">pos_x=</span><span class="st">"100"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProcesses</span> <span class="ot">href=</span><span class="st">"#pr_gouvernance_fonciere"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">actors</span> <span class="ot">id=</span><span class="st">"a_groupe_arme"</span> <span class="ot">name=</span><span class="st">"Groupe Armé"</span> <span class="ot">documentation=</span><span class="st">"Facteur d'insécurité."</span> <span class="ot">category=</span><span class="st">"groupe armé"</span> <span class="ot">pos_x=</span><span class="st">"50"</span> <span class="ot">pos_y=</span><span class="st">"600"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#pr_mobilité"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#r_couloir_transhumance"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">actors</span>&gt;</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_betail"</span> <span class="ot">name=</span><span class="st">"Troupeau de bétail"</span> <span class="ot">documentation=</span><span class="st">"Démographie clé du système."</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_nombre_tetes"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_taux_mortalite"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_prix_marche"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_paturage"</span> <span class="ot">name=</span><span class="st">"Pâturage naturel"</span> <span class="ot">documentation=</span><span class="st">"Disponibilité dépendant de la pluviométrie."</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_eau"</span> <span class="ot">name=</span><span class="st">"Points d'eau"</span> <span class="ot">documentation=</span><span class="st">"Niveau crucial pour la transhumance."</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>&gt;</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">hasProperties</span> <span class="ot">href=</span><span class="st">"#p_niveau_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">resources</span>&gt;</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">resources</span> <span class="ot">id=</span><span class="st">"r_couloir_transhumance"</span> <span class="ot">name=</span><span class="st">"Couloir de transhumance"</span> <span class="ot">documentation=</span><span class="st">"Espace de déplacement."</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"700"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"60.0"</span>/&gt;</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_demographie_troupeau"</span> <span class="ot">name=</span><span class="st">"Dynamique démographique du troupeau"</span> <span class="ot">equation=</span><span class="st">"TauxCroissance = 0.15 - 0.10 - TauxExploitation"</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Démographie avec taux initiaux."</span> <span class="ot">pos_x=</span><span class="st">"700"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"125.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_nombre_tetes"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_gouvernance_fonciere"</span> <span class="ot">name=</span><span class="st">"Gouvernance Foncière"</span> <span class="ot">equation=</span><span class="st">""</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Gestion des droits fonciers."</span> <span class="ot">pos_x=</span><span class="st">"200"</span> <span class="ot">pos_y=</span><span class="st">"700"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">involves</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">involves</span> <span class="ot">href=</span><span class="st">"#r_couloir_transhumance"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_capacite_adaptation"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_degradation_paturages"</span> <span class="ot">name=</span><span class="st">"Dégradation des pâturages"</span> <span class="ot">equation=</span><span class="st">"Biomasse_Finale = Biomasse_Initiale - Consommation - Tassement + Régénération"</span> <span class="ot">pseudoCode=</span><span class="st">""</span> <span class="ot">documentation=</span><span class="st">"Perte et régénération de biomasse."</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"800"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affects</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProcesses</span> <span class="ot">id=</span><span class="st">"pr_mobilité"</span> <span class="ot">name=</span><span class="st">"Décision de Mobilité"</span> <span class="ot">equation=</span><span class="st">"Opt(Couts;Revenus;Risques)"</span> <span class="ot">pseudoCode=</span><span class="st">"Si Biomasse</span><span class="er">&lt;</span><span class="st">500 OU Eau</span><span class="er">&lt;</span><span class="st">0.5, ALORS Mobilité=True"</span> <span class="ot">documentation=</span><span class="st">"Choix basé sur ressources et risques."</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"300"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_biomasse"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_niveau_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_prix_marche"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">dependsOn</span> <span class="ot">href=</span><span class="st">"#p_capacite_adaptation"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">hasProcesses</span>&gt;</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">interactions</span> <span class="ot">id=</span><span class="st">"i_transhumance"</span> <span class="ot">name=</span><span class="st">"Transhumance"</span> <span class="ot">documentation=</span><span class="st">"Mobilité saisonnière."</span> <span class="ot">pos_x=</span><span class="st">"100"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_pasteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affectsResources</span> <span class="ot">href=</span><span class="st">"#r_paturage"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">affectsResources</span> <span class="ot">href=</span><span class="st">"#r_eau"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">interactions</span>&gt;</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">interactions</span> <span class="ot">id=</span><span class="st">"i_conflit"</span> <span class="ot">name=</span><span class="st">"Conflit agriculteurs-éleveurs"</span> <span class="ot">documentation=</span><span class="st">"Conflits pour l'accès à la terre."</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"300"</span> <span class="ot">width=</span><span class="st">"150.0"</span> <span class="ot">height=</span><span class="st">"80.0"</span>&gt;</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_pasteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">betweenActors</span> <span class="ot">href=</span><span class="st">"#a_agriculteur"</span> <span class="ot">type=</span><span class="st">"straight"</span>/&gt;</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">interactions</span>&gt;</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_nombre_tetes"</span> <span class="ot">name=</span><span class="st">"Nombre de têtes"</span> <span class="ot">unit=</span><span class="st">"têtes"</span> <span class="ot">type=</span><span class="st">"integer"</span> <span class="ot">scope=</span><span class="st">"Individual"</span> <span class="ot">pos_x=</span><span class="st">"600"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"40.0"</span>/&gt;</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_taux_mortalite"</span> <span class="ot">name=</span><span class="st">"Taux de mortalité annuel"</span> <span class="ot">unit=</span><span class="st">"%"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Individual"</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"0"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_prix_marche"</span> <span class="ot">name=</span><span class="st">"Prix de vente du bétail"</span> <span class="ot">unit=</span><span class="st">"USD/tête"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"500"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_biomasse"</span> <span class="ot">name=</span><span class="st">"Biomasse disponible"</span> <span class="ot">unit=</span><span class="st">"kg/ha"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"700"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_diversite_fourrage"</span> <span class="ot">name=</span><span class="st">"Diversité des espèces fourragères"</span> <span class="ot">unit=</span><span class="st">"indice"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"200"</span> <span class="ot">width=</span><span class="st">"119.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_niveau_eau"</span> <span class="ot">name=</span><span class="st">"Niveau d'eau"</span> <span class="ot">unit=</span><span class="st">"mètres"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"400"</span> <span class="ot">pos_y=</span><span class="st">"500"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">hasProperties</span> <span class="ot">xsi:type=</span><span class="st">"socioEcosysteme:Variable"</span> <span class="ot">id=</span><span class="st">"p_capacite_adaptation"</span> <span class="ot">name=</span><span class="st">"Capacité d’adaptation"</span> <span class="ot">unit=</span><span class="st">"indice"</span> <span class="ot">type=</span><span class="st">"double"</span> <span class="ot">scope=</span><span class="st">"Shared"</span> <span class="ot">pos_x=</span><span class="st">"300"</span> <span class="ot">pos_y=</span><span class="st">"400"</span> <span class="ot">width=</span><span class="st">"120.0"</span> <span class="ot">height=</span><span class="st">"50.0"</span>/&gt;</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">SocioEcosystem</span>&gt;</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">xmi:XMI</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Le modèle modifié inclut des ajouts pour les variables exogènes, des équations paramétrées, et des relations supplémentaires. Si vous avez besoin de plus de modifications ou d’une simulation (ex. avec SymPy), faites-le-moi savoir !</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="catégories-dagents-dans-un-modèle-socio-écosystémique" class="level1">
+<h1>Catégories d’agents dans un modèle socio-écosystémique</h1>
+<p>D’après une recherche documentaire sur les catégories d’agents dans les modèles socio-écosystémiques (basée sur des sources académiques comme des articles de PMC, ScienceDirect, JASSS, et Wikipedia), les agents sont souvent classés en fonction de leur rôle dans les systèmes socio-économiques complexes. Ces classifications proviennent principalement de la modélisation à base d’agents (ABM) pour les SES (socio-ecological systems), où les agents représentent des entités actives influençant les écosystèmes (humains, institutions, ou collectifs).</p>
+<p>Voici une proposition de catégories réalistes et documentées, adaptées à votre contexte (modélisation socio-écosystémique, ex. acteurs comme pasteurs, autorités, ou entités naturelles). J’ai sélectionné 6 catégories principales pour garder le combo simple et pertinent, en évitant les trop génériques. Elles s’inspirent de typologies courantes en ABM pour les SES :</p>
+<ul>
+<li><strong>Individuel</strong> : Agents humains singuliers (ex. fermiers, pasteurs, résidents), qui prennent des décisions locales basées sur des ressources personnelles [web:0, web:2].</li>
+<li><strong>Institutionnel</strong> : Organisations formelles comme gouvernements, ONG ou régulateurs, gérant des politiques collectives [web:0, web:1].</li>
+<li><strong>Communautaire</strong> : Groupes informels ou communautés locales (ex. coopératives villageoises), influençant via des normes sociales [web:3, web:5].</li>
+<li><strong>Entreprise</strong> : Entités économiques privées (ex. entreprises agricoles ou touristiques), axées sur le profit et l’exploitation des ressources [web:2, web:4].</li>
+<li><strong>Écosystémique</strong> : Agents non-humains ou hybrides (ex. écosystèmes comme “agents passifs” modélisant des dynamiques naturelles) [web:1, web:6].</li>
+<li><strong>Autre</strong> : Catégorie catch-all pour des agents spécifiques (ex. animaux ou événements imprévus) [web:7, web:8].</li>
+</ul>
+<p>Ces catégories sont tirées de frameworks comme le <em>“Panarchy framework”</em> et des modèles ABM pour SES [web:0, web:2], où les agents sont typés par leur échelle (individuel vs.&nbsp;institutionnel) et leur rôle (humain vs.&nbsp;écologique). Elles favorisent une modélisation hiérarchique et scalable, utile pour simuler des interactions comme la gouvernance des biens communs (<em>Ostrom-inspired</em>).</p>
+<section id="code-ajusté-pour-agentdialog" class="level2">
+<h2 class="anchored" data-anchor-id="code-ajusté-pour-agentdialog">Code ajusté pour AgentDialog</h2>
+<p>Remplacez la ligne dans <code>init_ui</code> par cette version mise à jour :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Catégorie (basée sur typologies socio-écosystémiques)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.category_combo <span class="op">=</span> QComboBox()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.category_combo.addItems([<span class="st">"Individuel"</span>, <span class="st">"Institutionnel"</span>, <span class="st">"Communautaire"</span>, <span class="st">"Entreprise"</span>, <span class="st">"Écosystémique"</span>, <span class="st">"Autre"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="pourquoi-ces-catégories" class="level2">
+<h2 class="anchored" data-anchor-id="pourquoi-ces-catégories">Pourquoi ces catégories ?</h2>
+<p><strong>Sources principales</strong> :</p>
+<ul>
+<li><a href="https://example.com/web0">web:0</a>: Distingue “individus” vs.&nbsp;“institutions” dans les SES.</li>
+<li><a href="https://example.com/web2">web:2</a>: Typologies en ABM incluent “farmers” (individuel), “governments” (institutionnel), et</li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

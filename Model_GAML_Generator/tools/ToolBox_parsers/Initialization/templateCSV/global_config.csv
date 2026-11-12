@@ -1,0 +1,4 @@
+```csv
+section,start_date,end_date,time_step,warmup_period,extent,projection,resolution
+"<Section, ex. temporal>","<YYYY-MM-DD, ex. 2020-01-01>","<YYYY-MM-DD, ex. 2030-12-31>","<Durée, ex. 1 day>","<Durée, ex. 365 days>","<Bounding box, ex. [\"min_x\", \"min_y\", \"max_x\", \"max_y\"]>","<Système, ex. EPSG:4326>","<Résolution, ex. 100 m>"
+```

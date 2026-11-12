@@ -1,0 +1,29 @@
+// ========== ESPÈCES/AGENTS ==========
+
+{% for agent in agents -%}
+{% if agent.attributes or agent.actions -%} {# Skip les agents vides #}
+species {{ agent.name }} {
+    // === ATTRIBUTS ===
+    {% for attr in agent.attributes %}
+    {% set default_value = attr.value if attr.value is defined and attr.value != "0.0" else "0.0" %}
+    {% set var_type = attr.type | default('float') %}
+    {% set unit_text = " (" + attr.unit + ")" if attr.unit else "" %}
+    // {{ attr.description | default(attr.name) }}{{ unit_text }}
+    {{ var_type }} {{ attr.name }} <- {{ default_value }};
+    {% endfor%}
+
+    // === COMPORTEMENTS (Actions et Réflexes basés sur les Processus XMI) ===
+    {{ agent.process_gaml_code }}
+
+    // === ASPECT VISUEL ===
+    aspect default {
+        // Couleur RGB unique par agent
+        draw circle(3) color: rgb({{ (loop.index0 * 50) % 255 }}, {{ (loop.index0 * 100) % 255 }}, {{ (loop.index0 * 150) % 255 }});
+    }
+}
+{% else %}
+// NOTE: Agent '{{ agent.name }}' sans attributs ni actions (conceptuel)
+{% endif %}
+
+{# Cette ligne vide ici créera l'espacement dans le fichier final #}
+{% endfor %}

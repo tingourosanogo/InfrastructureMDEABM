@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "title": "Générateur GAML",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "xmi": {
+      "directory": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_GAML_Generator/input/modeleElevage_en.xmi",
+      "format": "xmi"
+    },
+    "input_pseudocode": {
+      "directory": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_GAML_Generator/input",
+      "format": "auto"
+    },
+    "output_gaml": {
+      "directory": "C:/Users/tingo/Documents/Self_Vscode/Tout_Bazar/Model_GAML_Generator/output_gaml"
+    }
+  },
+  "generation": {
+    "mode": "monolithic",
+    "generate_reflex": true,
+    "include_diagnostics": true
+  }
+}

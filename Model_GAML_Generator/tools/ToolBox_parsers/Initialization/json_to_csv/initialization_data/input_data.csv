@@ -1,0 +1,4 @@
+data_type,format_type,file_format,path,description,resolution,source,quality,sample_size,response_rate,validation_method
+spatial,raster,GeoTIFF,data/land_cover_sahel.tif,Land cover map for Sahel pastoral areas (ESA CCI),100m,European Space Agency (ESA),medium,,,
+spatial,vector,GeoJSON,data/water_points.geojson,Locations of water points and pastures,,PRAPS Project Data / FAO,high,,,
+tabular,csv,csv,data/household_survey_sahel.csv,"Socio-economic survey on pastoral households (herd sizes, cash, resilience)",,,,2000,75%,cross_validation

@@ -1,0 +1,4 @@
+data_type,format_type,file_format,path,description,resolution,source,quality,sample_size,response_rate,validation_method
+spatial,raster,GeoTIFF,data/land_use.tif,CORINE Land Cover 2020,100m,EEA,low,,,
+spatial,vector,GeoJSON,data/parcels.geojson,Agricultural parcel boundaries,,Registre Parcellaire,high,,,
+tabular,csv,csv,data/household_survey.csv,Socio-economic survey 2020,,,,1500,78%,cross_validation

@@ -1,0 +1,4 @@
+name,description,based_on,parameters,state_variables,validation_status
+baseline,"No additional investments, current trends",RCP4.5 + PRAPS baseline,"{""climate_change_scenario"": ""RCP4.5"", ""policy_intervention"": ""none""}","{""initial_investment"": 0.0}",calibrated
+praps_investment,"PRAPS investments (water, health, markets)",PRAPS-2 objectives + RCP2.6 mitigation,"{""climate_change_scenario"": ""RCP2.6"", ""policy_intervention"": ""full_support""}","{""initial_investment"": 5000.0}",plausible
+climate_stress,High climate stress without support,RCP8.5 + no intervention,"{""climate_change_scenario"": ""RCP8.5"", ""policy_intervention"": ""baseline""}","{""initial_investment"": 0.0}",stress_test

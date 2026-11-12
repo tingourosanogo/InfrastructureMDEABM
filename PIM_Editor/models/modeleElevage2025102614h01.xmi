@@ -1,0 +1,462 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xmi:XMI xmlns="http://www.example.org/socioecosystem.en" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ses="http://www.example.org/socioecosystem.en" xmi:version="2.0">
+  <SocioEcosystem xsi:type="ses:SocioEcosystem" name="Module Elevage Migré" location="Zone Agricole">
+    <properties xsi:type="ses:Resource" xmi:id="resource_001" id="resource_001" name="Azote" description="Azote dans le sol, essentiel pour la fertilité" pos_x="-219.8" pos_y="-202.44" width="120.0" height="42.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_001" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_002" id="resource_002" name="Carbone" description="Carbone dans le sol, lié à la matière organique" pos_x="-16.8" pos_y="-196.44" width="120.0" height="42.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_001" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_003" id="resource_003" name="Type Arbre" description="Type de couvert arboré (ex. acacia)" pos_x="1090.504" pos_y="-386.216" width="121.0" height="47.0" unit="Catégorie" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_002" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_004" id="resource_004" name="Nombre Arbre" description="Nombre d'arbres dans le couvert arboré" pos_x="960.904" pos_y="-673.064" width="121.0" height="47.0" unit="Unité" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_002" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_005" id="resource_005" name="Type Herbacé" description="Type de couvert herbacé (culture, prairie)" pos_x="223.5" pos_y="-89.0" width="119.0" height="41.0" unit="Catégorie (Culture, prairie naturelle, prairie cultivée)" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_003" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_006" id="resource_006" name="Litière foliaire" description="Litière foliaire issue des arbres" pos_x="-645.224" pos_y="-479.472" width="107.0" height="42.0" unit="kg" quantity="0.0" isRenewable="true">
+      <heldBy href="#agent_001" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_007" id="resource_007" name="Litière naturelle" description="Litière naturelle des prairies" pos_x="-740.944" pos_y="-426.16" width="104.0" height="46.0" unit="kg" quantity="0.0" isRenewable="true">
+      <heldBy href="#agent_001" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_008" id="resource_008" name="Litière cultivée" description="Litière issue de cultures agricoles" pos_x="-819.184" pos_y="-377.984" width="109.0" height="46.0" unit="kg" quantity="0.0" isRenewable="true">
+      <heldBy href="#agent_001" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_009" id="resource_009" name="Fertilisant" description="Fertilisant appliqué au sol" pos_x="-1124.336" pos_y="-306.208" width="113.0" height="45.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_001" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_010" id="resource_010" name="Pluviométrie" description="Précipitations annuelles" pos_x="163.0" pos_y="-426.0" width="110.0" height="45.0" unit="mm/an" quantity="0.0" isRenewable="true">
+      <heldBy href="#agent_004" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_011" id="resource_011" name="Azote atmosphérique" description="Azote fixé depuis l'atmosphère" pos_x="-466.608" pos_y="-722.424" width="155.0" height="71.0" unit="kg" quantity="0.0" isRenewable="true">
+      <heldBy href="#agent_004" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_012" id="resource_012" name="Type Herbacé" description="Type de couvert herbacé (duplicata)" pos_x="573.216" pos_y="-166.48" width="197.0" height="45.0" unit="Catégorie (Culture, prairie naturelle, prairie cultivée)" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_003" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_013" id="resource_013" name="Nombre Arbre" description="Nombre d'arbres (duplicata)" pos_x="707.04" pos_y="-290.0" width="106.0" height="44.0" unit="Unité" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_002" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_014" id="resource_014" name="Cash" description="Ressources financières des ménages" pos_x="-1202.3" pos_y="562.83" width="90.0" height="42.0" unit="Monétaire" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_015" id="resource_015" name="Fertilisant" description="Fertilisant stocké par les éleveurs" pos_x="-1220.658" pos_y="357.136" width="90.0" height="41.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_016" id="resource_016" name="Fertilisant" description="Fertilisant stocké (duplicata)" pos_x="-1421.552" pos_y="-212.896" width="113.0" height="45.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_017" id="resource_017" name="Carcasse" description="Carcasse issue de l'abattage" pos_x="-921.3" pos_y="318.0" width="111.0" height="40.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_018" id="resource_018" name="Carcasse" description="Carcasse issue de l'abattage (duplicata)" pos_x="-921.3" pos_y="318.0" width="111.0" height="40.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_019" id="resource_019" name="NombreJeuneMale" description="Nombre de jeunes mâles dans le troupeau" pos_x="845.416" pos_y="499.28" width="111.0" height="60.0" unit="Têtes" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_020" id="resource_020" name="LaitTire" description="Lait extrait par traite" pos_x="-516.584" pos_y="794.844" width="103.0" height="48.0" unit="Litres" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_021" id="resource_021" name="Nombre Jeune Female" description="Nombre de jeunes femelles dans le troupeau" pos_x="945.502" pos_y="300.236" width="109.0" height="47.0" unit="Têtes" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_022" id="resource_022" name="NombreSubAdulteMale" description="Nombre de sub-adultes mâles" pos_x="696.516" pos_y="618.88" width="96.0" height="41.0" unit="Têtes" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_023" id="resource_023" name="NombreSubAdulteFemale" description="Nombre de sub-adultes femelles" pos_x="770.686" pos_y="553.51" width="107.0" height="60.0" unit="Têtes" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_024" id="resource_024" name="NombreAdulteMale" description="Nombre d'adultes mâles" pos_x="614.186" pos_y="768.71" width="101.0" height="42.0" unit="Têtes" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_025" id="resource_025" name="NombreAdulteFemale" description="Nombre d'adultes femelles" pos_x="632.956" pos_y="681.04" width="137.0" height="40.0" unit="Têtes" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_026" id="resource_026" name="Lait Transforme" description="Lait transformé en produits (ex. fromage)" pos_x="-687.4" pos_y="1117.784" width="108.0" height="41.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_027" id="resource_027" name="Lait Produit" description="Lait produit par le troupeau" pos_x="-706.2" pos_y="893.0" width="106.0" height="41.0" unit="Litres" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_029" id="resource_029" name="Lait Laitérie" description="Lait destiné à la laiterie" pos_x="-504.38" pos_y="214.18" width="98.0" height="40.0" unit="Litres" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_030" id="resource_030" name="GES" description="Gaz à effet de serre émis" pos_x="321.0" pos_y="-716.0" width="113.0" height="42.0" unit="kg CO2eq" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_004" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_031" id="resource_031" name="Fèces" description="Fèces produites par le troupeau" pos_x="-738.0" pos_y="1516.0" width="96.0" height="41.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_032" id="resource_032" name="Foin" description="Foin stocké pour alimentation" pos_x="-1099.4" pos_y="1425.2" width="114.0" height="41.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_033" id="resource_033" name="Résidus de Culture" description="Résidus agricoles utilisés comme fourrage" pos_x="-1440.0" pos_y="1319.0" width="106.0" height="46.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_034" id="resource_034" name="Concentré" description="Aliment concentré pour le bétail" pos_x="-1155.0" pos_y="625.0" width="110.0" height="45.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_035" id="resource_035" name="Résidus de Culture" description="Résidus agricoles (duplicata)" pos_x="-1149.33" pos_y="714.17" width="110.0" height="40.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_036" id="resource_036" name="Foin" description="Foin stocké (duplicata)" pos_x="-1114.83" pos_y="836.17" width="96.0" height="44.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_037" id="resource_037" name="Stock Disponible Fertilisant" description="Stock de fertilisant disponible" pos_x="-1622.5" pos_y="339.17" width="120.0" height="60.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_038" id="resource_038" name="Stock Disponible Concentré" description="Stock de concentré disponible" pos_x="-1631.67" pos_y="630.0" width="120.0" height="60.0" unit="kg" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_039" id="resource_039" name="Lait" description="Lait brut produit" pos_x="-250.2" pos_y="770.8" width="109.0" height="40.0" unit="Litres" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_040" id="resource_040" name="Santé du Bétail" description="Santé des troupeaux, impactée par maladies/climat" pos_x="158.8000000000003" pos_y="1073.696" width="130.0" height="50.0" unit="Indice (0-1)" quantity="0.0" isRenewable="false">
+      <heldBy href="#agent_005" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_041" id="resource_041" name="Fourrage Saisonnier" description="Fourrage disponible selon saisons" pos_x="200.0" pos_y="-200.0" width="140.0" height="50.0" unit="kg" quantity="0.0" isRenewable="true">
+      <heldBy href="#agent_003" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Resource" xmi:id="resource_042" id="resource_042" name="Eau" description="Eau disponible pour abreuvement" pos_x="-1000.0" pos_y="400.0" width="120.0" height="50.0" unit="m³" quantity="0.0" isRenewable="true">
+      <heldBy href="#agent_012" type="straight"/>
+    </properties>
+    <properties xsi:type="ses:Parameter" xmi:id="property_001" id="property_001" name="LitiereNaturelleToC" description="Conversion litière naturelle à carbone" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_002" id="property_002" name="LitiereNaturelleToN" description="Conversion litière naturelle à azote" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_003" id="property_003" name="LitiereCultiveeToC" description="Conversion litière cultivée à carbone" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_004" id="property_004" name="LitiereFoliaireToC" description="Conversion litière foliaire à carbone" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_005" id="property_005" name="AzoteAtmosphericToN" description="Conversion azote atmosphérique à azote" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="true" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_006" id="property_006" name="OfftakePourlesCinqACompleter" description="Offtake pour cinq catégories à compléter" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_007" id="property_007" name="OfftakeAdultFemale" description="Offtake pour adultes femelles" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_008" id="property_008" name="ProportionTirée" description="Proportion de lait tiré" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="%" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_009" id="property_009" name="ProportionProduite" description="Proportion de lait produit" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="%" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_010" id="property_010" name="ProportionTransformée" description="Proportion de lait transformé" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="%" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_011" id="property_011" name="ProportionAbattoir" description="Proportion abattue pour abattoir" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_012" id="property_012" name="Proportion Lait" description="Proportion de lait vendu" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_013" id="property_013" name="Taux Mortalité Jeune Male" description="Taux de mortalité des jeunes mâles" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="%" value="0.0" isExogenous="false" parameterType="Biologique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_014" id="property_014" name="Age Min Jeune Male" description="Âge minimum des jeunes mâles" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Années" value="0.0" isExogenous="false" parameterType="Biologique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_015" id="property_015" name="Age Max Jeune Male" description="Âge maximum des jeunes mâles" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Années" value="0.0" isExogenous="false" parameterType="Biologique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_016" id="property_016" name="Taux Reproduction Adulte Female" description="Taux de reproduction des adultes femelles" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="%" value="0.0" isExogenous="false" parameterType="Biologique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_017" id="property_017" name="Taux Reproduction SubAdulte Female" description="Taux de reproduction des sub-adultes femelles" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="%" value="0.0" isExogenous="false" parameterType="Biologique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_018" id="property_018" name="Contribution Calorique" description="Contribution calorique des aliments" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Calorie/kgMS" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_019" id="property_019" name="Besoin Métabolique" description="Besoin métabolique du bétail" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Calorie/kg" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_020" id="property_020" name="Besoin Mobilité" description="Besoin énergétique pour mobilité" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Calorie/km/an" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_021" id="property_021" name="Besoin Mastication" description="Besoin énergétique pour mastication" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Calorie/kgMS" value="0.0" isExogenous="false" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_022" id="property_022" name="PrixConcentre" description="Prix du concentré" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Monétaire/kg" value="0.0" isExogenous="true" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_023" id="property_023" name="PrixFertilisant" description="Prix du fertilisant" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Monétaire/kg" value="0.0" isExogenous="true" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_024" id="property_024" name="Quantite" description="Quantité achetée (fertilisant/concentré)" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="kg" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_025" id="property_025" name="Proportion" description="Proportion achetée" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_026" id="property_026" name="PrixAbattoir" description="Prix à l'abattoir" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Monétaire/kg" value="0.0" isExogenous="true" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_027" id="property_027" name="PrixCarcasse" description="Prix de la carcasse" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Monétaire/kg" value="0.0" isExogenous="true" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_028" id="property_028" name="ProportionAbattage" description="Proportion d'animaux abattus" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_029" id="property_029" name="ProportionMarche" description="Proportion vendue au marché" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Ratio" value="0.0" isExogenous="false" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_030" id="property_030" name="PrixMarche" description="Prix au marché" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Monétaire/kg" value="0.0" isExogenous="true" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_031" id="property_031" name="Variabilité Pluviométrique" description="Variabilité des pluies impactant mobilité" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="%" value="0.0" isExogenous="true" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_032" id="property_032" name="Prix du Marché" description="Prix variables pour produits pastoraux" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Monétaire" value="0.0" isExogenous="true" parameterType="Economique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_033" id="property_033" name="Vulnérabilité Climatique" description="Indice de vulnérabilité au climat" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Indice (0-1)" value="0.0" isExogenous="true" parameterType="Physique"/>
+    <properties xsi:type="ses:Parameter" xmi:id="property_034" id="property_034" name="Indicateurs ODD" description="Indicateurs pour ODD (ex. résilience, faim)" pos_x="0.0" pos_y="0.0" width="0.0" height="0.0" unit="Indice" value="0.0" isExogenous="false" parameterType="Institutionnel"/>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_001" id="process_001" name="Minéralisation" description="Minéralisation du sol pour enrichir azote/carbone" pos_x="-510.0" pos_y="-523.0" width="120.0" height="60.0" transformationType="AutoTransformation">
+      <subjects href="#agent_001" type="straight"/>
+      <objects href="#agent_001" type="straight"/>
+      <involvedResources href="#resource_006" type="straight"/>
+      <involvedResources href="#resource_007" type="straight"/>
+      <involvedResources href="#resource_008" type="straight"/>
+      <involvedResources href="#resource_009" type="straight"/>
+      <involvedResources href="#resource_011" type="straight"/>
+      <involvedResources href="#resource_016" type="straight"/>
+      <dependsOnParameters href="#property_001" type="straight"/>
+      <dependsOnParameters href="#property_002" type="straight"/>
+      <dependsOnParameters href="#property_003" type="straight"/>
+      <dependsOnParameters href="#property_004" type="straight"/>
+      <dependsOnParameters href="#property_005" type="straight"/>
+      <affectsResources href="#resource_001" type="straight"/>
+      <affectsResources href="#resource_002" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_002" id="process_002" name="Croissance" description="Croissance du couvert herbacé" pos_x="137.0" pos_y="-271.0" width="120.0" height="60.0" transformationType="Production">
+      <subjects href="#agent_003" type="straight"/>
+      <objects href="#agent_003" type="straight"/>
+      <involvedResources href="#resource_010" type="straight"/>
+      <involvedResources href="#resource_012" type="straight"/>
+      <involvedResources href="#resource_013" type="straight"/>
+      <affectsResources href="#resource_041" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:MovementProcess" xmi:id="process_003" id="process_003" name="Nourissage" description="Alimentation du troupeau" pos_x="-1148.07" pos_y="959.57" width="113.0" height="42.0">
+      <subjects href="#agent_005" type="straight"/>
+      <involvedResources href="#resource_041" type="straight"/>
+      <involvedResources href="#resource_032" type="straight"/>
+      <involvedResources href="#resource_033" type="straight"/>
+      <source href="#agent_003" type="straight"/>
+      <destination href="#agent_006" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_004" id="process_004" name="Fertilisation" description="Application de fertilisant au sol" pos_x="-1258.45" pos_y="287.89" width="120.0" height="60.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_001" type="straight"/>
+      <involvedResources href="#resource_015" type="straight"/>
+      <involvedResources href="#resource_016" type="straight"/>
+      <affectsResources href="#resource_009" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_005" id="process_005" name="Traite" description="Extraction du lait" pos_x="-568.4" pos_y="882.2" width="146.0" height="50.0" transformationType="Production">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_006" type="straight"/>
+      <involvedResources href="#resource_039" type="straight"/>
+      <dependsOnParameters href="#property_008" type="straight"/>
+      <dependsOnParameters href="#property_009" type="straight"/>
+      <dependsOnParameters href="#property_010" type="straight"/>
+      <affectsResources href="#resource_020" type="straight"/>
+      <affectsResources href="#resource_027" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_006" id="process_006" name="Abattage" description="Abattage des animaux" pos_x="-473.43" pos_y="541.33" width="117.0" height="51.0" transformationType="Consumption">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_006" type="straight"/>
+      <involvedResources href="#resource_019" type="straight"/>
+      <involvedResources href="#resource_021" type="straight"/>
+      <involvedResources href="#resource_022" type="straight"/>
+      <involvedResources href="#resource_023" type="straight"/>
+      <involvedResources href="#resource_024" type="straight"/>
+      <involvedResources href="#resource_025" type="straight"/>
+      <dependsOnParameters href="#property_006" type="straight"/>
+      <dependsOnParameters href="#property_007" type="straight"/>
+      <dependsOnParameters href="#property_011" type="straight"/>
+      <dependsOnParameters href="#property_028" type="straight"/>
+      <affectsResources href="#resource_017" type="straight"/>
+      <affectsResources href="#resource_018" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_007" id="process_007" name="Consommation" description="Consommation d'aliments par le troupeau" pos_x="779.54" pos_y="190.18" width="116.0" height="46.0" transformationType="Consumption">
+      <subjects href="#agent_006" type="straight"/>
+      <objects href="#agent_006" type="straight"/>
+      <involvedResources href="#resource_041" type="straight"/>
+      <involvedResources href="#resource_032" type="straight"/>
+      <involvedResources href="#resource_034" type="straight"/>
+      <dependsOnParameters href="#property_018" type="straight"/>
+      <dependsOnParameters href="#property_019" type="straight"/>
+      <dependsOnParameters href="#property_020" type="straight"/>
+      <dependsOnParameters href="#property_021" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_008" id="process_008" name="VenteCarcasse" description="Vente de carcasses au marché" pos_x="-1090.93" pos_y="234.0" width="110.0" height="44.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_013" type="straight"/>
+      <involvedResources href="#resource_017" type="straight"/>
+      <involvedResources href="#resource_018" type="straight"/>
+      <dependsOnParameters href="#property_027" type="straight"/>
+      <dependsOnParameters href="#property_032" type="straight"/>
+      <affectsResources href="#resource_014" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_009" id="process_009" name="VenteLait" description="Vente de lait au marché" pos_x="-732.0" pos_y="277.39" width="120.0" height="44.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_013" type="straight"/>
+      <involvedResources href="#resource_029" type="straight"/>
+      <dependsOnParameters href="#property_012" type="straight"/>
+      <dependsOnParameters href="#property_032" type="straight"/>
+      <affectsResources href="#resource_014" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_010" id="process_010" name="Démographie Troupeau" description="Dynamique démographique du troupeau" pos_x="257.5" pos_y="903.33" width="118.0" height="46.0" transformationType="Modification">
+      <subjects href="#agent_006" type="straight"/>
+      <objects href="#agent_006" type="straight"/>
+      <involvedResources href="#resource_019" type="straight"/>
+      <involvedResources href="#resource_021" type="straight"/>
+      <involvedResources href="#resource_022" type="straight"/>
+      <involvedResources href="#resource_023" type="straight"/>
+      <involvedResources href="#resource_024" type="straight"/>
+      <involvedResources href="#resource_025" type="straight"/>
+      <dependsOnParameters href="#property_013" type="straight"/>
+      <dependsOnParameters href="#property_014" type="straight"/>
+      <dependsOnParameters href="#property_015" type="straight"/>
+      <dependsOnParameters href="#property_016" type="straight"/>
+      <dependsOnParameters href="#property_017" type="straight"/>
+      <affectsResources href="#resource_019" type="straight"/>
+      <affectsResources href="#resource_021" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_011" id="process_011" name="Digestion" description="Digestion par le troupeau" pos_x="295.92" pos_y="237.88" width="119.0" height="47.0" transformationType="Modification">
+      <subjects href="#agent_006" type="straight"/>
+      <objects href="#agent_006" type="straight"/>
+      <involvedResources href="#resource_041" type="straight"/>
+      <affectsResources href="#resource_031" type="straight"/>
+      <affectsResources href="#resource_030" type="straight"/>
+      <affectsResources href="#resource_039" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_012" id="process_012" name="Épandage" description="Épandage des fèces sur le sol" pos_x="-916.336" pos_y="1131.504" width="115.0" height="43.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_001" type="straight"/>
+      <involvedResources href="#resource_031" type="straight"/>
+      <affectsResources href="#resource_009" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_013" id="process_013" name="AchatFertisant" description="Achat de fertilisant" pos_x="-1600.042" pos_y="196.53" width="118.0" height="44.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <involvedResources href="#resource_014" type="straight"/>
+      <dependsOnParameters href="#property_023" type="straight"/>
+      <dependsOnParameters href="#property_024" type="straight"/>
+      <affectsResources href="#resource_015" type="straight"/>
+      <affectsResources href="#resource_016" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_014" id="process_014" name="AchatConcentre" description="Achat de concentré" pos_x="-1757.1" pos_y="784.27" width="116.0" height="40.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <involvedResources href="#resource_014" type="straight"/>
+      <dependsOnParameters href="#property_022" type="straight"/>
+      <dependsOnParameters href="#property_025" type="straight"/>
+      <affectsResources href="#resource_034" type="straight"/>
+      <affectsResources href="#resource_038" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_016" id="process_016" name="VenteAnimal" description="Vente d'animaux au marché" pos_x="-362.558" pos_y="206.8" width="102.0" height="40.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_013" type="straight"/>
+      <involvedResources href="#resource_019" type="straight"/>
+      <involvedResources href="#resource_021" type="straight"/>
+      <involvedResources href="#resource_022" type="straight"/>
+      <involvedResources href="#resource_023" type="straight"/>
+      <involvedResources href="#resource_024" type="straight"/>
+      <involvedResources href="#resource_025" type="straight"/>
+      <dependsOnParameters href="#property_011" type="straight"/>
+      <dependsOnParameters href="#property_026" type="straight"/>
+      <dependsOnParameters href="#property_029" type="straight"/>
+      <dependsOnParameters href="#property_030" type="straight"/>
+      <affectsResources href="#resource_014" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:MovementProcess" xmi:id="process_017" id="process_017" name="Transhumance" description="Déplacement saisonnier des troupeaux pour fourrage/eau" pos_x="500.0" pos_y="600.0" width="150.0" height="60.0">
+      <subjects href="#agent_006" type="straight"/>
+      <involvedResources href="#resource_041" type="straight"/>
+      <involvedResources href="#resource_042" type="straight"/>
+      <dependsOnParameters href="#property_031" type="straight"/>
+      <source href="#agent_001" type="straight"/>
+      <destination href="#agent_012" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_018" id="process_018" name="Résolution de Conflits" description="Gestion des conflits pour l'accès aux ressources" pos_x="-1100.0" pos_y="900.0" width="160.0" height="60.0" transformationType="Modification">
+      <subjects href="#agent_014" type="straight"/>
+      <objects href="#agent_005" type="straight"/>
+      <involvedResources href="#resource_042" type="straight"/>
+      <dependsOnParameters href="#property_033" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_019" id="process_019" name="Diversification des Revenus" description="Diversification pour résilience des ménages" pos_x="-700.0" pos_y="1000.0" width="170.0" height="60.0" transformationType="Modification">
+      <subjects href="#agent_005" type="straight"/>
+      <objects href="#agent_013" type="straight"/>
+      <dependsOnParameters href="#property_032" type="straight"/>
+      <affectsResources href="#resource_014" type="straight"/>
+    </processes>
+    <processes xsi:type="ses:TransformationProcess" xmi:id="process_020" id="process_020" name="Conservation Biodiversité" description="Gestion de la biodiversité pour durabilité" pos_x="400.0" pos_y="-500.0" width="160.0" height="60.0" transformationType="Modification">
+      <subjects href="#agent_001" type="straight"/>
+      <objects href="#agent_015" type="straight"/>
+      <involvedResources href="#resource_041" type="straight"/>
+      <dependsOnParameters href="#property_034" type="straight"/>
+    </processes>
+    <agents xmi:id="agent_001" id="agent_001" name="Sol" description="Sol supportant les ressources et activités agricoles" pos_x="-142.8" pos_y="-354.44" width="120.0" height="42.0" type="Physical">
+      <isSubjectOf href="#process_001" type="straight"/>
+      <isObjectOf href="#process_001" type="straight"/>
+      <isObjectOf href="#process_004" type="straight"/>
+      <isObjectOf href="#process_012" type="straight"/>
+      <isObjectOf href="#process_020" type="straight"/>
+      <containsAgents href="#agent_002" type="straight"/>
+      <containsAgents href="#agent_003" type="straight"/>
+      <containsAgents href="#agent_011" type="straight"/>
+      <holdsResources href="#resource_001" type="straight"/>
+      <holdsResources href="#resource_002" type="straight"/>
+      <holdsResources href="#resource_006" type="straight"/>
+      <holdsResources href="#resource_007" type="straight"/>
+      <holdsResources href="#resource_008" type="straight"/>
+      <holdsResources href="#resource_009" type="straight"/>
+      <holdsResources href="#resource_016" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_002" id="agent_002" name="Couvert arboré" description="Couvert arboré contribuant à la litière" pos_x="1023.112" pos_y="-501.992" width="182.0" height="47.0" type="Biological">
+      <partOfParentAgent href="#agent_001" type="straight"/>
+      <holdsResources href="#resource_003" type="straight"/>
+      <holdsResources href="#resource_004" type="straight"/>
+      <holdsResources href="#resource_013" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_003" id="agent_003" name="Couvert herbacé" description="Couvert herbacé pour fourrage" pos_x="223.5" pos_y="-89.0" width="179.0" height="43.0" type="Biological">
+      <isSubjectOf href="#process_002" type="straight"/>
+      <isObjectOf href="#process_002" type="straight"/>
+      <partOfParentAgent href="#agent_001" type="straight"/>
+      <holdsResources href="#resource_005" type="straight"/>
+      <holdsResources href="#resource_012" type="straight"/>
+      <holdsResources href="#resource_041" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_004" id="agent_004" name="Atmosphère" description="Atmosphère influençant le climat" pos_x="71.0" pos_y="-574.0" width="156.0" height="60.0" type="Physical">
+      <holdsResources href="#resource_010" type="straight"/>
+      <holdsResources href="#resource_011" type="straight"/>
+      <holdsResources href="#resource_030" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_005" id="agent_005" name="Ménages Éleveurs" description="Ménages pratiquant le pastoralisme" pos_x="-813.1999999999999" pos_y="611.664" width="120.0" height="54.0" type="Social">
+      <isSubjectOf href="#process_003" type="straight"/>
+      <isSubjectOf href="#process_004" type="straight"/>
+      <isSubjectOf href="#process_005" type="straight"/>
+      <isSubjectOf href="#process_006" type="straight"/>
+      <isSubjectOf href="#process_008" type="straight"/>
+      <isSubjectOf href="#process_009" type="straight"/>
+      <isSubjectOf href="#process_012" type="straight"/>
+      <isSubjectOf href="#process_013" type="straight"/>
+      <isSubjectOf href="#process_014" type="straight"/>
+      <isSubjectOf href="#process_016" type="straight"/>
+      <isSubjectOf href="#process_019" type="straight"/>
+      <isObjectOf href="#process_018" type="straight"/>
+      <containsAgents href="#agent_006" type="straight"/>
+      <containsAgents href="#agent_010" type="straight"/>
+      <containsAgents href="#agent_011" type="straight"/>
+      <holdsResources href="#resource_014" type="straight"/>
+      <holdsResources href="#resource_015" type="straight"/>
+      <holdsResources href="#resource_016" type="straight"/>
+      <holdsResources href="#resource_017" type="straight"/>
+      <holdsResources href="#resource_018" type="straight"/>
+      <holdsResources href="#resource_019" type="straight"/>
+      <holdsResources href="#resource_020" type="straight"/>
+      <holdsResources href="#resource_021" type="straight"/>
+      <holdsResources href="#resource_022" type="straight"/>
+      <holdsResources href="#resource_023" type="straight"/>
+      <holdsResources href="#resource_024" type="straight"/>
+      <holdsResources href="#resource_025" type="straight"/>
+      <holdsResources href="#resource_026" type="straight"/>
+      <holdsResources href="#resource_027" type="straight"/>
+      <holdsResources href="#resource_029" type="straight"/>
+      <holdsResources href="#resource_031" type="straight"/>
+      <holdsResources href="#resource_032" type="straight"/>
+      <holdsResources href="#resource_033" type="straight"/>
+      <holdsResources href="#resource_034" type="straight"/>
+      <holdsResources href="#resource_035" type="straight"/>
+      <holdsResources href="#resource_036" type="straight"/>
+      <holdsResources href="#resource_037" type="straight"/>
+      <holdsResources href="#resource_038" type="straight"/>
+      <holdsResources href="#resource_039" type="straight"/>
+      <holdsResources href="#resource_040" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_006" id="agent_006" name="Troupeau" description="Troupeau pastoral" pos_x="-1390.5439999999996" pos_y="941.1359999999999" width="144.0" height="60.0" type="Biological">
+      <isSubjectOf href="#process_007" type="straight"/>
+      <isSubjectOf href="#process_010" type="straight"/>
+      <isSubjectOf href="#process_011" type="straight"/>
+      <isSubjectOf href="#process_017" type="straight"/>
+      <isObjectOf href="#process_005" type="straight"/>
+      <isObjectOf href="#process_006" type="straight"/>
+      <isObjectOf href="#process_007" type="straight"/>
+      <isObjectOf href="#process_010" type="straight"/>
+      <isObjectOf href="#process_011" type="straight"/>
+      <partOfParentAgent href="#agent_005" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_010" id="agent_010" name="Jeunes" description="Jeunes animaux du troupeau" pos_x="-1371.4880000000003" pos_y="1047.2160000000003" width="138.0" height="60.0" type="Biological">
+      <partOfParentAgent href="#agent_005" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_011" id="agent_011" name="Adultes" description="Animaux adultes du troupeau" pos_x="-1395.1519999999998" pos_y="859.4879999999999" width="134.0" height="60.0" type="Biological">
+      <partOfParentAgent href="#agent_005" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_012" id="agent_012" name="Points d'Eau" description="Points d'eau (puits, mares) pour abreuvement" pos_x="-1000.0" pos_y="400.0" width="150.0" height="60.0" type="Physical">
+      <isObjectOf href="#process_017" type="straight"/>
+      <isObjectOf href="#process_018" type="straight"/>
+      <holdsResources href="#resource_042" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_013" id="agent_013" name="Marchés" description="Marchés pour échanges de produits pastoraux" pos_x="-600.0" pos_y="900.0" width="120.0" height="60.0" type="Social">
+      <isObjectOf href="#process_008" type="straight"/>
+      <isObjectOf href="#process_009" type="straight"/>
+      <isObjectOf href="#process_019" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_014" id="agent_014" name="Institutions Gouvernementales" description="Institutions pour politiques et conflits" pos_x="-1200.0" pos_y="800.0" width="180.0" height="60.0" type="Social">
+      <isSubjectOf href="#process_018" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_015" id="agent_015" name="Faune Sauvage" description="Faune interagissant avec écosystèmes pastoraux" pos_x="300.0" pos_y="-600.0" width="140.0" height="60.0" type="Biological">
+      <isObjectOf href="#process_020" type="straight"/>
+      <partOfParentAgent href="#agent_001" type="straight"/>
+    </agents>
+    <agents xmi:id="agent_016" id="agent_016" name="Ménages Agriculteurs" description="Ménages pratiquant l'agriculture" pos_x="-1518.848" pos_y="521.184" width="150.0" height="60.0" type="Social">
+      <isSubjectOf href="#process_004" type="straight"/>
+      <holdsResources href="#resource_033" type="straight"/>
+      <holdsResources href="#resource_035" type="straight"/>
+    </agents>
+  </SocioEcosystem>
+</xmi:XMI>

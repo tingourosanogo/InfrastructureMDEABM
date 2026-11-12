@@ -1,0 +1,353 @@
+from platform import node
+from pydoc import html
+from lxml import etree
+from typing import Dict, List, Optional
+from pathlib import Path
+import sys
+import re
+
+project_root = Path(__file__).parent
+sys.path.insert(0, str(project_root))
+from src.exceptions import InvalidModelError
+
+class DSLParser:
+    def __init__(self, xmi_path: str):
+        try:
+            self.tree = etree.parse(xmi_path)
+            self.ns = {
+                "xmi": "http://www.omg.org/XMI",
+                "xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "ses": "http://www.example.org/socioecosystem.en"
+            }
+            # Index all elements with xmi:id for fast resolution
+            self.index = self._build_index()
+            self.xmi_path = xmi_path
+            self.raw_content = None
+
+        except Exception as e:
+            raise InvalidModelError(f"Erreur de parsing DSL XMI: {str(e)}")
+
+    def _build_index(self) -> Dict[str, etree._Element]:
+        idx = {}
+        for el in self.tree.xpath("//*[@xmi:id]", namespaces=self.ns):
+            idx[el.get("{http://www.omg.org/XMI}id")] = el
+        return idx
+
+    def _resolve_href(self, href: Optional[str]) -> Optional[Dict]:
+        if not href:
+            return None
+        #print(f"[DEBUG] Resolving href: {href}") 
+        ref_id = href[1:] if href.startswith("#") else href
+        node = self.index.get(ref_id)
+        #print(f"[DEBUG] Resolved node: {node is not None} for id={ref_id}")
+        if not node:
+            return {"id": ref_id}
+        return {
+            "id": ref_id,
+            "name": node.get("name"),
+            "type": node.tag.split("}")[-1]  # local name
+        }
+
+    def parse_to_structure(self) -> Dict:
+        try:
+            ecosystem = self._parse_ecosystem()
+            agents = [self._parse_agent(a) for a in self.tree.xpath("//ses:SocioEcosystem/ses:agents", namespaces=self.ns)]
+            resources = [self._parse_resource(r) for r in self.tree.xpath("//ses:SocioEcosystem/ses:properties[@xsi:type='ses:Resource']", namespaces=self.ns)]
+            parameters = [self._parse_parameter(p) for p in self.tree.xpath("//ses:SocioEcosystem/ses:properties[@xsi:type='ses:Parameter']", namespaces=self.ns)]
+            processes = [self._parse_process(pr) for pr in self.tree.xpath("//ses:SocioEcosystem/ses:processes", namespaces=self.ns)]
+
+            print(f"[INFO] Found agents: {len(agents)}")
+            print(f"[INFO] Found processes: {len(processes)}")
+            print(f"[INFO] Found resources: {len(resources)}")
+            print(f"[INFO] Found parameters: {len(parameters)}")
+
+            return {
+                "ecosystem": ecosystem,
+                "entities": {
+                    "agents": agents,
+                    "resources": resources,
+                    "parameters": parameters
+                },
+                "processes": processes
+            }
+              
+
+        except Exception as e:
+            raise InvalidModelError(f"Erreur transformation structure DSL: {str(e)}")
+
+    def _parse_ecosystem(self) -> Dict:
+        root = self.tree.xpath("//ses:SocioEcosystem", namespaces=self.ns)
+        if not root:
+            return {}
+        node = root[0]
+        return {
+            "name": node.get("name"),
+            "location": node.get("location")
+        }
+
+    def _parse_agent(self, node) -> Dict:
+        # node is <agents ...> with attributes of Agent
+        # Some XMI serializers may put xsi:type; here agents appear as child elements under SocioEcosystem
+        return {
+            "id": node.get("{http://www.omg.org/XMI}id") or node.get("id"),
+            "name": node.get("name"),
+            "description": node.get("description"),
+            "comment": node.get("comment"),
+            "type": node.get("type"),  # enum literal string
+            "pos": {
+                "x": node.get("pos_x"),
+                "y": node.get("pos_y"),
+                "width": node.get("width"),
+                "height": node.get("height"),
+            },
+            "partOfParentAgent": self._resolve_href(self._first_attr(node, "partOfParentAgent", "href")),
+            "containsAgents": [self._resolve_href(c.get("href")) for c in node.xpath("./ses:containsAgents", namespaces=self.ns)],
+            "holdsResources": [self._resolve_href(r.get("href")) for r in node.xpath("./ses:holdsResources", namespaces=self.ns)],
+            "isSubjectOf": [self._resolve_href(p.get("href")) for p in node.xpath("./ses:isSubjectOf", namespaces=self.ns)],
+            "isObjectOf": [self._resolve_href(p.get("href")) for p in node.xpath("./ses:isObjectOf", namespaces=self.ns)],
+        }
+
+    def _parse_resource(self, node) -> Dict:
+        return {
+            "id": node.get("{http://www.omg.org/XMI}id") or node.get("id"),
+            "name": node.get("name"),
+            "description": node.get("description"),
+            "comment": node.get("comment"),
+            "unit": node.get("unit"),
+            "quantity": node.get("quantity"),
+            "isRenewable": self._to_bool(node.get("isRenewable")),
+            "pos": {
+                "x": node.get("pos_x"),
+                "y": node.get("pos_y"),
+                "width": node.get("width"),
+                "height": node.get("height"),
+            },
+            "heldBy": [self._resolve_href(hb.get("href")) for hb in node.xpath("./ses:heldBy", namespaces=self.ns)]
+        }
+
+    def _parse_parameter(self, node) -> Dict:
+        return {
+            "id": node.get("{http://www.omg.org/XMI}id") or node.get("id"),
+            "name": node.get("name"),
+            "description": node.get("description"),
+            "comment": node.get("comment"),
+            "unit": node.get("unit"),
+            "value": node.get("value"),
+            "isExogenous": self._to_bool(node.get("isExogenous")),
+            "parameterType": node.get("parameterType"),
+            "pos": {
+                "x": node.get("pos_x"),
+                "y": node.get("pos_y"),
+                "width": node.get("width"),
+                "height": node.get("height"),
+            },
+        }
+
+
+    def _parse_process(self, node) -> Dict:
+        # Determine subtype by xsi:type
+        xsi_type = node.get("{http://www.w3.org/2001/XMLSchema-instance}type")
+        subtype = None
+        transformation_type = None
+        if xsi_type:
+            local = xsi_type.split(":")[-1]
+            subtype = local
+
+        if subtype == "TransformationProcess":
+            transformation_type = node.get("transformationType")
+
+        # DEBUG: afficher brut ce qui est dans equation et pseudoCode
+        raw_equation = node.get("equation")
+        raw_pseudo = self.extract_pseudocode_perfectly(node.get("{http://www.omg.org/XMI}id") or node.get("id"))
+        print(f"[DEBUG] Raw equation attr: {raw_equation}")
+        print(f"[DEBUG] Raw pseudoCode attr: {raw_pseudo}")
+
+        formatted_equation = self._formatted(node, "equation")
+        formatted_pseudo = self._formatted(node, "pseudoCode")
+        formatted_equation = self._normalize_equation(node, formatted_equation)
+        formatted_pseudo = self._normalize_pseudocode(node, raw_pseudo)
+        print(f"[DEBUG] Formatted equation: {repr(formatted_equation)}")
+        print(f"[DEBUG] Formatted pseudoCode: {repr(formatted_pseudo)}")
+
+        return {
+            "id": node.get("{http://www.omg.org/XMI}id") or node.get("id"),
+            "name": node.get("name"),
+            "description": node.get("description"),
+            "comment": node.get("comment"),
+            "equation": formatted_equation,
+            "pseudoCode": formatted_pseudo,
+            "subtype": subtype,  # TransformationProcess | MovementProcess
+            "transformationType": transformation_type,
+            "pos": {
+                "x": node.get("pos_x"),
+                "y": node.get("pos_y"),
+                "width": node.get("width"),
+                "height": node.get("height"),
+            },
+            "subjects": [self._resolve_href(s.get("href")) for s in node.xpath("./ses:subjects", namespaces=self.ns)],
+            "objects": [self._resolve_href(o.get("href")) for o in node.xpath("./ses:objects", namespaces=self.ns)],
+            "involvedResources": [self._resolve_href(r.get("href")) for r in node.xpath("./ses:involvedResources", namespaces=self.ns)],
+            "dependsOnParameters": [self._resolve_href(p.get("href")) for p in node.xpath("./ses:dependsOnParameters", namespaces=self.ns)],
+            "affectsResources": [self._resolve_href(r.get("href")) for r in node.xpath("./ses:affectsResources", namespaces=self.ns)],
+            "source": self._resolve_href(self._first_attr(node, "source", "href")),
+            "destination": self._resolve_href(self._first_attr(node, "destination", "href")),
+        }
+    
+    def extract_pseudocode_perfectly(self, process_id: str) -> str:
+        """
+        Extrait le contenu de l'attribut pseudoCode sans la normalisation XML.
+        """
+        with open(self.xmi_path, 'r', encoding='utf-8') as f:
+                self.raw_content = f.read()
+
+        content = self.raw_content
+
+        # 1. Regex ciblée : 
+        # - On cherche le process avec l'ID spécifique
+        # - On capture tout ce qui est dans pseudoCode="..." 
+        # - Le flag re.DOTALL permet de capturer les vrais sauts de ligne (\n)
+        pattern = rf'id="{process_id}".*?pseudoCode="([^"]+)"'
+        match = re.search(pattern, content, re.DOTALL)
+
+        if not match:
+            return ""
+
+        # 2. Récupération de la capture (group 1)
+        raw_pseudo = match.group(1)
+
+        # 3. Décodage des entités HTML/XML (ex: &lt; devient <)
+        # html.unescape est parfait ici car il ne touche pas aux espaces/sauts de ligne
+        final_code = html.unescape(raw_pseudo)
+
+        return final_code.strip()
+
+        
+    # helper to extract formatted inner XML/text of child element (falls back to attribute)
+    def _formatted(self, node, child_name: str) -> Optional[str]:
+        els = node.xpath(f"./ses:{child_name}", namespaces=self.ns)
+        if not els:
+            return node.get(child_name)
+        el = els[0]
+        parts = []
+        if el.text:
+            parts.append(el.text)
+        for ch in el:
+            xml_str = etree.tostring(ch, encoding="unicode")
+            parts.append(xml_str)
+            if ch.tail:
+                parts.append(ch.tail)
+        inner = "\n".join(p.strip() for p in parts if p)  # <-- insérer des \n
+        print(f"[DEBUG] Extracted {child_name}: {repr(inner)}")
+        return inner if inner else None
+
+
+    def _normalize_equation(self, node, raw: Optional[str]) -> Optional[str]:
+        if not raw:
+            return None
+
+        try:
+            # Unescape HTML entities and normalize newlines
+            text = html.unescape(raw)
+            text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+            # Extract and protect /* */ block comments
+            block_comments = {}
+            def _block_repl(m):
+                placeholder = f"__BLOCK_COMMENT_{len(block_comments)}__"
+                block_comments[placeholder] = m.group(0)
+                return placeholder
+            text = re.sub(r"/\*.*?\*/", _block_repl, text, flags=re.DOTALL)
+
+            # Ensure inline comments '//' start on their own line
+            # but keep those already at line start
+            text = re.sub(r"(?<!\n)(//)", r"\n\1", text)
+
+            # Ensure semicolons terminate a line
+            # Keep semicolon with the statement, then newline
+            text = re.sub(r";\s*", ";\n", text)
+            # Standardize keywords to uppercase
+            keywords = ["if", "then", "else", "elsif", "for", "do", "end", "while", "repeat", "until", "switch", "case", "default"]
+            for kw in keywords:
+                pattern = r"\b" + re.escape(kw) + r"\b"
+                text = re.sub(pattern, kw.upper(), text, flags=re.IGNORECASE)
+
+            # Split into lines and normalize internal spacing while preserving logical leading indentation
+            lines = []
+            indent_level = 0
+            for raw_line in text.split("\n"):
+                if not raw_line.strip():
+                    # preserve a single blank line (skip multiple)
+                    if lines and lines[-1] != "": 
+                        lines.append("")
+                    continue
+
+                stripped = raw_line.strip()
+
+                # If line is a block comment placeholder, restore as-is later; treat as a single indented block
+                if stripped in block_comments:
+                    # place block comment at current indent level without altering inner formatting
+                    comment_lines = block_comments[stripped].split("\n")
+                    for cl in comment_lines:
+                        lines.append(("  " * indent_level) + cl)
+                    continue
+
+                # Collapse multiple internal spaces/tabs to single space
+                collapsed = re.sub(r"[ \t]+", " ", stripped)
+
+                lw = collapsed.lower()
+                # De-dent before handling 'else' or closing tokens
+                if re.search(r"\belse\b\s*$", lw) or lw in ("end", "until", "done", "od", "fi"):
+                    indent_level = max(indent_level - 1, 0)
+                
+
+                # Apply current indentation
+                lines.append(("  " * indent_level) + collapsed)
+
+                # Increase indent after lines that end with 'then' or are openers
+                # Consider common patterns: 'then', 'do', lines ending with ':' (if any)
+                if re.search(r"\bthen\b\s*$", lw) or lw.endswith(" do") or lw.endswith(":"):
+                    indent_level += 1
+
+            # Re-join and clean extra blank lines
+            out = "\n".join(lines)
+            out = re.sub(r"\n{3,}", "\n\n", out)  # no more than 2 consecutive newlines
+
+            # Final pass: ensure single trailing newline trimmed
+            return out.strip()
+
+        except Exception:
+            # In case of any issue, fallback to simpler normalization
+            txt = " ".join(raw.split())
+            txt = txt.replace(";", ";\n")
+            txt = txt.replace("//", "\n//")
+            return txt.strip()
+        
+
+    def _normalize_pseudocode(self, node, raw: Optional[str]) -> Optional[str]:
+        if not raw:
+            return None
+
+        try:
+            # Unescape HTML entities and normalize newlines
+            text = html.unescape(raw)
+            
+            return text.strip()
+
+        except Exception:
+            # In case of any issue, fallback to simpler normalization
+            txt = " ".join(raw.split())
+            txt = txt.replace(";", ";\n")
+            txt = txt.replace("//", "\n//")
+            return txt.strip()
+
+    
+    def _first_attr(self, node, child_name: str, attr_name: str) -> Optional[str]:
+        els = node.xpath(f"./ses:{child_name}", namespaces=self.ns) 
+        return els[0].get(attr_name) if els else None
+
+
+
+    def _to_bool(self, v: Optional[str]) -> Optional[bool]:
+        if v is None:
+            return None
+        return v.lower() in ("true", "1", "yes")

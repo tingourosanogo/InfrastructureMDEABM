@@ -1,0 +1,4 @@
+```csv
+variable_type,name,entity,value,values,unit,distribution,distribution_params,probabilities,source
+"<Type de variable, ex. fixed>","<Nom, ex. initial_wealth>","<Entité, ex. HouseholdAgent>","<Valeur, ex. 50000>","<Liste de valeurs, ex. [\"forest\", \"agriculture\", \"urban\", \"wetland\"]>","<Unité, ex. EUR>","<Distribution, ex. lognormal>","<Paramètres, ex. {\"mean\": 10.82, \"sigma\": 0.8}>","<Probabilités, ex. [0.3, 0.4, 0.2, 0.1]>","<Source, ex. National statistics 2020>"
+```

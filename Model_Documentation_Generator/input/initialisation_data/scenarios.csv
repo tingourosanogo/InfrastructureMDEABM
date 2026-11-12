@@ -1,0 +1,3 @@
+name,description,based_on,parameters,state_variables,validation_status
+sustainability_transition,Pathway towards sustainable agroecology,IPCC RCP2.6 + EU Green Deal,"{""climate_change_scenario"": ""RCP2.6"", ""policy_intervention"": ""regulation""}","{""initial_investment"": 20000}",plausible
+business_as_usual,Current trends continuation,,"{""climate_change_scenario"": ""RCP4.5"", ""policy_intervention"": ""baseline""}","{""initial_investment"": 10000}",calibrated

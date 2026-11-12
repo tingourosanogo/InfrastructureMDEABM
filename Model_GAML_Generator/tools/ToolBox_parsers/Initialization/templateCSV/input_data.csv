@@ -1,0 +1,4 @@
+```csv
+data_type,format_type,file_format,path,description,resolution,source,quality,sample_size,response_rate,validation_method
+"<Type de données, ex. spatial>","<Type de format, ex. raster>","<Format de fichier, ex. GeoTIFF>","<Chemin, ex. data/land_use.tif>","<Description, ex. CORINE Land Cover 2020>","<Résolution, ex. 100m>","<Source, ex. EEA>","<Qualité, ex. low>","<Taille d'échantillon, ex. 1500>","<Taux de réponse, ex. 78%>","<Méthode de validation, ex. cross_validation>"
+```

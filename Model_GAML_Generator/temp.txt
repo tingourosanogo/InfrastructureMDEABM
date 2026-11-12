@@ -1,0 +1,118 @@
+species Slaughterhouse {
+    // === ATTRIBUTS ===
+    // Carcass (unitless)
+    float carcass <- 0.0;
+    // Total meat produced from slaughtered animals (unitless)
+    float meat_production <- 0.0;
+    // Count of Young Male animals transferred to the slaughterhouse (count)
+    float ym_to_slaughter <- 0.0;
+    // Count of Young Female animals transferred to the slaughterhouse (count)
+    float yf_to_slaughter <- 0.0;
+    // Count of Sub-Adult Male animals transferred to the slaughterhouse (count)
+    float sam_to_slaughter <- 0.0;
+    // Count of Sub-Adult Female animals transferred to the slaughterhouse (count)
+    float saf_to_slaughter <- 0.0;
+    // Count of Adult Male animals transferred to the slaughterhouse (count)
+    float am_to_slaughter <- 0.0;
+    // Count of Adult Female animals transferred to the slaughterhouse (count)
+    float af_to_slaughter <- 0.0;
+    // The final inventory of packaged, salable meat product ready for market. (kg)
+    float processed_meat_stock <- 0.0;
+    // The total mass (kg) of processed meat sold to the market over the simulation period. (kg)
+    float meat_sold_amount <- 0.0;
+
+    // === COMPORTEMENTS (Actions et Réflexes basés sur les Processus XMI) ===
+    // ============================================
+// Action: slaughtering
+// Description: Animal slaughter and processing into carcass based on received animals.
+// Equation: CarcassWeight = NumToSlaughter * AvgLiveWeight * BaseDressPct * ConditionFactor
+// Depends on: resource_054, resource_055, resource_056, resource_057, resource_058, resource_059, resource_046, resource_047
+// ============================================
+
+action slaughtering {
+    total_carcass <- 0;
+    condition_factor <- body_condition / Optimal_Condition; // resource resource_046
+    base_dressing <- base_dressing_percentage; // property property_098
+    ym_carcass <- ym_to_slaughter * weight_ym * base_dressing * condition_factor; // resource resource_054
+    yf_carcass <- yf_to_slaughter * weight_yf * base_dressing * condition_factor; // resource resource_055
+    sam_carcass <- sam_to_slaughter * weight_sam * base_dressing * condition_factor; // resource resource_056
+    saf_carcass <- saf_to_slaughter * weight_saf * base_dressing * condition_factor; // resource resource_057
+    am_carcass <- am_to_slaughter * weight_am * base_dressing * condition_factor; // resource resource_058
+    af_carcass <- af_to_slaughter * weight_af * base_dressing * condition_factor; // resource resource_059
+    total_carcass <- ym_carcass + yf_carcass + sam_carcass + saf_carcass + am_carcass + af_carcass;
+    ym_to_slaughter <- 0; // resource resource_054
+    yf_to_slaughter <- 0; // resource resource_055
+    sam_to_slaughter <- 0; // resource resource_056
+    saf_to_slaughter <- 0; // resource resource_057
+    am_to_slaughter <- 0; // resource resource_058
+    af_to_slaughter <- 0; // resource resource_059
+    Carcass <- Carcass + total_carcass; // resource resource_017
+    meat_production <- meat_production + total_carcass; // resource resource_036
+}
+
+reflex slaughtering_dynamics {
+    do slaughtering;
+}
+
+
+// ============================================
+// Action: meat_processing
+// Description: Processing of carcasses into meat products
+// Equation: ProcessedMeat = Carcass * TrimmingEff * CuttingEff * (1 - PackagingLoss) * (1 - StorageLoss)
+// Depends on: resource_017
+// ============================================
+
+action meat_processing {
+    carcass_initial_weight <- carcass; // resource resource_017
+    if (initial_weight > 0) {
+        trimming_efficiency <- trimming_efficiency; // property property_092
+        trimmed_weight <- initial_weight * trimming_efficiency;
+        cutting_efficiency <- cutting_efficiency; // property property_093
+        cut_weight <- trimmed_weight * cutting_efficiency;
+        packaging_loss <- packaging_loss; // property property_094
+        packaged_weight <- cut_weight * 1 - packaging_loss;
+        storage_loss <- storage_loss; // property property_095
+        stored_weight <- packaged_weight * 1 - storage_loss;
+        carcass <- carcass - carcass_initial_weight; // resource resource_017
+        Processed_Meat_Stock <- Processed_Meat_Stock + stored_weight; // resource resource_060
+        waste_mass <- initial_weight - stored_weight;
+    }
+    else {
+        stored_weight <- 0;
+    }
+}
+
+reflex meat_processing_dynamics {
+    do meat_processing;
+}
+
+
+// ============================================
+// Action: meat_sale
+// Description: Sale of processed meat stock, tracking the cumulative volume sold.
+// Equation: MeatSoldCum += ProcessedMeatStock; DeltaStock = -ProcessedMeatStock
+// Depends on: resource_058, resource_061
+// ============================================
+
+action meat_sale {
+    to_sell <- processed_meat_stock; // resource resource_058
+    market_price <- market_price_meat; // property property_030
+    if (to_sell > 0) {
+        revenue <- to_sell * market_price;
+        processed_meat_stock <- processed_meat_stock - to_sell; // resource resource_058
+        Meat_Sold_Amount_Cumulative <- Meat_Sold_Amount_Cumulative + to_sell; // resource resource_061
+    }
+    else {
+        revenue <- 0;
+    }
+}
+
+reflex meat_sale_dynamics {
+    do meat_sale;
+}
+
+    // === ASPECT VISUEL ===
+    aspect default {
+        draw circle(3) color: rgb(250, 245, 240);
+    }
+}

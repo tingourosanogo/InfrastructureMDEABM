@@ -1,0 +1,91 @@
+{
+  "version": "<Version du document, ex. 1.2>",
+  "metadata": {
+    "auteur": "<Auteur(s) ou équipe>",
+    "date_mise_a_jour": "<YYYY-MM-DD>",
+    "version_modele": "<Nom ou version du modèle, ex. PastoralABM v3.1>",
+    "reference": "<Référence bibliographique, ex. Nom et al. 2023 - Journal>",
+    "licence": "<Type de licence, ex. CC BY-NC 4.0>" 
+  },
+  "lancement_simulation": {
+    "plateforme_requise": {
+      "os": ["<Systèmes d'exploitation, ex. Windows 10/11>"],
+      "memoire_ram": "<Mémoire recommandée/minimum, ex. 16GB/8GB>",
+      "espace_disque": "<Espace disque requis, ex. 2GB>",
+      "dependances": ["<Nom de la dépendance, ex. GAMA Platform 1.9.1+>"]
+    },
+    "fichiers_necessaires": [
+      {
+        "nom": "<Nom du fichier, ex. main_model.gaml>",
+        "description": "<Description du fichier>",
+        "format": "<Format, ex. GAML>",
+        "exemple": "<Chemin ou exemple, ex. models/.../main_model.gaml>", 
+        "parametres_cles": ["<Nom du paramètre, ex. duree_simulation>"], 
+        "colonnes_obligatoires": ["<Nom de colonne, ex. household_id>"], 
+        "resolution": "<Résolution, ex. 10m>", 
+        "systeme_coordonnees": "<Système, ex. WGS84 UTM 28N>" 
+      }
+    ],
+    "procedure": [
+      {
+        "etape": "<Numéro d'étape, ex. 1>",
+        "commande": "<Commande, ex. gama-headless.exe ...>",
+        "description": "<Description de l'étape>",
+        "options": ["<Option, ex. --experiment main_experiment>"], 
+        "prerequis": "<Prérequis, ex. Environnement graphique>" 
+      }
+    ]
+  },
+  "entrees": {
+    "interface_utilisateur": {
+      "disponible": "<true/false>",
+      "type": "<Nom de l'interface, ex. GAMA Modeling Environment>",
+      "url": "<URL, ex. https://gama-platform.org>", 
+      "fonctionnalites": ["<Fonctionnalité, ex. Exploration visuelle des scénarios>"]
+    },
+    "fichiers_entree": [
+      {
+        "type": "<Type de données, ex. parametres_globaux>",
+        "format": "<Format, ex. XML>",
+        "schema": "<Schéma, ex. schemas/parameters_schema.xsd>", 
+        "description": "<Description du fichier>",
+        "champs_obligatoires": ["<Champ, ex. simulation_duration: 3650 (10 ans)>"], 
+        "couches_requises": ["<Couche, ex. land_cover: Occupation du sol>"], 
+        "variables_cles": ["<Variable, ex. household_size: Taille du ménage>"], 
+        "systeme_coordonnees": "<Système, ex. WGS84/UTM>" 
+      }
+    ]
+  },
+  "sorties": {
+    "visualisation": [
+      {
+        "type": "<Type de visualisation, ex. cartes_dynamiques>",
+        "format": "<Format, ex. HTML interactif>",
+        "outils": "<Outils utilisés, ex. GAMA GIS + Leaflet.js>",
+        "description": "<Description de la visualisation>",
+        "indicateurs_visuels": ["<Indicateur, ex. Densité de troupeaux>"], 
+        "indicateurs": ["<Indicateur, ex. Biomasse disponible (kg/ha)>"] 
+      }
+    ],
+    "fichiers_sortie": [
+      {
+        "type": "<Type de fichier, ex. resultats_bruts>",
+        "format": "<Format, ex. CSV>",
+        "colonnes": ["<Colonne, ex. step: Pas de temps>"], 
+        "indicateurs": ["<Indicateur, ex. mean_herd_size: Taille moyenne>"], 
+        "sections": ["<Section, ex. résumé_exécutif>"], 
+        "description": "<Description du fichier>"
+      }
+    ],
+    "post_traitement": {
+      "outils_recommandes": ["<Outil, ex. R Studio (analyse statistique)>"],
+      "scripts_exemples": "<Chemin, ex. scripts/analysis/>", 
+      "methodes_analyse": ["<Méthode, ex. ANOVA multi-facteurs>"] 
+    }
+  },
+  "documentation_complementaire": {
+    "references_bibliographiques": ["<Référence, ex. Barton et al. 2022 - Titre>"],
+    "tutorials": ["<URL ou description, ex. https://github.com/.../tutorials>"],
+    "formations": ["<Formation, ex. Atelier de modélisation agent-based>"] 
+  }
+}

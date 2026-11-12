@@ -1,0 +1,82 @@
+// version 2 pour while et switch
+
+%import common.WS_INLINE
+%import common.NEWLINE
+%import common.INT
+%import common.FLOAT
+%import common.ID
+%import common.ESCAPED_STRING
+%import common.CNAME
+
+%ignore WS_INLINE
+%ignore NEWLINE  // Ignore les lignes vides pour flexibilité
+
+// Ignore les commentaires // jusqu'à la fin de ligne
+%ignore "//" /.*/
+
+start: stmt*
+
+stmt: assign_stmt
+    | if_stmt
+    | for_stmt
+    | while_stmt
+    | switch_stmt
+    | break_stmt
+    | comment  // Optionnel, si on veut conserver dans l'AST
+
+assign_stmt: var_name (ASSIGN_OP expr)? SEMI
+           | var_name annotation? SEMI  // Assignation vide ou avec annotation
+
+var_name: ID
+
+ASSIGN_OP: "=" | "+=" | "-=" | "*=" | "/="
+
+expr: atom
+    | expr BIN_OP expr
+    | UN_OP expr
+    | "(" expr ")"
+    | func_call
+
+atom: NUMBER | STRING | BOOL | var_name | list_literal
+
+NUMBER: INT | FLOAT
+
+STRING: ESCAPED_STRING
+
+BOOL: "true" | "false"
+
+BIN_OP: "+" | "-" | "*" | "/" | "^" | ">" | "<" | ">=" | "<=" | "==" | "!=" | "and" | "or"
+
+UN_OP: "-" | "!"
+
+func_call: CNAME "(" (expr ("," expr)*)? ")"
+
+list_literal: "[" (expr ("," expr)*)? "]"
+
+annotation: "/*" (RESOURCE_ID | PROPERTY_ID) "*/"  // Préserve les annotations spécifiques
+
+RESOURCE_ID: /resource_\d+/
+
+PROPERTY_ID: /property_\d+/
+
+if_stmt: "if" "(" expr ")" "{" stmt* "}" else_stmt?
+
+else_stmt: "else" "{" stmt* "}"
+
+for_stmt: "for" "each" var_name "in" expr "{" stmt* "}"
+
+while_stmt: "while" "(" expr ")" "{" stmt* "}"  // Nouvelle : while (condition) { stmts }
+
+switch_stmt: "switch" "(" expr ")" "{" case_stmt* default_stmt? "}"  // Nouvelle : switch (expr) { case v: stmts [break;] ... default: stmts }
+
+case_stmt: "case" value ":" stmt* break_stmt?  // case value: stmts [break;]
+
+default_stmt: "default" ":" stmt*  // default: stmts (pas de break obligatoire)
+
+value: NUMBER | STRING | BOOL  // Littéraux pour case (extensible si besoin)
+
+break_stmt: "break" SEMI  // Optionnel pour terminer un case
+
+comment: "//" /.*/  // Conservé si besoin dans AST
+
+SEMI: ";"

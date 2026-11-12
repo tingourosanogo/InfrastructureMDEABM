@@ -1,0 +1,53 @@
+{# processes_specialized.j2 - Template pour processus complexes #}
+
+{% for process in processes %}
+{% set mapper = process_mapper.map_to_gaml_action(process) %}
+
+// === PROCESS: {{ process.name }} ===
+// {{ process.description }}
+// Type: {{ mapper.semantic_type }}
+
+{% if mapper.semantic_type == 'biogeochemical_transformation' %}
+reflex {{ process.name }}_reflex when: {{ mapper.trigger_condition }} {
+    // Environmental factors calculation
+    {% for factor in mapper.environmental_factors %}
+    float {{ factor.name }} <- {{ factor.calculation }};
+    if ({{ factor.constraint }}) { {{ factor.name }} <- {{ factor.default }}; }
+    {% endfor %}
+    
+    // Rate calculation
+    float rate <- {{ mapper.base_rate }} {% for factor in mapper.environmental_factors %}* {{ factor.name }}{% endfor %};
+    
+    // Resource transformation with constraints
+    do atomic {
+        {% for transformation in mapper.transformations %}
+        {{ transformation.resource }} <- {{ transformation.update_expression }};
+        {% endfor %}
+    }
+}
+
+{% elif mapper.semantic_type == 'economic_transaction' %}
+action {{ process.name }}_action({{ mapper.parameters | join(', ') }}) {
+    // Validation
+    if (!{{ mapper.validation_condition }}) {
+        write "Transaction failed: validation error";
+        return;
+    }
+    
+    // Economic calculation
+    {{ mapper.cost_calculation }}
+    
+    // Execute transaction
+    do atomic {
+        {{ mapper.transaction_updates }}
+    }
+}
+
+reflex trigger_{{ process.name }} when: {{ mapper.decision_condition }} {
+    float desired_amount <- {{ mapper.decision_logic }};
+    if (desired_amount > 0) {
+        do {{ process.name }}_action(desired_amount);
+    }
+}
+{% endif %}
+{% endfor %}

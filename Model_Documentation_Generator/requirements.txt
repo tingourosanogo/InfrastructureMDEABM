@@ -1,0 +1,134 @@
+# 📦 CIM-PIM Transformation Tool - Dépendances Python
+# Version: 1.0.0
+# Date: 2024-01-15
+
+# ========================
+# 🎯 CORE DEPENDENCIES
+# ========================
+
+# Parsing XML/XMI
+lxml==4.9.3                 # Parseur XML/XMI haute performance
+
+# Manipulation YAML
+PyYAML==6.0.1               # Support YAML complet
+
+# Interface interactive
+questionary==1.10.0         # Interface CLI interactive
+
+# Manipulation JSON avancée
+jsonschema==4.20.0          # Validation JSON Schema
+
+# ========================
+# 📊 OPTIONAL DEPENDENCIES
+# ========================
+
+# Support CSV avancé
+pandas==2.0.3               # Manipulation données tabulaires
+openpyxl==3.1.2             # Support Excel (optionnel)
+
+# Visualisation (pour extensions futures)
+matplotlib==3.7.2           # Graphiques et visualisations
+plotly==5.15.0              # Visualisations interactives
+
+# Génération HTML/PDF (export avancé)
+markdown==3.4.4             # Conversion Markdown vers HTML
+pdfkit==1.0.0               # Génération PDF (requires wkhtmltopdf)
+
+# ========================
+# 🛠️ DEVELOPMENT TOOLS
+# ========================
+
+# Testing framework
+pytest==7.4.0               # Framework de tests
+pytest-cov==4.1.0           # Couverture de code
+
+# Code quality
+black==23.7.0               # Formattage de code
+flake8==6.0.0               # Linting Python
+isort==5.12.0               # Tri des imports
+
+# Documentation
+sphinx==7.2.6               # Documentation technique
+sphinx-rtd-theme==1.3.0     # Thème ReadTheDocs
+
+# ========================
+# 📁 UTILITIES
+# ========================
+
+# Manipulation chemins fichiers
+pathlib==1.0.1              # Gestion chemins (Python < 3.4)
+python-slugify==8.0.1       # Création slugs pour noms fichiers
+
+# Dates et heures
+python-dateutil==2.8.2      Manipulation dates avancée
+pytz==2023.3                # Timezones support
+
+# Compression et archives
+python-magic==0.4.27        # Détection type fichiers
+
+# ========================
+# 🚀 PERFORMANCE
+# ========================
+
+# Accélération traitement
+ujson==5.8.0                # JSON ultra-rapide
+orjson==3.9.10              # Alternative JSON rapide
+
+# Mémoire et profiling
+memory-profiler==0.61.0     # Profiling mémoire
+psutil==5.9.5               # Monitoring système
+
+# ========================
+# 🔐 SECURITY
+# ========================
+
+# Validation entrées
+certifi==2023.7.22          # Certificats SSL
+cryptography==41.0.4        # Chiffrement (pour données sensibles)
+
+# ========================
+# 🌐 NETWORK (optionnel)
+# ========================
+
+# Téléchargement ressources
+requests==2.31.0            # Requêtes HTTP
+urllib3==2.0.4              # Client HTTP
+
+# APIs distantes
+python-dotenv==1.0.0        # Variables d'environnement
+
+# ========================
+# 📝 VERSION SPECIFICS
+# ========================
+
+# Compatibilité Python
+typing-extensions==4.7.1    # Backport typing (Python < 3.10)
+importlib-metadata==6.8.0   # Métadonnées packages
+
+# ========================
+# 🎨 THEMING (optionnel)
+# ========================
+
+# Support couleurs terminal
+colorama==0.4.6             # Couleurs cross-platform
+rich==13.5.2                # Interface console riche
+
+# ========================
+# 📊 DATA VALIDATION
+# ========================
+
+# Validation données
+pydantic==2.3.0             # Validation et parsing données
+email-validator==2.0.0      # Validation emails
+
+# ========================
+# 🔧 BUILD & DEPLOYMENT
+# ========================
+
+# Packaging
+setuptools==68.0.0          # Packaging et distribution
+wheel==0.41.2               # Format binaire Python
+
+# Déploiement
+twine==4.0.2                # Upload PyPI
+build==0.10.0               # Construction packages

@@ -1,0 +1,24 @@
+// ========== INITIALISATION ==========
+
+init {
+    // Création des agents avec nombre initial
+    {% for agent in agents_with_count %}
+    create {{ agent.name }} number: {{ agent.initial_count }};
+    {% endfor %}
+    
+    // Création par défaut pour les agents sans count spécifié
+    {% for agent in agents %}
+    {% if agent.initial_count == 0 and (agent.attributes or agent.actions) %}
+    create {{ agent.name }} number: 1; // Création minimale pour démonstration
+    {% endif %}
+    {% endfor %}
+    
+    // Message de démarrage
+    write "=== SIMULATION DÉMARRÉE ===";
+    write "Modèle: {{ initialization_config.get('metadata', {}).get('model_name', 'Pastoral') }}";
+    write "Agents créés:";
+    {% for agent in agents if agent.attributes or agent.actions %}
+    write "  - {{ agent.name }}: " + ({{ agent.name }} count) + " agents";
+    {% endfor %}
+    write "Cycle initial: " + cycle;
+}

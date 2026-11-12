@@ -1,0 +1,5 @@
+parameter_type,name,entity,value,values,unit,definition,source,uncertainty,sensitivity_rank,validation,impact_assessment
+fixed,discount_rate,HouseholdAgent,0.03,,dimensionless,Temporal discount rate for decision-making,Berger et al. (2007) - Empirical estimation,"{""distribution"": ""normal"", ""std_dev"": 0.005}",high,,
+fixed,soil_mineralization_rate,ParcelEntity,0.15,,kgN/kgOM/day,Rate of organic matter mineralization,Local soil measurements,{},,lab_experiments,
+variable,climate_change_scenario,Global,,"[""RCP2.6"", ""RCP4.5"", ""RCP8.5""]",,IPCC climate scenarios,IPCC AR6,,,,high
+variable,policy_intervention,Global,,"[""baseline"", ""subsidy"", ""tax"", ""regulation""]",,Policy intervention scenarios,Stakeholder workshop,,,,

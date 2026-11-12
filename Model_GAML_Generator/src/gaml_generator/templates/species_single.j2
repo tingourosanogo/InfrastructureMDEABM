@@ -1,0 +1,19 @@
+{# Template pour une SEULE espèce #}
+species {{ agent.name }} {
+    // === ATTRIBUTS ===
+    {% for attr in agent.attributes %}
+    {% set default_value = attr.value if attr.value is defined and attr.value != "None" else "0.0" %}
+    {% set var_type = attr.type | default('float') %}
+    {% set unit_text = " (" + attr.unit + ")" if attr.unit else "" %}
+    // {{ attr.description | default(attr.name) }}{{ unit_text }}
+    {{ var_type }} {{ attr.name }} <- {{ default_value }};
+    {% endfor %}
+
+    // === COMPORTEMENTS (Actions et Réflexes basés sur les Processus XMI) ===
+    {{ agent.process_gaml_code }}
+
+    // === ASPECT VISUEL ===
+    aspect default {
+        draw circle(3) color: rgb({{ agent_color_r }}, {{ agent_color_g }}, {{ agent_color_b }});
+    }
+}

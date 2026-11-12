@@ -1,0 +1,96 @@
+# introduction.yaml
+version: "1.0"
+metadata:
+  titre: "Introduction"
+  auteur: "Équipe de modélisation"
+  date_creation: "2024-01-15"
+  modele_reference: "Nom_du_Modèle_v1.0"
+
+principe_modelisation:
+  question_recherche:
+    formulation: "Quel est l'impact de X sur Y étant donné Z ?"
+    explication: |
+      Toute modélisation part d'une question structurée où :
+      - X définit l'ensemble des scénarios à explorer
+      - Y l'ensemble des indicateurs à observer
+      - Z le contexte de la question
+
+  concepts_fondamentaux:
+    entites: "Système structuré en entités et processus"
+    attributs:
+      - type: "parametres"
+        definition: "Valeur fixe durant la simulation"
+      - type: "variables_etat"
+        definition: "Valeur variant au cours du temps"
+    portee_attributs:
+      - "globaux : partagés par tout le système"
+      - "locaux : partagés par entités de même type"
+      - "individuels : spécifiques à chaque entité"
+
+  relation_questions_modele:
+    explication: |
+      X ⊆ A, Z ⊆ A, X ∩ Z = ∅, X ∪ Z = A
+      Y est calculé à partir des attributs
+    implication: "Un choix différent de X et Z permet de répondre à d'autres questions avec le même modèle"
+
+modele_specifique:
+  question_centrale:
+    formulation: "Quel est l'impact des schémas de gestion et des facteurs exogènes sur la durabilité des ressources naturelles ?"
+    domaine: "socio-écosystème agricole"
+    echelle: "territoriale"
+
+  diagrammes:
+    - id: "question_recherche"
+      fichier: "question.png"
+      legende: "Question de recherche schématisée - Figure 1"
+      description: |
+        Sur la flèche diagonale, on représente qu'une combinaison (X) 
+        de schémas de gestion et de facteurs impacte les stocks.
+
+    - id: "facteurs_exogenes"
+      fichier: "facteur.png"
+      legende: "Facteurs exogènes - Figure 2"
+      description: |
+        Les facteurs exogènes sont un ensemble de facteurs influençant 
+        le système sans être contrôlés par les acteurs.
+
+  composants_principaux:
+    - nom: "porteurs_ressources"
+      description: "Composés de divers stocks et mettent en œuvre des dynamiques"
+      role: "Utilisent des stocks comme ressources et produisent des stocks"
+
+    - nom: "schemas_gestion"
+      description: "Ensembles de schémas de gestion mis en œuvre par des acteurs"
+      types:
+        - "individuels : par exploitation"
+        - "collectifs : par village"
+
+    - nom: "stocks"
+      description: "Quantités de ressources pour différents usages"
+      usages: ["humains", "animaux", "plantes", "processus biophysiques"]
+
+  acteurs:
+    - type: "individuels"
+      exemple: "exploitations agricoles"
+    - type: "collectifs"
+      exemple: "villages, coopératives"
+
+contextualisation:
+  domaine_application: "agroécologie, gestion des ressources naturelles"
+  pertinence_scientifique: |
+    Modélisation des interactions complexes entre pratiques de gestion 
+    et dynamiques des ressources dans un contexte de changement global
+  public_cible:
+    - "décideurs politiques"
+    - "chercheurs en socio-écosystèmes"
+    - "acteurs territoriaux"
+
+references_bibliographiques:
+  - auteur: "Nom et al."
+    annee: 2023
+    titre: "Article sur la modélisation des systèmes complexes"
+    journal: "Journal of Environmental Modelling"
+  - auteur: "Auteur et al."
+    annee: 2022
+    titre: "Ouvrage sur les approches intégratives"
+    edition: "Springer"

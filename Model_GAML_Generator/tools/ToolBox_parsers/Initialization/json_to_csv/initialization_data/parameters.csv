@@ -1,0 +1,7 @@
+parameter_type,name,entity,value,values,unit,definition,source,uncertainty,sensitivity_rank,validation,impact_assessment
+fixed,adult_female_reproduction_rate,Herd,0.7,,ratio,Annual reproduction rate for adult females in herd,Ndiaye et al. (2021) - Pastoralism; typical 0.6-0.8 in Sahel,"{""distribution"": ""normal"", ""std_dev"": 0.1}",high,,
+fixed,drought_mortality_rate,Herd,0.15,,ratio,Mortality rate of herd during dry season,Sandford (1983); adjusted for Sahel droughts,{},,field_surveys,
+fixed,fodder_consumption_per_TLU,Herd,6.0,,kg DM/day,Daily dry matter intake per Tropical Livestock Unit (TLU),FAO (2021) - Livestock feed requirements in Sahel,"{""distribution"": ""uniform"", ""min"": 5.0, ""max"": 7.0}",medium,,
+fixed,water_need_per_head,Herd,30.0,,liters/day,Daily water requirement per head of livestock,World Bank (2024) - PRAPS water management,{},,empirical_data,
+variable,investment_scenario,Global,,"[""baseline"", ""water_infrastructure"", ""market_access"", ""health_services""]",,"PRAPS investment scenarios (water, markets, health)",World Bank PRAPS-2 (2024),,,,
+variable,climate_scenario,Global,,"[""RCP4.5"", ""RCP8.5""]",,IPCC climate scenarios for Sahel variability,IPCC AR6 (2022),,,,

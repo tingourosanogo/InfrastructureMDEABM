@@ -1,0 +1,19 @@
+// ========== PARAMÈTRES GLOBAUX ==========
+
+global {
+    // Configuration temporelle
+    float step <- 1.0;
+    int total_steps <- 365;
+    
+    // Paramètres globaux du modèle
+    {% for param in global_parameters %}
+    {% if param.name and param.value is defined %}
+    float {{ param.name }} <- {{ param.value }};
+        {% if param.description %}// {{ param.description }}{% endif %}
+    {% endif %}
+    {% endfor %}
+    
+    // Métriques globales
+    int cycle_count <- 0;
+    int simulation_year <- 2024;
+}

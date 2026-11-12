@@ -1,0 +1,23 @@
+// ========== RÉFLEXES GLOBAUX ==========
+
+// Mise à jour temporelle globale
+reflex update_global_metrics {
+    cycle_count <- cycle;
+    simulation_time <- time;
+    
+    // Mise à jour annuelle
+    if (cycle % 365 = 0) {
+        simulation_year <- simulation_year + 1;
+        write "=== NOUVELLE ANNÉE: " + simulation_year + " ===";
+    }
+}
+
+// Vérification fin de simulation
+reflex check_simulation_end {
+    if (cycle >= total_steps) {
+        write "=== FIN DE SIMULATION ATTEINTE ===";
+        write "Cycles total: " + cycle;
+        write "Années simulées: " + (simulation_year - 2024);
+        do pause;
+    }
+}

@@ -1,0 +1,30 @@
+{
+  "indicators": [
+    {
+      "id": "<Identifiant unique, ex. PA.01.01>",
+      "name": "<Nom de l'indicateur>",
+      "category": "<Catégorie, ex. Pastoralisme>",
+      "source": "<Source ou référence, ex. Auteur et al. (Année), Journal>",
+      "description": "<Description détaillée de l'indicateur>",
+      "formula": "<Formule de calcul, ex. CA = (Nombre UBT) / (Surface pâturable)>",
+      "unit": "<Unité de mesure, ex. UBT/ha>",
+      "variables": [
+        {
+          "name": "<Nom de la variable, ex. nombre_ubt>",
+          "entity": "<Entité associée, ex. Troupeau>",
+          "definition": "<Définition de la variable>",
+          "unit": "<Unité, ex. UBT>" 
+        }
+      ],
+      "parameters": [
+        {
+          "name": "<Nom du paramètre, ex. facteur_saison>",
+          "entity": "<Entité associée, ex. Système>",
+          "definition": "<Définition du paramètre>",
+          "value": "<Valeur par défaut, ex. 1.2>", 
+          "unit": "<Unité, ex. coefficient>" 
+        }
+      ]
+    }
+  ]
+}

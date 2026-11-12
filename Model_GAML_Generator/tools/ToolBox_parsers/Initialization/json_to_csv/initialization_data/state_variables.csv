@@ -1,0 +1,9 @@
+variable_type,name,entity,value,values,unit,distribution,distribution_params,probabilities,source
+fixed,cash,HerdsmenHouseholds,2000.0,,XOF,lognormal,"{""mean"": 7.6, ""sigma"": 1.0}",,Household surveys Sahel (World Bank 2024; average 1000-5000 XOF)
+fixed,herd_size,Herd,50.0,,TLU,normal,"{""mean"": 50.0, ""std_dev"": 20.0}",,Ndiaye et al. (2021); typical 20-100 TLU/household
+fixed,nitrogen,Parcel,50.0,,kg/ha,normal,"{""mean"": 50.0, ""std_dev"": 10.0}",,FAO (2021); typical for Sahelian soils
+fixed,carbon,Parcel,1000.0,,kg/ha,normal,"{""mean"": 1000.0, ""std_dev"": 200.0}",,FAO (2021); typical SOM in Sahelian pastures
+variable,fodder_biomass,Parcel,,"[""low"", ""medium"", ""high""]",,categorical,,"[0.4, 0.4, 0.2]",NDVI data ESA (2020-2024) for Sahel seasons
+variable,herbaceous_type,Parcel,,"[""natural_prairie"", ""cultivated_prairie""]",,categorical,,"[0.8, 0.2]",GIZ (2022); dominant natural prairies in Sahel
+variable,water,WaterPoints,,"[50.0, 100.0, 150.0]",,uniform,,[],PRAPS water point surveys (World Bank 2024)
+variable,tree_count,Parcel,,"[20, 50, 100]",,uniform,,[],XMI comment; typical 20-100 trees/ha

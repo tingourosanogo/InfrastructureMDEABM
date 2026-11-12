@@ -1,0 +1,104 @@
+﻿# introduction.yaml
+version: "1.0"
+metadata:
+  titre: "Introduction"
+  auteur: "Équipe de modélisation"
+  date_creation: "2024-01-15"
+  modele_reference: "Nom_du_Modèle_v1.0"
+
+principe_modelisation:
+  question_recherche:
+    formulation: "Quel est l'impact de X sur Y étant donné Z ?"
+    explication: |
+      Toute modélisation part d'une question structurée où :
+      - X définit l’ensemble des scénarios que l’on souhaite explorer 
+      - Y l’ensemble des indicateurs que l’on souhaite observer comme réponse aux différents scénarios 
+      - Z le contexte de la question
+
+  concepts_fondamentaux:
+    entites: "Système structuré en entités et processus"
+    attributs:
+      - type: "parametres"
+        definition: "dont la valeur ne varie pas au fil de la simulation"
+      - type: "variables_etat"
+        definition: "dont la simulation fait varier la valeur au fil du temps"
+    portee_attributs:
+      - "globaux : partagés par tout le système (nous avons choisi de les décrire dans l’entité « système »)"
+      - "locaux : partagés par entités de même type"
+      - "individuels : spécifiques à chaque entité"
+
+  relation_questions_modele:
+    explication: |
+      X ⊆ A, Z ⊆ A, X ∩ Z = ∅, X ∪ Z = A
+      X est un sous-ensemble des attributs (de A) 
+      Z est un sous-ensemble des attributs disjoint de X 
+      X union Z = A 
+      Y est calculé à partir des attributs
+    implication: "Un choix différent de X et Z permet de répondre à d'autres questions avec le même modèle On peut donc imaginer l’ensemble des questions auxquelles un même modèle peut répondre."
+
+modele_specifique:
+  question_centrale:
+    formulation: "Quel est l'impact des schémas de gestion et des facteurs exogènes sur la durabilité des ressources naturelles ?"
+    domaine: "socio-écosystème agricole"
+    echelle: "territoriale"
+
+  diagrammes:
+    - id: "question_recherche"
+      fichier: "C:/Users/tingo/source/repos/tingourosanogo/CIM-PIM_Transformation/CIM-PIM_Transformation/project_root/src/input/diagrammes/question.png"
+      legende: "Question de recherche schématisée"
+      description: |
+        Sur la flèche diagonale, on représente qu’une combinaison (X) de schémas de gestion et de facteurs impacte les stocks.
+        En bas à droite, les stocks sont des quantités de ressource pour différents usages (par les humains, les animaux, les plantes et autres processus biophysiques).
+        Au milieu en bas, un porteur de ressource est composé de divers stocks et met en œuvre une dynamique qui utilise des stocks comme ressources et produits des stocks.
+        A gauche, les schémas de gestion sont des ensembles de schémas de gestion, mis-en-oeuvre par un acteur (sujet). On distingue les schémas de gestion individuels des 
+        schémas de gestion collectif mis-en-oeuvre par les auteurs correspondant. Dans notre cas, les acteurs individuels sont des exploitations; les acteurs collectifs sont des villages.
+        Au milieu en haut, les facteurs exogènes sont un ensemble de facteurs, un facteur pouvant être comme suit
+
+
+    - id: "facteurs_exogenes"
+      fichier: "C:/Users/tingo/source/repos/tingourosanogo/CIM-PIM_Transformation/CIM-PIM_Transformation/project_root/src/input/diagrammes/facteurs.png"
+      legende: "Facteurs exogènes"
+      description: |
+        Les facteurs exogènes sont un ensemble de facteurs influençant 
+        le système sans être contrôlés par les acteurs.
+
+  composants_principaux:
+    - nom: "porteurs_ressources"
+      description: "Composés de divers stocks et mettent en œuvre des dynamiques"
+      role: "Utilisent des stocks comme ressources et produisent des stocks"
+
+    - nom: "schemas_gestion"
+      description: "Ensembles de schémas de gestion mis en œuvre par des acteurs"
+      types:
+        - "individuels : par exploitation"
+        - "collectifs : par village"
+
+    - nom: "stocks"
+      description: "Quantités de ressources pour différents usages"
+      usages: ["humains", "animaux", "plantes", "processus biophysiques"]
+
+  acteurs:
+    - type: "individuels"
+      exemple: "exploitations agricoles"
+    - type: "collectifs"
+      exemple: "villages, coopératives"
+
+contextualisation:
+  domaine_application: "agroécologie, gestion des ressources naturelles"
+  pertinence_scientifique: |
+    Modélisation des interactions complexes entre pratiques de gestion 
+    et dynamiques des ressources dans un contexte de changement global
+  public_cible:
+    - "décideurs politiques"
+    - "chercheurs en socio-écosystèmes"
+    - "acteurs territoriaux"
+
+references_bibliographiques:
+  - auteur: "Nom et al."
+    annee: 2023
+    titre: "Article sur la modélisation des systèmes complexes"
+    journal: "Journal of Environmental Modelling"
+  - auteur: "Auteur et al."
+    annee: 2022
+    titre: "Ouvrage sur les approches intégratives"
+    edition: "Springer"

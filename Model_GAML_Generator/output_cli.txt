@@ -1,0 +1,856 @@
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'milk_sale':
+------------------------------------------------------------------------------------------
+// Total raw milk produced by AgroPastoralHousehold
+      total_milk_sale = milk_for_sale /* resource_071 */;
+      market_price = market_price_raw_milk /* property_119 */;
+      dairy_prop = milk_dairy_prop; /* property_146 */
+
+      if (milk_sold > 0) {
+        // 1. Execute Sale (updates Household's Cash)
+        income = total_milk_sale * market_price;
+        livestock_revenue = livestock_revenue + income;  /* resource_067 */
+
+        // 2. Execute Transfer to Dairy
+        milk_to_dairy = total_milk_sale * dairy_prop;
+        milk_for_processing = milk_for_processing + milk_to_dairy;  /* resource_029 */
+
+        // 3. Update Resources
+        // Consume the raw milk input entirely
+        milk_for_sale = milk_for_sale - total_milk; /* resource_039 */
+      } else {
+        revenue = 0;
+      }
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.039s, 98 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_071 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_119*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_146*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_067 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_029 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_039 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_milk_sale (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : milk_for_sale (scope_level=0, ligne=7)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : market_price (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : market_price_raw_milk (scope_level=0, ligne=14)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : dairy_prop (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : milk_dairy_prop (scope_level=0, ligne=21)
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : milk_sold (scope_level=1, ligne=28)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : income (scope_level=1, ligne=32)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : livestock_revenue (scope_level=1, ligne=42)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : milk_to_dairy (scope_level=1, ligne=53)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : milk_for_processing (scope_level=1, ligne=63)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_milk (scope_level=1, ligne=82)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : revenue (scope_level=1, ligne=86)
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+INFO:src.gaml_generator.generator:Collecte terminée : 13 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'off_farm_employment':
+------------------------------------------------------------------------------------------
+// Household strategic decision: Define fraction of available labor to allocate
+      // Logic Check: In a robust model, the decision (property_132) is a function of Farm Size (resource_065),
+      // e.g., Strategy_Rate = Max_Rate * f(1 / Crop_Area).
+      labor_allocation_rate = household_offFarm_strategy /* property_132 */;
+
+      // 1. Calculate Labor Used
+      available_labor_tmp = available_labor /* resource_064 */;
+      allocated_labor = available_labor_tmp * labor_allocation_rate;
+
+      // 2. Calculate Income Generated
+      wage_rate = off_farm_wage_rate /* property_131 */;
+      offFarm_income_generated = allocated_labor * wage_rate;
+
+      // 3. Update Resources (Mass Balance)
+      // Store the generated income in the dedicated resource
+      off_farm_income /* resource_066 */ = off_farm_income + offFarm_income_generated;
+
+      // Consume the allocated labor (Mass Balance)
+      available_labor /* resource_064 */ = available_labor - allocated_labor;
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.022s, 71 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_132*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_064 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_131*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_066 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_064 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : labor_allocation_rate (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : household_offFarm_strategy (scope_level=0, ligne=7)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : available_labor_tmp (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : available_labor (scope_level=0, ligne=14)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : allocated_labor (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : wage_rate (scope_level=0, ligne=27)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : off_farm_wage_rate (scope_level=0, ligne=31)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : offFarm_income_generated (scope_level=0, ligne=34)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : off_farm_income (scope_level=0, ligne=44)
+INFO:src.gaml_generator.generator:Collecte terminée : 9 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'income_diversification':
+------------------------------------------------------------------------------------------
+// Step 1: Define Income Streams (Assumed outputs from previous processes)
+      livestock_revenue_tmp = livestock_revenue /* resource_067 */;
+      crop_revenue_tmp = crop_sale_revenue /* resource_068 */;
+      nonfarm_offfarm_income = off_farm_income /* resource_066 */;
+
+      current_cash = cash /* resource_014 */;
+
+      // Step 2: Calculate Total Income Consolidated (Mass Balance)
+      total_diversified_income = livestock_revenue_tmp + crop_revenue_tmp + nonfarm_offfarm_income;
+
+      // Step 3: Update Resources (Cash Inflow and Resource Reset)
+      cash /* resource_014 */ = cash + total_diversified_income;
+
+      livestock_revenue /* resource_067 */ = livestock_revenue - livestock_revenue_tmp;
+      crop_sale_revenue /* resource_068 */ = crop_sale_revenue - crop_revenue_tmp;
+      off_farm_income /* resource_066 */ = off_farm_income - nonfarm_offfarm_income;
+
+      // Step 4: Update Resilience Property (Qualitative Outcome - Essential for Realism)
+      // The Resilience Index increases based on the number of active, non-zero revenue streams.
+      active_streams = 0;
+      if (livestock_revenue_tmp > 0) {
+        active_streams = active_streams + 1;
+      }
+      if (crop_revenue_tmp > 0) {
+        active_streams = active_streams + 1;
+      }
+      if (nonfarm_offfarm_income > 0) {
+        active_streams = active_streams + 1;
+      }
+
+      // Placeholder for the resilience function (to be defined precisely later)
+      Resilience_Index = Resilience_Index + f(active_streams, relative_magnitude);
+      // Note: For example, combining Farm + Off-Farm yields a specific, statistically significant improvement in security.
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.051s, 172 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_067 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_068 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_066 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_014 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_014 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_067 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_068 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_066 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : livestock_revenue_tmp (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : livestock_revenue (scope_level=0, ligne=7)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_revenue_tmp (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_sale_revenue (scope_level=0, ligne=14)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : nonfarm_offfarm_income (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : off_farm_income (scope_level=0, ligne=21)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : current_cash (scope_level=0, ligne=24)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : cash (scope_level=0, ligne=28)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_diversified_income (scope_level=0, ligne=31)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : active_streams (scope_level=0, ligne=89)
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : Resilience_Index (scope_level=0, ligne=145)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : relative_magnitude (scope_level=0, ligne=158)
+INFO:src.gaml_generator.generator:Collecte terminée : 12 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'biodiversity_conservation':
+------------------------------------------------------------------------------------------
+// 1. Define Parameters and Inputs
+      // (Assuming Total_Grazing_Area is a known parameter or aggregate of Grasslands/Rangelands area)
+      herd_tlu_tmp = herd_tlu /* resource_069 */;
+      grazing_pressure = herd_tlu_tmp / total_grazing_area;
+
+      degradation_threshold = sustain_graz_threshold /* property_098 */;
+      optimal_threshold = sustain_graz_threshold /* property_137 */;
+
+      // 2. Determine Biodiversity Change (Three Regimes for Realism)
+      if (grazing_pressure < optimal_threshold) {
+        // Regime 1: Under-grazing or Light Grazing (Sub-optimal growth, as grazing is necessary)
+        change = biodiversity_growth_rate /* property_135 */;
+        soil_loss = 0;
+      } else if (grazing_pressure <= degradation_threshold) {
+        // Regime 2: Optimal to Sustainable Grazing (Growth maximized/maintained)
+        change = biodiversity_growth_rate /* property_135 */;
+        soil_loss = 0;
+      } else {
+        // Regime 3: Over-grazing (Degradation occurs, leading to erosion risk)
+        degradation_intensity = grazing_pressure - degradation_threshold;
+        change = degradation_intensity * grazing_degradation_factor /* property_136 */;
+
+        // Secondary effect: Link to Soil Erosion Factor (property_144) and loss of Soil Nitrogen
+        soil_loss = degradation_intensity * soil_erosion_factor /* property_144 */;
+      }
+
+      // 3. Update Resources (Mass Balance)
+      // Update Biodiversity (resource_043 assumed)
+      biodiversity /* resource_043 */ = biodiversity + change;
+      biodiversity /* resource_043 */ = max(0.0, min(1.0, biodiversity)); /* resource_043 */
+
+      // Link degradation to soil nutrient loss
+      soil_nitrogen /* resource_001 */ = soil_nitrogen - soil_loss;
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.048s, 158 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_069 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_098*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_137*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_135*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_135*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_136*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_144*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_043 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_043 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_043 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_001 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : herd_tlu_tmp (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : herd_tlu (scope_level=0, ligne=7)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : grazing_pressure (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_grazing_area (scope_level=0, ligne=18)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : degradation_threshold (scope_level=0, ligne=20)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sustain_graz_threshold (scope_level=0, ligne=24)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : optimal_threshold (scope_level=0, ligne=27)
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : change (scope_level=1, ligne=43)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : biodiversity_growth_rate (scope_level=1, ligne=47)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : soil_loss (scope_level=1, ligne=50)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : degradation_intensity (scope_level=1, ligne=76)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : grazing_degradation_factor (scope_level=1, ligne=94)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : soil_erosion_factor (scope_level=1, ligne=105)
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : biodiversity (scope_level=0, ligne=108)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : soil_nitrogen (scope_level=0, ligne=135)
+INFO:src.gaml_generator.generator:Collecte terminée : 15 variables, 0 fonctions
+DEBUG:src.gaml_generator.generator:Agent Herd (ID: agent_006) → 4 processus liés
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'nutrient_absorption':
+------------------------------------------------------------------------------------------
+// Input: Total mass of nutrients consumed in this step (from resource_051, set by process_003)
+      nutrients_consumed = nutrients_consumed /* resource_051 */;
+
+      // 1. Calculate Absorption
+      // Calculate absorption capacity based on animal factors
+      absorption_capacity = base_absorption_rate * body_condition * livestock_health /* property_086 resource_046 resource_040 */;
+      absorption_rate = min(1.0, absorption_capacity); // Cap absorption at 100%
+
+      // Calculate absorbed and excreted nutrients
+      absorbed_nutrients = nutrients_consumed * absorption_rate;
+      excreted_nutrients = nutrients_consumed - absorbed_nutrients;
+
+      // 2. Calculate Excretion Components
+      // Use dedicated parameters for splitting the excreted mass
+      feces_output = excreted_nutrients * Feces_Nutrient_Proportion /* property_080 */;
+      urine_output = excreted_nutrients * Urine_Nutrient_Proportion /* property_082 */;
+
+      // 3. Update Resources and Status
+      // Update internal animal state
+      update_nutrient_levels(absorbed_nutrients);
+      update_metabolism_status();
+
+      // Accumulate waste products (outputs for process_011)
+      faeces /* resource_049 */ = faeces + feces_output;
+      urine /* resource_050 */ = urine + urine_output;
+
+      // Consume the input resource (Mass Balance: it has been fully processed)
+      nutrients_consumed /* resource_051 */ = 0;
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.036s, 120 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_051 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_046 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_080*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_082*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_049 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_050 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_051 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : nutrients_consumed (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : absorption_capacity (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : base_absorption_rate (scope_level=0, ligne=16)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : body_condition (scope_level=0, ligne=19)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : livestock_health (scope_level=0, ligne=22)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : absorption_rate (scope_level=0, ligne=25)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : absorbed_nutrients (scope_level=0, ligne=35)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : excreted_nutrients (scope_level=0, ligne=45)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : feces_output (scope_level=0, ligne=55)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : Feces_Nutrient_Proportion (scope_level=0, ligne=63)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : urine_output (scope_level=0, ligne=66)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : Urine_Nutrient_Proportion (scope_level=0, ligne=74)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : faeces (scope_level=0, ligne=84)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : urine (scope_level=0, ligne=95)
+INFO:src.gaml_generator.generator:Collecte terminée : 14 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'animal_health_status':
+------------------------------------------------------------------------------------------
+// 0. Retrieve Inputs
+      // Status Metrics
+      current_body_condition = body_condition /* resource_046 */;
+      current_livestock_health = livestock_health /* resource_040 */;
+
+      // Drivers (From other processes/parameters)
+      intake_ratio = daily_intake_ratio /* resource_075 */; // Output of process_003
+      disease_prevalence = disease_prevalence_index /* resource_074 */;
+      climate_stress_factor = drought_mortality_rate /* property_036 */; // Re-use drought stress as a health stressor
+      hydration_stress = hydration_stress_factor /* resource_076 */; // Output of process_007
+
+      // Intervention Parameters
+      vet_access_score = vet_service_access /* property_161 */;
+      vaccination_rate = herd_vaccination_rate /* property_162 */;
+      intervention_efficacy = treatment_efficacy /* property_163 */;
+
+      // Define constants for rate of change (delta per time step)
+      health_recovery_rate = health_recovery_rate /* property_157 */;
+      health_decline_rate = health_decline_rate /* property_158 */;
+      condition_recovery_rate = condition_recovery_rate /* property_159 */;
+      condition_decline_rate = condition_decline_rate /* property_160 */;
+
+      // 1. Update Body Condition (Metabolic Link)
+      // Body condition is primarily driven by the ratio of intake to requirement (intake_ratio)
+
+      // Condition Change is proportional to intake deficit or surplus
+      condition_change = intake_ratio - 1.0;
+
+      if (condition_change > 0) {
+        // Surplus: Condition improves
+        delta_condition = condition_change * condition_recovery_rate;
+      } else {
+        // Deficit: Condition declines (decline rate is often higher than recovery rate)
+        delta_condition = condition_change * condition_decline_rate;
+      }
+
+      // NOTE: Water stress also reduces body condition, scaled by decline rate
+      delta_condition = delta_condition - hydration_stress * condition_decline_rate * 0.5; // Moderate impact
+
+      new_body_condition = current_body_condition + delta_condition;
+
+      // Constrain Body Condition to [0, 1]
+      body_condition /* resource_046 */ = max(0.0, min(1.0, new_body_condition));
+
+      // 2. Update Livestock Health (Disease and Intervention Link)
+
+      // A. Baseline Decline (Stressors)
+      // Health declines due to climate stress, water stress, and prolonged poor body condition
+      climate_decline = climate_stress_factor * health_decline_rate;
+      hydration_decline = hydration_stress * health_decline_rate * 3.0; // High impact of water stress on health
+      condition_penalty = (1.0 - current_body_condition) * health_decline_rate; // Poor condition penalizes health
+
+      // B. Disease Impact
+      disease_impact = disease_prevalence * health_decline_rate * 2.0; // Disease has a strong negative impact
+
+      // C. Intervention Impact
+      // Intervention benefit is high if access is good, vaccination is high, and efficacy is high.
+      intervention_benefit = vet_access_score * vaccination_rate * intervention_efficacy * health_recovery_rate;
+
+      // D. Net Health Change
+      total_health_decline = climate_decline + hydration_decline + condition_penalty + disease_impact;
+
+      delta_health = intervention_benefit - total_health_decline;
+
+      new_livestock_health = current_livestock_health + delta_health;
+
+      // Constrain Livestock Health to [0, 1]
+      livestock_health /* resource_040 */ = max(0.0, min(1.0, new_livestock_health));
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.089s, 357 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_046 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_040 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_075 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_074 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_036*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_076 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_161*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_162*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_163*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_157*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_158*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_159*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_160*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_046 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_040 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : current_body_condition (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : body_condition (scope_level=0, ligne=7)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : current_livestock_health (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : livestock_health (scope_level=0, ligne=14)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : intake_ratio (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : daily_intake_ratio (scope_level=0, ligne=21)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : disease_prevalence (scope_level=0, ligne=24)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : disease_prevalence_index (scope_level=0, ligne=28)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : climate_stress_factor (scope_level=0, ligne=31)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : drought_mortality_rate (scope_level=0, ligne=35)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : hydration_stress (scope_level=0, ligne=38)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : hydration_stress_factor (scope_level=0, ligne=42)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : vet_access_score (scope_level=0, ligne=45)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : vet_service_access (scope_level=0, ligne=49)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : vaccination_rate (scope_level=0, ligne=52)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : herd_vaccination_rate (scope_level=0, ligne=56)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : intervention_efficacy (scope_level=0, ligne=59)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : treatment_efficacy (scope_level=0, ligne=63)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : health_recovery_rate (scope_level=0, ligne=66)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : health_decline_rate (scope_level=0, ligne=73)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : condition_recovery_rate (scope_level=0, ligne=80)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : condition_decline_rate (scope_level=0, ligne=87)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : condition_change (scope_level=0, ligne=94)
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : delta_condition (scope_level=1, ligne=111)
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : new_body_condition (scope_level=0, ligne=161)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : climate_decline (scope_level=0, ligne=186)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : hydration_decline (scope_level=0, ligne=196)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : condition_penalty (scope_level=0, ligne=209)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : disease_impact (scope_level=0, ligne=223)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : intervention_benefit (scope_level=0, ligne=236)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_health_decline (scope_level=0, ligne=266)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : delta_health (scope_level=0, ligne=296)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : new_livestock_health (scope_level=0, ligne=306)
+INFO:src.gaml_generator.generator:Collecte terminée : 33 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'herd_demography':
+------------------------------------------------------------------------------------------
+// 0. Retrieve Parameters and Status
+      // Reproduction Parameters
+      adult_female_reprod_rate = adult_female_reprod_rate /* property_016 */;
+      sub_adult_female_reprod_rate = sub_adult_female_reprod_rate /* property_017 */;
+      sex_ratio_male = sex_ratio /* property_101 */;
+
+      // Mortality and Status
+      drought_mortality_rate = drought_mortality_rate /* property_036 */;
+      livestock_health = livestock_health /* resource_040 */; // Scale 0 (worst) to 1 (best)
+      body_condition = body_condition /* resource_046 */; // Scale 0 (worst) to 1 (best)
+
+      // Aging Durations
+      young_male_duration = young_male_max_age - young_male_min_age /* property_014 */;
+      young_female_duration = young_female_max_age - young_female_min_age /* property_102 */;
+      sub_adult_duration = sub_adult_age_duration /* property_104 */;
+
+      // 1. Calculate Overall Mortality Multiplier (Health and Stress Link)
+      // Health Deficit (1.0 = perfect health, 0.0 = average health/condition is 0)
+      health_status_score = (livestock_health + body_condition) / 2.0;
+      health_deficit_factor = max(0.0, 1.0 - health_status_score);
+
+      // Use a sensitivity factor (Placeholder for future property, e.g., 0.5)
+      health_impact_sensitivity = 0.5;
+
+      // Overall Multiplier (Base 1.0 + Drought Shock + Health/Condition Penalty)
+      overall_mortality_multiplier = 1.0 + drought_mortality_rate + (health_deficit_factor * health_impact_sensitivity);
+      overall_mortality_multiplier = max(1.0, overall_mortality_multiplier);
+
+      // 2. Calculate Births (Applies to Young classes)
+      total_births = (adult_female_count * adult_female_reprod_rate)
+                  + (sub_adult_female_count * sub_adult_female_reprod_rate);
+
+      young_male_count_inflow = total_births * sex_ratio_male;
+      young_female_count_inflow = total_births * (1.0 - sex_ratio_male);
+
+      // 3. Calculate Mortality and Aging Transitions (Temporal Update)
+
+      // A. Young Male Class Transition (YM -> SAM)
+      aging_out_YM = young_male_count * (1.0 / max(1.0, young_male_duration));
+      deaths_YM = young_male_count * young_male_mortality_rate * overall_mortality_multiplier;
+
+      sub_adult_male_count /* resource_022 */ = sub_adult_male_count + aging_out_YM;
+      young_male_count /* resource_019 */ = max(0.0, young_male_count + young_male_count_inflow - deaths_YM - aging_out_YM);
+
+      // B. Young Female Class Transition (YF -> SAF)
+      aging_out_YF = young_female_count * (1.0 / max(1.0, young_female_duration));
+      deaths_YF = young_female_count * young_female_mortality_rate * overall_mortality_multiplier;
+
+      sub_adult_female_count /* resource_023 */ = sub_adult_female_count + aging_out_YF;
+      young_female_count /* resource_021 */ = max(0.0, young_female_count + young_female_count_inflow - deaths_YF - aging_out_YF);
+
+      // C. Sub-Adult Male Class Transition (SAM -> AM)
+      aging_out_SAM = sub_adult_male_count * (1.0 / max(1.0, sub_adult_duration));
+      deaths_SAM = sub_adult_male_count * sub_adult_male_mortality_rate * overall_mortality_multiplier;
+
+      adult_male_count /* resource_024 */ = adult_male_count + aging_out_SAM;
+      sub_adult_male_count /* resource_022 */ = max(0.0, sub_adult_male_count - deaths_SAM - aging_out_SAM);
+
+      // D. Sub-Adult Female Class Transition (SAF -> AF)
+      aging_out_SAF = sub_adult_female_count * (1.0 / max(1.0, sub_adult_duration));
+      deaths_SAF = sub_adult_female_count * sub_adult_female_mortality_rate * overall_mortality_multiplier;
+
+      adult_female_count /* resource_025 */ = adult_female_count + aging_out_SAF;
+      sub_adult_female_count /* resource_023 */ = max(0.0, sub_adult_female_count - deaths_SAF - aging_out_SAF);
+
+      // E. Adult Classes (Only Mortality)
+      deaths_AM = adult_male_count * adult_male_mortality_rate * overall_mortality_multiplier;
+      adult_male_count /* resource_024 */ = max(0.0, adult_male_count - deaths_AM);
+
+      deaths_AF = adult_female_count * adult_female_mortality_rate * overall_mortality_multiplier;
+      adult_female_count /* resource_025 */ = max(0.0, adult_female_count - deaths_AF);
+
+      // 4. Track Total Mortality (for output/metrics)
+      total_mortality = deaths_YM + deaths_YF + deaths_SAM + deaths_SAF + deaths_AM + deaths_AF;
+      // Suggestion: assigner total_mortality à une ressource dédiée pour suivi, ex. :
+      // total_mortality_resource /* resource_XXX */ = total_mortality;
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.136s, 770 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_016*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_017*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_101*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_036*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_040 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_046 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_014*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_102*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_104*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_022 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_019 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_023 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_021 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_024 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_022 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_025 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_023 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_024 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_025 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : adult_female_reprod_rate (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_female_reprod_rate (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sex_ratio_male (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sex_ratio (scope_level=0, ligne=21)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : drought_mortality_rate (scope_level=0, ligne=24)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : livestock_health (scope_level=0, ligne=31)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : body_condition (scope_level=0, ligne=38)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_male_duration (scope_level=0, ligne=45)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_male_max_age (scope_level=0, ligne=50)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_male_min_age (scope_level=0, ligne=53)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_female_duration (scope_level=0, ligne=56)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_female_max_age (scope_level=0, ligne=61)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_female_min_age (scope_level=0, ligne=64)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_duration (scope_level=0, ligne=67)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_age_duration (scope_level=0, ligne=71)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : health_status_score (scope_level=0, ligne=74)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : health_deficit_factor (scope_level=0, ligne=88)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : health_impact_sensitivity (scope_level=0, ligne=101)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : overall_mortality_multiplier (scope_level=0, ligne=106)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_births (scope_level=0, ligne=134)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : adult_female_count (scope_level=0, ligne=141)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_female_count (scope_level=0, ligne=149)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_male_count_inflow (scope_level=0, ligne=154)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_female_count_inflow (scope_level=0, ligne=164)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : aging_out_YM (scope_level=0, ligne=178)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_male_count (scope_level=0, ligne=183)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : deaths_YM (scope_level=0, ligne=196)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_male_mortality_rate (scope_level=0, ligne=205)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_male_count (scope_level=0, ligne=210)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : aging_out_YF (scope_level=0, ligne=256)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_female_count (scope_level=0, ligne=261)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : deaths_YF (scope_level=0, ligne=274)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_female_mortality_rate (scope_level=0, ligne=283)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : aging_out_SAM (scope_level=0, ligne=334)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : deaths_SAM (scope_level=0, ligne=352)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_male_mortality_rate (scope_level=0, ligne=361)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : adult_male_count (scope_level=0, ligne=366)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : aging_out_SAF (scope_level=0, ligne=396)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : deaths_SAF (scope_level=0, ligne=414)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_female_mortality_rate (scope_level=0, ligne=423)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : deaths_AM (scope_level=0, ligne=458)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : adult_male_mortality_rate (scope_level=0, ligne=467)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : deaths_AF (scope_level=0, ligne=487)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : adult_female_mortality_rate (scope_level=0, ligne=496)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_mortality (scope_level=0, ligne=516)
+INFO:src.gaml_generator.generator:Collecte terminée : 45 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'manure_production':
+------------------------------------------------------------------------------------------
+// 1. Get raw waste production from the previous time step (outputs of process_023)
+        total_waste_mass = faeces + urine /* resource_050 */;
+
+        // 2. Apply deposition/loss rate
+        deposition_factor = manure_deposition_rate /* property_105 */;
+        final_manure_addition = total_waste_mass * deposition_factor;
+
+        // 3. Update the Manure Resource
+        manure /* resource_031 */ = manure + final_manure_addition;
+
+        // 4. Clear/Reset the intermediate waste resources
+        faeces /* resource_049 */ = 0;
+        urine /* resource_050 */ = 0;
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.023s, 58 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_050 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_105*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_031 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_049 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_050 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_waste_mass (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : faeces (scope_level=0, ligne=8)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : urine (scope_level=0, ligne=11)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : deposition_factor (scope_level=0, ligne=14)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : manure_deposition_rate (scope_level=0, ligne=18)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : final_manure_addition (scope_level=0, ligne=21)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : manure (scope_level=0, ligne=31)
+INFO:src.gaml_generator.generator:Collecte terminée : 7 variables, 0 fonctions
+DEBUG:src.gaml_generator.generator:Agent Grasslands (ID: agent_008) → 0 processus liés
+DEBUG:src.gaml_generator.generator:Agent WaterSource (ID: agent_012) → 0 processus liés
+DEBUG:src.gaml_generator.generator:Agent Biodiversity (ID: agent_015) → 0 processus liés
+DEBUG:src.gaml_generator.generator:Agent ClimateSystem (ID: agent_020) → 0 processus liés
+DEBUG:src.gaml_generator.generator:Agent HerbaceousCover (ID: agent_003) → 1 processus liés
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'Herbaceous_cover_growth':
+------------------------------------------------------------------------------------------
+// 1. Get Environmental Limiting Factors
+      optimal_rainfall = optimal_rainfall /* property_031 */;
+      rainfall = rainfall /* resource_010 */;
+      rain_factor = min(1, rainfall / optimal_rainfall);
+
+      soil_nitrogen_current = soil_nitrogen /* resource_001 */;
+      n_factor = min(1, soil_nitrogen_current / n_opt);
+
+      // 2. Calculate Grazing Pressure (Stress Factor)
+      fodder_consumption_rate = fodder_consumption_rate /* property_060 */;
+      total_demand = (young_male_count + young_female_count +
+                      sub_adult_male_count + sub_adult_female_count +
+                      adult_male_count + adult_female_count) * fodder_consumption_rate;
+
+      max_grazing_capacity = max_grazing_capacity /* #property_073 */;
+      seasonal_fodder_current = seasonal_fodder /* resource_041 */;
+
+      if (seasonal_fodder_current > 0) {
+        // Calculate pressure ratio. Denominator is capped at max(1, ...) to prevent division by zero
+        grazing_pressure = min(1.0, total_demand / max(1, seasonal_fodder_current * max_grazing_capacity));
+      } else {
+        // Maximum pressure (1.0) when no fodder is available
+        grazing_pressure = 1.0;
+      }
+
+      // Stress is the reduction factor (0-1) where 1 is no stress and 0 is max stress
+      stress = max(0, 1 - grazing_pressure);
+
+      // 3. Calculate Final Growth
+      r_max = herbaceous_growth_rate /* property_039 */;
+      fodder_quality = fodder_quality /* property_053 */;
+
+      growth = r_max * rain_factor * n_factor * stress * fodder_quality;
+
+      // 4. Update Resources (Mass Balance)
+      seasonal_fodder = seasonal_fodder + growth;
+
+      // Nitrogen Uptake (Robustness: Ensure Soil_Nitrogen does not go below zero)
+      n_uptake_ratio = herbaceous_n_uptake_ratio /* property_096 */;
+      n_consumption_needed = growth * n_uptake_ratio;
+
+      n_deducted = min(n_consumption_needed, soil_nitrogen_current); // Deduct only what's available
+      soil_nitrogen = soil_nitrogen - n_deducted;
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.107s, 502 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_031*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_010 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_001 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_060*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_073*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_041 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_039*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_053*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_096*/
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : optimal_rainfall (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : rainfall (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : rain_factor (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : soil_nitrogen_current (scope_level=0, ligne=31)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : soil_nitrogen (scope_level=0, ligne=35)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_factor (scope_level=0, ligne=38)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_opt (scope_level=0, ligne=50)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : fodder_consumption_rate (scope_level=0, ligne=52)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_demand (scope_level=0, ligne=59)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_male_count (scope_level=0, ligne=73)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : young_female_count (scope_level=0, ligne=76)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_male_count (scope_level=0, ligne=79)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : sub_adult_female_count (scope_level=0, ligne=93)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : adult_male_count (scope_level=0, ligne=138)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : adult_female_count (scope_level=0, ligne=277)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : max_grazing_capacity (scope_level=0, ligne=282)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : seasonal_fodder_current (scope_level=0, ligne=289)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : seasonal_fodder (scope_level=0, ligne=293)
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : grazing_pressure (scope_level=1, ligne=304)
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : stress (scope_level=0, ligne=332)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : r_max (scope_level=0, ligne=345)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : herbaceous_growth_rate (scope_level=0, ligne=349)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : fodder_quality (scope_level=0, ligne=352)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : growth (scope_level=0, ligne=359)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_uptake_ratio (scope_level=0, ligne=446)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : herbaceous_n_uptake_ratio (scope_level=0, ligne=450)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_consumption_needed (scope_level=0, ligne=453)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_deducted (scope_level=0, ligne=463)
+INFO:src.gaml_generator.generator:Collecte terminée : 28 variables, 0 fonctions
+DEBUG:src.gaml_generator.generator:Agent Crop (ID: agent_007) → 3 processus liés
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'crop_production':
+------------------------------------------------------------------------------------------
+// 1. Determine Limiting Factors
+      r_max = crop_yield_rate_r_max /* property_120 */;
+      total_crop_area = crop_area /* property_065 */;
+
+      // Get current resource values
+      rainfall_current = rainfall /* resource_010 */;
+      soil_nitrogen_current = soil_nitrogen /* resource_001 */;
+      optimal_rainfall = optimal_rainfall /* property_031 */;
+      n_opt = n_opt /* property_097 */;
+
+      // Environmental factors
+      rain_factor = min(1, rainfall_current / optimal_rainfall);
+      n_factor = min(1, soil_nitrogen_current / n_opt);
+
+      // 2. Calculate Total Biomass Produced
+      total_biomass = r_max * total_crop_area * rain_factor * n_factor;
+
+      // 3. Partition Biomass into Yield and Residue (Harvest Index)
+      harvest_index = harvest_index /* property_121 */;
+
+      crop_yield_produced = total_biomass * harvest_index;
+      crop_residue_produced = total_biomass * (1 - harvest_index);
+
+      // 4. Calculate Nitrogen Uptake (Consumption with Robustness Check)
+      n_uptake_ratio = crop_n_uptake_ratio /* property_050 */;
+      n_consumed_needed = total_biomass * n_uptake_ratio;
+
+      // The amount deducted cannot exceed the current stock
+      n_consumed_actual = min(n_consumed_needed, soil_nitrogen_current);
+
+      // 5. Update Resources (Mass Balance)
+      // A. Add Residue to the stock (held by Crops Agent)
+      crop_residue /* resource_035 */ = crop_residue + crop_residue_produced;
+
+      // B. Add Yield
+      crop_yield /* resource_028 */ = crop_yield + crop_yield_produced;
+
+      // C. Consume Soil Nitrogen (Mass Balance)
+      soil_nitrogen /* resource_001 */ = soil_nitrogen - n_consumed_actual;
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.052s, 211 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_120*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_065*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_010 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_001 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_031*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_097*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_121*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_050*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_035 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_028 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_001 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : r_max (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_yield_rate_r_max (scope_level=0, ligne=7)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_crop_area (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_area (scope_level=0, ligne=14)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : rainfall_current (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : rainfall (scope_level=0, ligne=21)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : soil_nitrogen_current (scope_level=0, ligne=24)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : soil_nitrogen (scope_level=0, ligne=28)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : optimal_rainfall (scope_level=0, ligne=31)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_opt (scope_level=0, ligne=38)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : rain_factor (scope_level=0, ligne=45)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_factor (scope_level=0, ligne=59)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_biomass (scope_level=0, ligne=73)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : harvest_index (scope_level=0, ligne=103)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_yield_produced (scope_level=0, ligne=110)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_residue_produced (scope_level=0, ligne=120)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_uptake_ratio (scope_level=0, ligne=134)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_n_uptake_ratio (scope_level=0, ligne=138)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_consumed_needed (scope_level=0, ligne=141)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : n_consumed_actual (scope_level=0, ligne=151)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_residue (scope_level=0, ligne=162)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_yield (scope_level=0, ligne=173)
+INFO:src.gaml_generator.generator:Collecte terminée : 22 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'crop_residue_partitioning':
+------------------------------------------------------------------------------------------
+// Total residue available
+      residue_stock = crop_residue /* resource_035 */;
+
+      // Get Proportions
+      grazing_prop = residue_grazing_prop /* property_124 */;
+      incorporation_prop = residue_incorp_prop /* property_125 */;
+
+      // 1. Conditional Execution and Proportion Scaling (Robustness Check)
+      if (residue_stock > 0) {
+        // Calculate total requested consumption proportion
+        total_management_prop = grazing_prop + incorporation_prop;
+
+        if (total_management_prop > 1.0) {
+          // Scale proportions down so their sum equals 1.0, consuming all residue
+          grazing_prop_actual = grazing_prop / total_management_prop;
+          incorporation_prop_actual = incorporation_prop / total_management_prop;
+        } else {
+          // Use original proportions (leaving unallocated residue in stock)
+          grazing_prop_actual = grazing_prop;
+          incorporation_prop_actual = incorporation_prop;
+        }
+
+        // 2. Calculate final allocations
+        residue_to_feed = residue_stock * grazing_prop_actual;
+        residue_to_litter = residue_stock * incorporation_prop_actual;
+
+        // Total mass consumed from stock
+        total_residue_consumed = residue_to_feed + residue_to_litter;
+
+        // 3. Update Resources (Mass Balance)
+        // Consume the stock (resource_035)
+        crop_residue /* resource_035 */ = crop_residue - total_residue_consumed;
+
+        // Increase destination stocks
+        crop_residue_to_feed /* resource_033 */ = crop_residue_to_feed + residue_to_feed;
+        cultivated_litter /* resource_008 */ = cultivated_litter + residue_to_litter;
+      } else {
+        // No action if no residue is available
+        residue_to_feed = 0;
+        residue_to_litter = 0;
+      }
+INFO:src.gaml_generator.generator:✅ Grammaire chargée (parser=earley)
+INFO:src.gaml_generator.generator:Parsing réussi en 0.053s, 171 nœuds
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_035 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_124*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /*property_125*/
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_035 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_033 */
+DEBUG:src.gaml_generator.generator:Annotation ajoutée ligne 0: /* resource_008 */
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : residue_stock (scope_level=0, ligne=3)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_residue (scope_level=0, ligne=7)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : grazing_prop (scope_level=0, ligne=10)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : residue_grazing_prop (scope_level=0, ligne=14)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : incorporation_prop (scope_level=0, ligne=17)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : residue_incorp_prop (scope_level=0, ligne=21)
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 1
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_management_prop (scope_level=1, ligne=32)
+DEBUG:src.gaml_generator.generator:Entrée scope niveau 2
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : grazing_prop_actual (scope_level=2, ligne=50)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : incorporation_prop_actual (scope_level=2, ligne=60)
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 1
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : residue_to_feed (scope_level=1, ligne=83)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : residue_to_litter (scope_level=1, ligne=93)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : total_residue_consumed (scope_level=1, ligne=103)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : crop_residue_to_feed (scope_level=1, ligne=124)
+INFO:src.gaml_generator.generator:VARIABLE DÉTECTÉE : cultivated_litter (scope_level=1, ligne=135)
+DEBUG:src.gaml_generator.generator:Sortie scope, niveau actuel 0
+INFO:src.gaml_generator.generator:Collecte terminée : 14 variables, 0 fonctions
+--------------------------------=== PSEUDO-CODE BRUT DEBUG ===--------------------------------
+Check before acting -> Corps brut pour 'cultivated_forage_harvest':
+------------------------------------------------------------------------------------------
+// 1. Get available raw stock and parameters
+      raw_forage_stock = forage_crop_production /* resource_072 */;
+      litter_proportion = litter_proportion /* property_155 */;
+      hay_harvest_efficiency = hay_harvest_efficiency /* property_156 */;
+
+      // 2. Conditional Execution (Check if there is stock to harvest)
+      if (raw_forage_stock > 0) {
+        // 3. Partition the harvest
+
+        // Mass that remains as litter/bedding (resource_008)
+        litter_to_bedding = raw_forage_stock * litter_proportion;
+
+        // Potential hay mass (raw stock minus litter proportion)
+        potential_hay_mass = raw_forage_stock * (1 - litter_proportion);
+
+        // Final hay mass after drying/harvest losses (resource_032)
+        hay_produced = potential_hay_mass * hay_harvest_efficiency;
+
+        // Total mass consumed from the raw stock (mass balance)
+        total_mass_consumed = raw_forage_stock;
+
+        // 4. Update Resources (Mass Balance)
+
+        // Consume source (forage_crop_production resource_072)
+        forage_crop_production /* resource_072 */ = forage_crop_production - total_mass_consumed;
+
+        // Increase destination 1: Hay (resource_032)
+        hay /* resource_032 */ = hay + hay_produced;
+
+        // Increase destination 2: Cultivated Litter (resource_008)
+        cultivated_litter /* resource_008 */ = cultivated_litter + litter_to_bedding;
+      } else {
+        hay_produced = 0;
+        litter_to_bedding = 0;
+      }

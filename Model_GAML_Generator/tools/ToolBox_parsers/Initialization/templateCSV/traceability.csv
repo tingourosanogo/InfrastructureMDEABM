@@ -1,0 +1,4 @@
+```csv
+traceability_type,parameter,quality_score,assessment_method,experts,uncertainty_type,magnitude,propagation_method,planned_methods,parameters_included,software
+"<Type de traçabilité, ex. data_quality>","<Paramètre, ex. discount_rate>","<Score de qualité, ex. 0.8>","<Méthode d'évaluation, ex. expert_judgment>","<Experts, ex. [{\"name\": \"Dr. Economist\", \"confidence\": \"high\"}]>","<Type d'incertitude, ex. epistemic>","<Magnitude, ex. medium>","<Méthode de propagation, ex. monte_carlo>","<Méthodes prévues, ex. [\"SOBOL\", \"Morris\"]>","<Paramètres inclus, ex. all>","<Logiciel, ex. SALib>"
+```

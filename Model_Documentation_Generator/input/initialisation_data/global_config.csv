@@ -1,0 +1,3 @@
+section,start_date,end_date,time_step,warmup_period,extent,projection,resolution
+temporal,2020-01-01,2030-12-31,1 day,365 days,,,
+spatial,,,,,"[""min_x"", ""min_y"", ""max_x"", ""max_y""]",EPSG:4326,100 m

@@ -1,0 +1,742 @@
+{
+    "indicators": [
+        {
+            "id": "PA.01.01",
+            "name": "Charge animale instantanée",
+            "category": "Pastoralisme",
+            "source": "Dutilly-Diane et al. (2007), Journal of Arid Environments",
+            "description": "Nombre d'unités de bétail (UBT) par hectare de pâturage disponible. Indicateur clé de pression sur les ressources fourragères.\n",
+            "formula": "CA = (Nombre UBT) / (Surface pâturable)",
+            "unit": "UBT/ha",
+            "variables": [
+                {
+                    "name": "nombre_ubt",
+                    "entity": "Troupeau",
+                    "definition": "Effectif converti en unité de bétail tropical",
+                    "unit": "UBT"
+                },
+                {
+                    "name": "surface_paturage",
+                    "entity": "Espace",
+                    "definition": "Surface accessible au pâturage",
+                    "unit": "ha"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "facteur_saison",
+                    "entity": "Système",
+                    "definition": "Coefficient saisonnier d'ajustement",
+                    "value": 1.2,
+                    "unit": "coefficient"
+                }
+            ]
+        },
+        {
+            "id": "PA.02.01",
+            "name": "Taux de rotation des pâturages",
+            "category": "Pastoralisme",
+            "source": "Vallentine (2001), Grazing Management",
+            "description": "Fréquence de rotation des troupeaux entre parcelles. Critique pour la durabilité des parcours.\n",
+            "formula": "TR = (Nombre rotations) / (Période analysée)",
+            "unit": "rotations/an",
+            "variables": [
+                {
+                    "name": "nombre_rotations",
+                    "entity": "Troupeau",
+                    "definition": "Nombre de déplacements entre parcelles",
+                    "unit": "n"
+                },
+                {
+                    "name": "periode_analyse",
+                    "entity": "Système",
+                    "definition": "Période d'observation",
+                    "unit": "jours"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "duree_min_sejour",
+                    "entity": "Parcelle",
+                    "definition": "Durée minimale entre deux rotations",
+                    "value": 21,
+                    "unit": "jours"
+                }
+            ]
+        },
+        {
+            "id": "AE.01.01",
+            "name": "Indice de diversité culturale",
+            "category": "Agroécologie",
+            "source": "Altieri (1999), Agroecology",
+            "description": "Mesure la diversité des cultures selon l'indice de Shannon. Corrélé à la résilience du système.\n",
+            "formula": "IDC = -Σ(p_i * ln(p_i))",
+            "unit": "n.d.",
+            "variables": [
+                {
+                    "name": "p_i",
+                    "entity": "Parcelle",
+                    "definition": "Proportion de la culture i dans la rotation",
+                    "unit": "[0-1]"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "seuil_diversite",
+                    "entity": "Système",
+                    "definition": "Valeur cible pour une diversité optimale",
+                    "value": 1.8,
+                    "unit": "indice"
+                }
+            ]
+        },
+        {
+            "id": "PA.03.01",
+            "name": "Taux de charge soutenable",
+            "category": "Pastoralisme",
+            "source": "Sandford (1983), Management of Pastoral Development",
+            "description": "Capacité de charge maximale sans dégradation à long terme. Basé sur la productivité fourragère.\n",
+            "formula": "TCS = (Production fourragère annuelle) / (Consommation UBT)",
+            "unit": "UBT/ha/an",
+            "variables": [
+                {
+                    "name": "production_fourrage",
+                    "entity": "Parcelle",
+                    "definition": "Biomasse fourragère produite annuellement",
+                    "unit": "kg MS/ha"
+                },
+                {
+                    "name": "consommation_ubt",
+                    "entity": "Troupeau",
+                    "definition": "Besoin annuel moyen par UBT",
+                    "unit": "kg MS/UBT"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "facteur_resilience",
+                    "entity": "Ecosystème",
+                    "definition": "Coefficient de résilience des parcours",
+                    "value": 0.85,
+                    "unit": "coefficient"
+                }
+            ]
+        },
+        {
+            "id": "AE.02.01",
+            "name": "Taux de couverture végétale",
+            "category": "Agroécologie",
+            "source": "FAO (2021), Voluntary Guidelines for Soil Conservation",
+            "description": "Pourcentage de sol couvert par la végétation vivante ou morte. Réduit l'érosion et améliore l'infiltration.\n",
+            "formula": "TCV = (Surface couverte) / (Surface totale) * 100",
+            "unit": "%",
+            "variables": [
+                {
+                    "name": "surface_couverte",
+                    "entity": "Parcelle",
+                    "definition": "Surface sous couvert végétal",
+                    "unit": "ha"
+                },
+                {
+                    "name": "surface_totale",
+                    "entity": "Parcelle",
+                    "definition": "Surface totale de l'unité d'observation",
+                    "unit": "ha"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "seuil_optimal",
+                    "entity": "Système",
+                    "definition": "Couverture végétale cible",
+                    "value": 70,
+                    "unit": "%"
+                }
+            ]
+        },
+        {
+            "id": "PA.04.01",
+            "name": "Dépendance aux aliments externes",
+            "category": "Pastoralisme",
+            "source": "Hiernaux et al. (2016), Pastoralisme en Afrique",
+            "description": "Proportion des besoins alimentaires du bétail couverte par des achats externes. Indicateur de vulnérabilité économique.\n",
+            "formula": "DAE = (Quantité aliments achetés) / (Besoins totaux) * 100",
+            "unit": "%",
+            "variables": [
+                {
+                    "name": "aliments_achetes",
+                    "entity": "Troupeau",
+                    "definition": "Quantité d'aliments complémentaires acquis",
+                    "unit": "kg MS"
+                },
+                {
+                    "name": "besoins_totaux",
+                    "entity": "Troupeau",
+                    "definition": "Requête alimentaire annuelle du troupeau",
+                    "unit": "kg MS"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "prix_moyen_aliment",
+                    "entity": "Marché",
+                    "definition": "Coût moyen des aliments achetés",
+                    "value": 0.35,
+                    "unit": "€/kg MS"
+                }
+            ]
+        },
+        {
+            "id": "AE.03.01",
+            "name": "Indice de connectivité biologique",
+            "category": "Agroécologie",
+            "source": "Burel & Baudry (2003), Landscape Ecology",
+            "description": "Mesure la connectivité des habitats naturels dans la matrice agricole. Essentiel pour la biodiversité fonctionnelle.\n",
+            "formula": "ICB = Σ(Superficie corridor_i * Pondération_i)",
+            "unit": "ha.pts",
+            "variables": [
+                {
+                    "name": "superficie_corridor",
+                    "entity": "Paysage",
+                    "definition": "Superficie du corridor écologique",
+                    "unit": "ha"
+                },
+                {
+                    "name": "ponderation_ecologique",
+                    "entity": "Paysage",
+                    "definition": "Valeur de connectivité spécifique à l'habitat",
+                    "unit": "points"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "seuil_connectivite",
+                    "entity": "Paysage",
+                    "definition": "Seuil minimum pour une connectivité fonctionnelle",
+                    "value": 0.75,
+                    "unit": "sans dimension"
+                }
+            ]
+        },
+        {
+            "id": "PA.05.01",
+            "name": "Productivité laitière spécifique",
+            "category": "Pastoralisme",
+            "source": "Corniaux et al. (2014), Revue Elevage Méd. Vét. Pays Trop.",
+            "description": "Production laitière rapportée au nombre de femelles en lactation. Indicateur clé de performance zootechnique.\n",
+            "formula": "PLS = (Production laitière annuelle) / (Nombre femelles)",
+            "unit": "L/femelle/an",
+            "variables": [
+                {
+                    "name": "production_laitiere",
+                    "entity": "Troupeau",
+                    "definition": "Volume total de lait produit sur l'année",
+                    "unit": "L"
+                },
+                {
+                    "name": "nombre_femelles",
+                    "entity": "Troupeau",
+                    "definition": "Effectif moyen des femelles en lactation",
+                    "unit": "têtes"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "duree_lactation",
+                    "entity": "Troupeau",
+                    "definition": "Période standard de lactation",
+                    "value": 305,
+                    "unit": "jours"
+                }
+            ]
+        },
+        {
+            "id": "AE.04.01",
+            "name": "Taux de matière organique du sol",
+            "category": "Agroécologie",
+            "source": "Lal (2020), Soil Science Society of America Journal",
+            "description": "Concentration en matière organique dans les 20 premiers cm de sol. Proxy de la santé des sols.\n",
+            "formula": "MOS = (Poids MO) / (Poids sol sec) * 100",
+            "unit": "%",
+            "variables": [
+                {
+                    "name": "poids_matiere_organique",
+                    "entity": "Sol",
+                    "definition": "Poids sec de la matière organique",
+                    "unit": "g"
+                },
+                {
+                    "name": "poids_sol_sec",
+                    "entity": "Sol",
+                    "definition": "Poids total du sol séché à l'étuve",
+                    "unit": "g"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "profondeur_prelevement",
+                    "entity": "Sol",
+                    "definition": "Profondeur standard d'échantillonnage",
+                    "value": 20,
+                    "unit": "cm"
+                }
+            ]
+        },
+        {
+            "id": "PA.06.01",
+            "name": "Indice de mobilité pastorale",
+            "category": "Pastoralisme",
+            "source": "Niamir-Fuller (1999), Managing Mobility in African Rangelands",
+            "description": "Distance annuelle moyenne parcourue par le troupeau. Clé pour l'accès aux ressources.\n",
+            "formula": "IMP = (Distance totale) / (Nombre jours)",
+            "unit": "km/jour",
+            "variables": [
+                {
+                    "name": "distance_parcourue",
+                    "entity": "Troupeau",
+                    "definition": "Distance totale annuelle de transhumance",
+                    "unit": "km"
+                },
+                {
+                    "name": "jours_paturage",
+                    "entity": "Troupeau",
+                    "definition": "Nombre de jours de pâturage effectifs",
+                    "unit": "jours"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "facteur_saison",
+                    "entity": "Climat",
+                    "definition": "Coefficient d'ajustement saisonnier",
+                    "value": 1.2,
+                    "unit": "sans dimension"
+                }
+            ]
+        },
+        {
+            "id": "AE.05.01",
+            "name": "Efficience d'utilisation de l'eau",
+            "category": "Agroécologie",
+            "source": "Rockström et al. (2007), Agricultural Water Management",
+            "description": "Biomasse produite par unité d'eau consommée. Critique en zones arides.\n",
+            "formula": "WUE = (Production biomasse) / (ETR)",
+            "unit": "kg/m³",
+            "variables": [
+                {
+                    "name": "production_biomasse",
+                    "entity": "Culture",
+                    "definition": "Biomasse aérienne sèche produite",
+                    "unit": "kg/ha"
+                },
+                {
+                    "name": "evapotranspiration",
+                    "entity": "Climat",
+                    "definition": "Evapotranspiration réelle de la culture",
+                    "unit": "mm"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "coefficient_culture",
+                    "entity": "Culture",
+                    "definition": "Coefficient spécifique à l'espèce cultivée",
+                    "value": 0.85,
+                    "unit": "sans dimension"
+                }
+            ]
+        },
+        {
+            "id": "PA.07.01",
+            "name": "Taux de renouvellement du troupeau",
+            "category": "Pastoralisme",
+            "source": "Lesnoff et al. (2012), Dynamic of Livestock Systems",
+            "description": "Proportion d'animaux remplacés annuellement. Indicateur de gestion démographique.\n",
+            "formula": "TRT = (Nombre sorties) / (Effectif moyen) * 100",
+            "unit": "%/an",
+            "variables": [
+                {
+                    "name": "nombre_sorties",
+                    "entity": "Troupeau",
+                    "definition": "Animaux vendus ou décédés",
+                    "unit": "têtes"
+                },
+                {
+                    "name": "effectif_moyen",
+                    "entity": "Troupeau",
+                    "definition": "Effectif moyen annuel du troupeau",
+                    "unit": "têtes"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "taux_optimal",
+                    "entity": "Troupeau",
+                    "definition": "Valeur cible pour une gestion durable",
+                    "value": 20,
+                    "unit": "%"
+                }
+            ]
+        },
+        {
+            "id": "AE.06.01",
+            "name": "Indice d'autonomie en intrants",
+            "category": "Agroécologie",
+            "source": "Gliessman (2015), Agroecology",
+            "description": "Part des intrants produits sur l'exploitation. Mesure la circularité du système.\n",
+            "formula": "IAI = (Intrants internes) / (Intrants totaux) * 100",
+            "unit": "%",
+            "variables": [
+                {
+                    "name": "intrants_internes",
+                    "entity": "Système",
+                    "definition": "Intrants produits sur l'exploitation",
+                    "unit": "kg"
+                },
+                {
+                    "name": "intrants_totaux",
+                    "entity": "Système",
+                    "definition": "Consommation totale d'intrants",
+                    "unit": "kg"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "seuil_autonomie",
+                    "entity": "Système",
+                    "definition": "Niveau minimal pour une exploitation durable",
+                    "value": 60,
+                    "unit": "%"
+                }
+            ]
+        },
+        {
+            "id": "PA.08.01",
+            "name": "Pression pastorale équivalente",
+            "category": "Pastoralisme",
+            "source": "Bourn & Wint (1994), ODI Pastoral Development Network",
+            "description": "Charge animale ajustée par la productivité des parcours. Permet des comparaisons intersites.\n",
+            "formula": "PPE = (UBT) / (Indice productivité)",
+            "unit": "UBT/ha/indice",
+            "variables": [
+                {
+                    "name": "unite_betail_total",
+                    "entity": "Troupeau",
+                    "definition": "Nombre d'unités de bétail tropical",
+                    "unit": "UBT"
+                },
+                {
+                    "name": "indice_productivite",
+                    "entity": "Parcours",
+                    "definition": "Productivité fourragère du parcours",
+                    "unit": "kg MS/ha"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "capacite_charge",
+                    "entity": "Parcours",
+                    "definition": "Charge animale soutenable à long terme",
+                    "value": 0.5,
+                    "unit": "UBT/ha"
+                }
+            ]
+        },
+        {
+            "id": "AE.07.01",
+            "name": "Indice de spécialisation parcellaire",
+            "category": "Agroécologie",
+            "source": "Bennett et al. (2012), Landscape Ecology",
+            "description": "Nombre moyen de fonctions par parcelle (production, biodiversité...). Inverse de la spécialisation.\n",
+            "formula": "ISP = Σ(Fonctions_i) / (Nombre parcelles)",
+            "unit": "fonctions/parcelle",
+            "variables": [
+                {
+                    "name": "nombre_fonctions",
+                    "entity": "Parcelle",
+                    "definition": "Fonctions identifiées par parcelle",
+                    "unit": "nombre"
+                },
+                {
+                    "name": "nombre_parcelles",
+                    "entity": "Système",
+                    "definition": "Parcelles totales dans l'exploitation",
+                    "unit": "nombre"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "poids_fonction",
+                    "entity": "Système",
+                    "definition": "Coefficient d'importance relative des fonctions",
+                    "value": 1.0,
+                    "unit": "sans dimension"
+                }
+            ]
+        },
+        {
+            "id": "CA.01.01",
+            "name": "Tendance d'évolution de la pluviométrie",
+            "category": "Environnemental",
+            "source": "Données MétéoFrance 2023",
+            "description": "Analyse l'évolution de la pluviométrie dans le territoire. Indicateur de caractérisation de la vulnérabilité climatique. Valeurs négatives = baisse, positives = hausse.\n",
+            "formula": "CA.01.01 = a * CA.01.01 + (pluviométrie - pluviométrie-1)",
+            "unit": "% de variation annuelle",
+            "variables": [
+                {
+                    "name": "pluviométrie",
+                    "entity": "Climat",
+                    "definition": "La quantité de pluie annuelle cette année",
+                    "unit": "mm/an"
+                },
+                {
+                    "name": "pluviométrie-1",
+                    "entity": "Climat",
+                    "definition": "La quantité de pluie annuelle l'année précédente (n-1)",
+                    "unit": "mm/an"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "a",
+                    "entity": "Climat",
+                    "definition": "Facteur d'amortissement du passé",
+                    "value": 0.1,
+                    "unit": "sans"
+                }
+            ]
+        },
+        {
+            "id": "CA.02.01",
+            "name": "Taux de croissance annuelle de la population",
+            "category": "Démographique",
+            "source": "INSEE 2022",
+            "description": "Croissance démographique dans les terroirs sur 30 ans. Indicateur de pression anthropique (2,6% aux derniers calculs).\n",
+            "formula": "Donnée directe (pas de calcul)",
+            "unit": "%",
+            "parameters": [
+                {
+                    "name": "taux-croissance",
+                    "entity": "ActeurIndividuel",
+                    "definition": "Taux de croissance démographique du foyer",
+                    "value": 2.6,
+                    "unit": "%"
+                }
+            ]
+        },
+        {
+            "id": "EC.01.01",
+            "name": "Rentabilité moyenne des exploitations",
+            "category": "Économique",
+            "source": "FAO (2018), Agricultural Profitability Indicators",
+            "description": "Marge brute moyenne par hectare cultivé",
+            "formula": "(revenu_total - couts_production) / surface_totale",
+            "unit": "€/ha/an",
+            "variables": [
+                {
+                    "name": "revenu_total",
+                    "entity": "Exploitation",
+                    "definition": "Chiffre d'affaires annuel",
+                    "unit": "€/an"
+                },
+                {
+                    "name": "couts_production",
+                    "entity": "Exploitation",
+                    "definition": "Coûts opérationnels annuels",
+                    "unit": "€/an"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "surface_totale",
+                    "entity": "Espace",
+                    "definition": "Surface cultivée totale",
+                    "value": 1.0,
+                    "unit": "ha"
+                }
+            ]
+        },
+        {
+            "id": "SO.01.01",
+            "name": "Taux d'emploi local",
+            "category": "Social",
+            "source": "OCDE (2020), Local Employment Dynamics",
+            "description": "Part de la main d'œuvre issue du territoire",
+            "formula": "emplois_locaux / emplois_totaux * 100",
+            "unit": "%",
+            "variables": [
+                {
+                    "name": "emplois_locaux",
+                    "entity": "ActeurIndividuel",
+                    "definition": "Nombre de travailleurs résidant dans le territoire",
+                    "unit": "personnes"
+                },
+                {
+                    "name": "emplois_totaux",
+                    "entity": "ActeurIndividuel",
+                    "definition": "Nombre total de travailleurs",
+                    "unit": "personnes"
+                }
+            ]
+        },
+        {
+            "id": "AE.07.02",
+            "name": "Diversité culturale",
+            "category": "Agroécologie",
+            "source": "Altieri (1999), Agroecology Handbook",
+            "description": "Nombre moyen d'espèces cultivées par parcelle",
+            "formula": "Σ(espèces_i) / (surface_observée)",
+            "unit": "espèces/parcelle",
+            "variables": [
+                {
+                    "name": "especes_cultivees",
+                    "entity": "Parcelle",
+                    "definition": "Nombre d'espèces distinctes cultivées",
+                    "unit": "nombre"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "surface_observée",
+                    "entity": "Espace",
+                    "definition": "Surface échantillonnée",
+                    "value": 1.0,
+                    "unit": "ha"
+                }
+            ]
+        },
+        {
+            "id": "AE.07.03",
+            "name": "Diversité culturale",
+            "category": "Agroécologie",
+            "source": "Altieri et al., 2015 - Agroecology Principles",
+            "description": "Nombre moyen d'espèces cultivées par parcelle",
+            "formula": "Σ(espèces_i) / (nombre_parcelles)",
+            "unit": "espèces/parcelle",
+            "variables": [
+                {
+                    "name": "especes_cultivees",
+                    "entity": "Parcelle",
+                    "definition": "Nombre d'espèces identifiées",
+                    "unit": "nombre"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "poids_espece",
+                    "entity": "Système",
+                    "definition": "Coefficient de valeur écologique",
+                    "value": 1.2,
+                    "unit": "sans dimension"
+                }
+            ]
+        },
+        {
+            "id": "CL.03.01",
+            "name": "Bilan carbone",
+            "category": "Climat",
+            "source": "IPCC (2019), GHG Guidelines",
+            "description": "Émissions nettes de GES par hectare",
+            "formula": "(émissions - séquestration) / surface",
+            "unit": "tCO2eq/ha/an",
+            "variables": [
+                {
+                    "name": "émissions",
+                    "entity": "Exploitation",
+                    "definition": "Émissions totales de GES",
+                    "unit": "tCO2eq/an"
+                },
+                {
+                    "name": "séquestration",
+                    "entity": "Sol",
+                    "definition": "Carbone séquestré dans les sols",
+                    "unit": "tCO2eq/an"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "surface",
+                    "entity": "Espace",
+                    "definition": "Surface agricole utile",
+                    "value": 1.0,
+                    "unit": "ha"
+                }
+            ]
+        },
+        {
+            "id": "CL.03.02",
+            "name": "Indice de résilience climatique",
+            "category": "Climat",
+            "source": "IPCC (2022), AR6 Report",
+            "description": "Capacité à maintenir la production sous stress climatique",
+            "formula": "(production_reelle / production_potentielle) * 100",
+            "unit": "%",
+            "variables": [
+                {
+                    "name": "production_reelle",
+                    "entity": "Exploitation",
+                    "definition": "Production effective en année stressante",
+                    "unit": "t/ha"
+                },
+                {
+                    "name": "production_potentielle",
+                    "entity": "Exploitation",
+                    "definition": "Production théorique optimale",
+                    "unit": "t/ha"
+                }
+            ]
+        },
+        {
+            "id": "BD.04.01",
+            "name": "Indice de biodiversité fonctionnelle",
+            "category": "Biodiversité",
+            "source": "Díaz et al. (2015), Nature",
+            "description": "Abondance relative d'espèces indicatrices",
+            "formula": "Σ(abondance_espèce_i * poids_écologique_i)",
+            "unit": "points",
+            "variables": [
+                {
+                    "name": "abondance_especes",
+                    "entity": "Écosystème",
+                    "definition": "Nombre d'individus par espèce",
+                    "unit": "individus/ha"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "poids_ecologique",
+                    "entity": "Système",
+                    "definition": "Valeur écologique de l'espèce",
+                    "value": 0.75,
+                    "unit": "coefficient"
+                }
+            ]
+        },
+        {
+            "id": "BD.04.02",
+            "name": "Indice de biodiversité",
+            "category": "Biodiversité",
+            "source": "CBD, 2020 - Biodiversity Indicators",
+            "description": "Richesse spécifique normalisée",
+            "formula": "nombre_espèces / surface_reference",
+            "unit": "espèces/ha",
+            "variables": [
+                {
+                    "name": "nombre_espèces",
+                    "entity": "Espace",
+                    "definition": "Espèces identifiées",
+                    "unit": "nombre"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "surface_reference",
+                    "entity": "Système",
+                    "definition": "Surface de référence",
+                    "value": 10.0,
+                    "unit": "ha"
+                }
+            ]
+        }
+    ]
+}

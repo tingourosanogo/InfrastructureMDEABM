@@ -1,0 +1,5 @@
+entity,rule_description,implementation_code,assumptions
+HerdsmenHouseholds,"cash ~ lognormal(7.6, 1.0)","numpy.random.lognormal(7.6, 1.0, n_households)",Distribution based on Sahel household surveys (World Bank 2024)
+Herd,"herd_size ~ normal(50, 20); species_composition = categorical([0.5 cattle, 0.3 sheep, 0.2 goats])","random.normal(50, 20); random.choice(['cattle', 'sheep', 'goat'], p=[0.5, 0.3, 0.2])",Initial herd size and composition from Sahel surveys (Ndiaye et al. 2021)
+WaterPoints,"water ~ uniform(50, 200)","random.uniform(50, 200)",Seasonal variability in Sahel water points (PRAPS 2024)
+Parcel,"fodder_biomass ~ categorical([0.4 low, 0.4 medium, 0.2 high]); nitrogen ~ normal(50, 10); carbon ~ normal(1000, 200)","random.choice(['low', 'medium', 'high'], p=[0.4, 0.4, 0.2]); random.normal(50, 10); random.normal(1000, 200)","Based on NDVI and soil data for Sahel (ESA 2020-2024, FAO 2021)"

@@ -1,0 +1,197 @@
+{
+  "metadata": {
+    "protocol": "<Protocole, ex. ODDv3>",
+    "model_name": "<Nom du modèle, ex. SocioEco_Model>",
+    "version": "<Version du modèle, ex. 1.0.0>",
+    "creation_date": "<YYYY-MM-DD>",
+    "last_modified": "<YYYY-MM-DD>",
+    "authors": [
+      {
+        "name": "<Nom de l'auteur, ex. Researcher A>",
+        "affiliation": "<Institution ou organisation>",
+        "role": "<Rôle, ex. Domain Expert>",
+        "orcid": "<ORCID, ex. 0000-0000-0000-0000>" 
+      }
+    ],
+    "references": [
+      {
+        "citation": "<Citation, ex. Grimm et al. (2020) - ODD protocol>",
+        "doi": "<DOI, ex. 10.18564/jasss.4259>" 
+      }
+    ]
+  },
+  "global": {
+    "temporal_scope": {
+      "start_date": "<YYYY-MM-DD>",
+      "end_date": "<YYYY-MM-DD>",
+      "time_step": "<Durée, ex. 1 day>",
+      "warmup_period": "<Durée, ex. 365 days>" 
+    },
+    "spatial_configuration": {
+      "extent": ["<min_x>", "<min_y>", "<max_x>", "<max_y>"], 
+      "projection": "<Système, ex. EPSG:4326>",
+      "resolution": "<Résolution, ex. 100 m>" 
+    }
+  },
+  "input_data": {
+    "spatial_data": [
+      {
+        "type": "<Type, ex. raster>",
+        "format": "<Format, ex. GeoTIFF>",
+        "path": "<Chemin, ex. data/land_use.tif>",
+        "description": "<Description, ex. CORINE Land Cover>",
+        "resolution": "<Résolution, ex. 100m>", 
+        "source": "<Source, ex. EEA>",
+        "uncertainty": "<Niveau, ex. low>", 
+        "reliability": "<Niveau, ex. high>" 
+      }
+    ],
+    "tabular_data": [
+      {
+        "type": "<Type, ex. csv>",
+        "format": "<Format, ex. csv>",
+        "path": "<Chemin, ex. data/household_survey.csv>",
+        "description": "<Description, ex. Socio-economic survey>",
+        "sample_size": "<Taille, ex. 1500>", 
+        "response_rate": "<Pourcentage, ex. 78%>", 
+        "validation_method": "<Méthode, ex. cross_validation>" 
+      }
+    ]
+  },
+  "entities": [
+    {
+      "name": "<Nom de l'entité, ex. HouseholdAgent>",
+      "type": "<Type, ex. agent>",
+      "count": "<Nombre, ex. 1500>", 
+      "initialization_method": "<Méthode, ex. data_driven>",
+      "data_source": "<Source, ex. data/household_survey.csv>",
+      "sampling_strategy": "<Stratégie, ex. stratified_random>", 
+      "stratification_variables": ["<Variable, ex. income_class>"], 
+      "attribute_mapping": [
+        {
+          "model_attribute": "<Attribut, ex. size_ha>",
+          "data_field": "<Champ, ex. area>",
+          "conversion": "<Conversion, ex. square_meters_to_hectares>" 
+        }
+      ]
+    }
+  ],
+  "parameters": {
+    "fixed": [
+      {
+        "name": "<Nom, ex. discount_rate>",
+        "entity": "<Entité, ex. HouseholdAgent>",
+        "value": "<Valeur, ex. 0.03>",
+        "unit": "<Unité, ex. dimensionless>",
+        "definition": "<Définition, ex. Temporal discount rate>",
+        "source": "<Source, ex. Berger et al. (2007)>",
+        "uncertainty": {
+          "distribution": "<Distribution, ex. normal>", 
+          "std_dev": "<Écart-type, ex. 0.005>" 
+        },
+        "sensitivity_rank": "<Niveau, ex. high>", 
+        "validation": "<Méthode, ex. lab_experiments>" 
+      }
+    ],
+    "variable": [
+      {
+        "name": "<Nom, ex. climate_change_scenario>",
+        "entity": "<Entité, ex. Global>",
+        "values": ["<Valeur, ex. RCP2.6>"],
+        "definition": "<Définition, ex. IPCC climate scenarios>",
+        "source": "<Source, ex. IPCC AR6>",
+        "impact_assessment": "<Niveau, ex. high>" 
+      }
+    ]
+  },
+  "state_variables": {
+    "fixed_initialization": [
+      {
+        "name": "<Nom, ex. initial_wealth>",
+        "entity": "<Entité, ex. HouseholdAgent>",
+        "value": "<Valeur, ex. 50000>",
+        "unit": "<Unité, ex. EUR>",
+        "distribution": "<Distribution, ex. lognormal>",
+        "parameters": {
+          "<Paramètre, ex. mean>": "<Valeur, ex. 10.82>",
+          "<Paramètre, ex. sigma>": "<Valeur, ex. 0.8>"
+        },
+        "source": "<Source, ex. National statistics>"
+      }
+    ],
+    "variable_initialization": [
+      {
+        "name": "<Nom, ex. land_use_type>",
+        "entity": "<Entité, ex. ParcelEntity>",
+        "values": ["<Valeur, ex. forest>"],
+        "distribution": "<Distribution, ex. categorical>",
+        "probabilities": ["<Probabilité, ex. 0.3>"],
+        "source": "<Source, ex. Land cover map>"
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "<Nom, ex. sustainability_transition>",
+      "description": "<Description, ex. Pathway towards sustainable agroecology>",
+      "based_on": "<Base, ex. IPCC RCP2.6>", 
+      "parameters": {
+        "<Paramètre, ex. climate_change_scenario>": "<Valeur, ex. RCP2.6>"
+      },
+      "state_variables": {
+        "<Variable, ex. initial_investment>": "<Valeur, ex. 20000>"
+      },
+      "validation_status": "<Statut, ex. plausible>" 
+    }
+  ],
+  "traceability": {
+    "data_quality": [
+      {
+        "parameter": "<Paramètre, ex. discount_rate>",
+        "quality_score": "<Score, ex. 0.8>",
+        "assessment_method": "<Méthode, ex. expert_judgment>",
+        "experts": [
+          {
+            "name": "<Nom, ex. Dr. Economist>",
+            "confidence": "<Niveau, ex. high>"
+          }
+        ] 
+      }
+    ],
+    "uncertainty_quantification": [
+      {
+        "parameter": "<Paramètre, ex. soil_mineralization_rate>",
+        "uncertainty_type": "<Type, ex. epistemic>",
+        "magnitude": "<Niveau, ex. medium>",
+        "propagation_method": "<Méthode, ex. monte_carlo>"
+      }
+    ],
+    "sensitivity_analysis": {
+      "planned_methods": ["<Méthode, ex. SOBOL>"],
+      "parameters_included": "<Portée, ex. all>",
+      "software": "<Outil, ex. SALib>" 
+    }
+  },
+  "validation": {
+    "methods": [
+      {
+        "method_name": "<Nom, ex. expert_validation>",
+        "validation_date": "<YYYY-MM-DD>", 
+        "participants": "<Nombre, ex. 5>", 
+        "period": "<Période, ex. 2010-2020>", 
+        "metric": "<Métrique, ex. Nash-Sutcliffe>", 
+        "metric_value": "<Valeur, ex. 0.75>", 
+        "threshold": "<Seuil, ex. 0.6>", 
+        "result": "<Résultat, ex. parameters_approved>" 
+      }
+    ]
+  },
+  "initialization_rules": [
+    {
+      "entity": "<Entité, ex. HouseholdAgent>",
+      "rule": "<Règle, ex. wealth ~ lognormal(10.82, 0.8)>",
+      "implementation": "<Code, ex. numpy.random.lognormal(10.82, 0.8, n_agents)>",
+      "assumptions": "<Hypothèses, ex. Wealth distribution follows statistics>" 
+    }
+  ]
+}

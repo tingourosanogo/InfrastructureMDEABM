@@ -1,0 +1,208 @@
+# initialization_config.yaml
+## ODD-Compliant Initialization Configuration
+## Version: 1.1 | ODD Protocol: v3.0 | TRACE: Enabled
+
+metadata:
+  protocol: "ODDv3"
+  model_name: "SocioEco_Model"
+  version: "1.0.0"
+  creation_date: "2024-01-15"
+  last_modified: "2024-01-15"
+  authors:
+    - name: "Researcher A"
+      affiliation: "Institution X"
+      role: "Domain Expert"
+      orcid: "0000-0000-0000-0000"
+    - name: "Researcher B"
+      affiliation: "Institution Y" 
+      role: "Model Developer"
+      orcid: "0000-0000-0000-0001"
+
+  references:
+    - citation: "Grimm et al. (2020). ODD protocol v3.0"
+      doi: "10.18564/jasss.4259"
+    - citation: "Bousquet et al. (1998). CORMAS framework"
+      doi: "10.1007/3-540-64582-9_76"
+
+## ODD Section 3.3: Initialization
+global:
+  temporal_scope:
+    start_date: "2020-01-01"
+    end_date: "2030-12-31"
+    time_step: "1 day"
+    warmup_period: "365 days"  # Common practice in ABM
+
+  spatial_configuration:
+    extent: [min_x, min_y, max_x, max_y]  # Bounding box
+    projection: "EPSG:4326"
+    resolution: "100 m"  # Based on data availability
+
+## ODD Section 3.4: Input Data
+input_data:
+  spatial_data:
+    - type: "raster"
+      format: "GeoTIFF"
+      path: "data/land_use.tif"
+      description: "CORINE Land Cover 2020"
+      resolution: "100m"
+      source: "EEA"
+      uncertainty: "low"  # TRACE requirement
+
+    - type: "vector"
+      format: "GeoJSON"
+      path: "data/parcels.geojson"
+      description: "Agricultural parcel boundaries"
+      source: "Registre Parcellaire"
+      reliability: "high"
+
+  tabular_data:
+    - type: "csv"
+      path: "data/household_survey.csv"
+      description: "Socio-economic survey 2020"
+      sample_size: 1500
+      response_rate: "78%"
+      validation_method: "cross_validation"
+
+## CORMAS-inspired Entity Initialization
+entities:
+  - name: "HouseholdAgent"
+    type: "agent"
+    count: 1500
+    initialization_method: "data_driven"
+    data_source: "data/household_survey.csv"
+    sampling_strategy: "stratified_random"
+    stratification_variables: ["income_class", "location"]
+
+  - name: "ParcelEntity"
+    type: "environment"
+    initialization_method: "gis_import"
+    data_source: "data/parcels.geojson"
+    attribute_mapping:
+      - model_attribute: "size_ha"
+        data_field: "area"
+        conversion: "square_meters_to_hectares"
+
+## NetLogo-inspired Parameter Structure
+parameters:
+  # Fixed parameters (Z)
+  fixed:
+    - name: "discount_rate"
+      entity: "HouseholdAgent"
+      value: 0.03
+      unit: "dimensionless"
+      definition: "Temporal discount rate for decision-making"
+      source: "Berger et al. (2007) - Empirical estimation"
+      uncertainty:
+        distribution: "normal"
+        std_dev: 0.005
+      sensitivity_rank: "high"  # For sensitivity analysis
+
+    - name: "soil_mineralization_rate"
+      entity: "ParcelEntity"
+      value: 0.15
+      unit: "kgN/kgOM/day"
+      definition: "Rate of organic matter mineralization"
+      source: "Local soil measurements"
+      validation: "lab_experiments"
+
+  # Variable parameters (X) - For scenario exploration
+  variable:
+    - name: "climate_change_scenario"
+      entity: "Global"
+      values: ["RCP2.6", "RCP4.5", "RCP8.5"]
+      definition: "IPCC climate scenarios"
+      source: "IPCC AR6"
+      impact_assessment: "high"
+
+    - name: "policy_intervention"
+      entity: "Global"
+      values: ["baseline", "subsidy", "tax", "regulation"]
+      definition: "Policy intervention scenarios"
+      source: "Stakeholder workshop"
+
+## State Variables Initialization (ODD 3.3)
+state_variables:
+  fixed_initialization:
+    - name: "initial_wealth"
+      entity: "HouseholdAgent"
+      value: 50000
+      unit: "EUR"
+      distribution: "lognormal"
+      parameters:
+        mean: 10.82  # log(50000)
+        sigma: 0.8
+      source: "National statistics 2020"
+
+  variable_initialization:
+    - name: "land_use_type"
+      entity: "ParcelEntity"
+      values: ["forest", "agriculture", "urban", "wetland"]
+      distribution: "categorical"
+      probabilities: [0.3, 0.4, 0.2, 0.1]
+      source: "Land cover map 2020"
+
+## GAMA-inspired Scenario Configuration
+scenarios:
+  - name: "sustainability_transition"
+    description: "Pathway towards sustainable agroecology"
+    based_on: "IPCC RCP2.6 + EU Green Deal"
+    parameters:
+      climate_change_scenario: "RCP2.6"
+      policy_intervention: "regulation"
+    state_variables:
+      initial_investment: 20000
+    validation_status: "plausible"  # TRACE requirement
+
+  - name: "business_as_usual"
+    description: "Current trends continuation"
+    parameters:
+      climate_change_scenario: "RCP4.5"
+      policy_intervention: "baseline"
+    state_variables:
+      initial_investment: 10000
+    validation_status: "calibrated"
+
+## TRACE-compliant Documentation
+traceability:
+  data_quality:
+    - parameter: "discount_rate"
+      quality_score: 0.8
+      assessment_method: "expert_judgment"
+      experts:
+        - name: "Dr. Economist"
+          confidence: "high"
+
+  uncertainty_quantification:
+    - parameter: "soil_mineralization_rate"
+      uncertainty_type: "epistemic"
+      magnitude: "medium"
+      propagation_method: "monte_carlo"
+
+  sensitivity_analysis:
+    planned_methods: ["SOBOL", "Morris"]
+    parameters_included: "all"
+    software: "SALib"
+
+validation:
+  methods:
+    - name: "expert_validation"
+      date: "2024-01-10"
+      participants: 5
+      result: "parameters_approved"
+
+    - name: "historical_validation"
+      period: "2010-2020"
+      metric: "Nash-Sutcliffe"
+      value: 0.75
+      threshold: 0.6
+
+## Initialization Rules (ODD 3.3)
+initialization_rules:
+  - entity: "HouseholdAgent"
+    rule: "wealth ~ lognormal(10.82, 0.8)"
+    implementation: "numpy.random.lognormal(10.82, 0.8, n_agents)"
+    assumptions: "Wealth distribution follows national statistics"
+
+  - entity: "ParcelEntity"
+    rule: "land_use = categorical([0.3, 0.4, 0.2, 0.1])"
+    implementation: "random.choice(['forest', 'agriculture', 'urban', 'wetland'], p=[0.3, 0.4, 0.2, 0.1])"
